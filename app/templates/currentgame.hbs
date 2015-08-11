@@ -1,0 +1,30 @@
+<div class="row currentgame">
+    <div class="col-xs-12">
+
+        <div class="row">
+            <div class="col-xs-12 header">
+                <h2>Game information</h2>
+                <div class="input-group player-search">
+                    {{input class="form-control player-search-input" placeholder="Search for player" value=playerName}}
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" id="player-search" {{ action "getData" }}>Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        {{#if gameData}}
+        <div class="row game-information">
+            <span>
+                Solo ranked 5v5
+                <br />
+                Game time: 10:05
+            </span>
+        </div>
+        {{/if}}
+        
+        {{#each playerPairs as |pair|}}
+             {{player-comp pair=pair}}
+        {{/each}}
+    </div>
+</div>

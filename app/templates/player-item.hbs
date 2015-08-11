@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-xs-12 expandable">
+        <div class="row">
+            <span id="101" class="summoner-info-team100 col-xs-5">
+                <div class="col-xs-6">
+                    {{spriteimage pair.playerOnTeam1.sprite}}
+                    <p>{{pair.playerOnTeam1.name}}</p>
+                    <p>{{pair.playerOnTeam1.championWins}}/{{pair.playerOnTeam1.championLosses}} - {{pair.playerOnTeam1.championWinrate}}%<span class="level2">S</span><span class="level3">E</span><span class="level1">C</span></p>
+                </div>
+                <div class="col-xs-6">
+                    <img src='assets/images/medals/{{pair.playerOnTeam1.league}}.png' class='medal'>
+                    <span class="league-info-text">
+                        <p>{{pair.playerOnTeam1.league}} {{pair.playerOnTeam1.division}}</p>
+                        <p>{{pair.playerOnTeam1.rankedWins}}/{{pair.playerOnTeam1.rankedLosses}} - <b>{{pair.playerOnTeam1.rankedWinrate}}%</b></p>
+                    </span>
+                </div>
+            </span>
+
+            <div class="versus col-xs-2">vs.</div>
+
+            <span id="201" class="summoner-info-team200 col-xs-5">
+                <div class="col-xs-6">
+                    {{spriteimage pair.playerOnTeam2.sprite}}
+                    <p>{{pair.playerOnTeam2.name}}</p>
+                    <p>{{pair.playerOnTeam2.championWins}}/{{pair.playerOnTeam2.championLosses}} - {{pair.playerOnTeam2.championWinrate}}%<span class="level2">S</span><span class="level3">E</span><span class="level1">C</span></p>
+                </div>
+                <div class="col-xs-6">
+                    <img src='assets/images/medals/{{pair.playerOnTeam2.league}}.png' class='medal'>
+                    <span class="league-info-text">
+                        <p>{{pair.playerOnTeam2.league}} {{pair.playerOnTeam2.division}}</p>
+                        <p>{{pair.playerOnTeam2.rankedWins}}/{{pair.playerOnTeam2.rankedLosses}} - <b>{{pair.playerOnTeam2.rankedWinrate}}%</b></p>
+                    </span>
+                </div>
+            </span>
+        </div>
+
+        <div class='row expand game-info-expand'>
+            <span id="101-expand">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Winrate</th>
+                        <th><abbr title="Kills deaths assists">KDA</abbr></th>
+                    </tr>
+                    <tr id="player-champ">
+                        <td><b><abbr title="Jzbob on Jayce">Champion:</abbr></b></td>
+                        <td>75%</td>
+                        <td>5.2</td>
+                    </tr>
+                    <tr id="avg-champ">
+                        <td><b>Champion avg:</b></td>
+                        <td>50%</td>
+                        <td>3</td>
+                    </tr>
+                    <tr id="player-ranked">
+                        <td><b>Ranked:</b></td>
+                        <td>67%</td>
+                        <td>3</td>
+                    </tr>
+                </table>
+                <p>
+                    Experienced<br />
+                    <span class="danger">Skilled on champion</span><br />
+                    Most played champion<br />
+                </p>
+            </span>
+            <span id="201-expand">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Winrate</th>
+                        <th><abbr title="Kills deaths assists">KDA</abbr></th>
+                    </tr>
+                    <tr id="player-champ">
+                        <td><b><abbr title="Jzbob on Jayce">Champion:</abbr></b></td>
+                        <td>75%</td>
+                        <td>5.2</td>
+                    </tr>
+                    <tr id="avg-champ">
+                        <td><b>Champion avg:</b></td>
+                        <td>50%</td>
+                        <td>3</td>
+                    </tr>
+                    <tr id="player-ranked">
+                        <td><b>Ranked:</b></td>
+                        <td>67%</td>
+                        <td>3</td>
+                    </tr>
+                </table>
+                <p>
+                    Experienced<br />
+                    <span class="danger">Skilled on champion</span><br />
+                    Most played champion<br />
+                </p>
+            </span>
+        </div>
+    </div>
+</div>

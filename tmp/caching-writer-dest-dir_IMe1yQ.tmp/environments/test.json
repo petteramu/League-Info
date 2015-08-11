@@ -1,0 +1,1 @@
+{"modulePrefix":"leaguesite","environment":"test","baseURL":"/","locationType":"none","EmberENV":{"FEATURES":{}},"APP":{"LOG_ACTIVE_GENERATION":false,"LOG_VIEW_LOOKUPS":false,"rootElement":"#ember-testing","name":"leaguesite","version":"0.0.0+"},"exportApplicationGlobal":true}

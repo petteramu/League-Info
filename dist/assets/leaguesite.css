@@ -1,0 +1,351 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,700,600,300);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,800,700,600,300);
+h3 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #30385f;
+  margin: 5px 2px 2px 2px;
+  display: block;
+  font-family: "Open Sans";
+}
+.navbar {
+  font: 14px 'Lora';
+  background: #42444e;
+  color: white;
+  padding: 0 10px 0 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.navbar a {
+  color: white;
+}
+.navbar a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.navbar li {
+  transform: translateY(5px);
+}
+.navbar li:last-child {
+  float: right;
+}
+.graphInfo {
+  background: #222;
+  color: white;
+  font: 'sans-serif';
+  font-size: 8px;
+  position: absolute;
+  display: none;
+  padding: 3px;
+  border-radius: 3px;
+}
+/************************************/
+/* Current game information "table" */
+/************************************/
+.game-information {
+  padding: 5px;
+  font-weight: 500;
+}
+.currentgame {
+  background: #f7f7f8;
+  font-family: "Open Sans", sans-serif;
+}
+/* Top banner in current game */
+.header {
+  -webkit-border-top-radius: 5px;
+  -moz-border-top-radius: 5px;
+  border-top-radius: 5px;
+  border-top: solid #545763 1px;
+  border-bottom: solid #2f3037 1px;
+  border-left: none;
+  border-right: none;
+  background: #42444d;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  margin: 0;
+  text-align: left;
+}
+.header h2 {
+  font: 18px "Open Sans", sans-serif;
+  display: inline-block;
+  margin: 0 10px 0 0;
+  padding: 0;
+  font-weight: 600;
+}
+.player-search {
+  float: right;
+  display: inline-block;
+  color: black;
+  width: 200px;
+}
+.player-search .player-search-input {
+  width: 150px;
+}
+.player-search * {
+  height: 25px;
+}
+.player-pair {
+  padding-left: 0px;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+}
+.player-pair > div {
+  padding-left: 0px;
+}
+.player-pair > div > .row {
+  padding: 5px 0 0 0;
+  border-bottom: 1px #e6e6e6 solid;
+}
+.player-pair > div > .row:nth-child(2) {
+  border-top: none;
+}
+.player-pair:last-child {
+  border-bottom: #fcfcfc 1px solid;
+}
+.danger {
+  color: red;
+}
+.game-info-expand {
+  padding-left: 0px;
+  background: #f5f5f7;
+  display: none;
+  font: "Roboto", sans-serif;
+  font-size: 12px;
+}
+.game-info-expand table {
+  display: inline-block;
+}
+.game-info-expand table td {
+  padding-left: 15px;
+}
+.game-info-expand table th,
+.game-info-expand table abbr {
+  padding-left: 3px;
+  text-align: center;
+}
+.game-info-expand > span {
+  display: inline-block;
+}
+.game-info-expand > span p {
+  display: inline-block;
+  padding-left: 15px;
+}
+.game-info-expand > span:last-child {
+  float: right;
+}
+.game-info-expand .mostPlayedChampions {
+  float: right;
+}
+.game-info-expand .mostPlayedChampions:last-child {
+  float: left;
+}
+.versus {
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}
+@media (min-width: 1024px) {
+  .versus {
+    width: 4%;
+  }
+}
+@media (max-width: 1024px) {
+  .versus {
+    width: 8%;
+  }
+}
+.summoner-info-team100,
+.summoner-info-team200 {
+  display: inline-block;
+}
+@media (min-width: 1024px) {
+  .summoner-info-team100,
+  .summoner-info-team200 {
+    width: 48%;
+  }
+}
+@media (max-width: 1024px) {
+  .summoner-info-team100,
+  .summoner-info-team200 {
+    width: 46%;
+  }
+}
+.summoner-info-team100 div:first-child p:nth-child(2),
+.summoner-info-team200 div:first-child p:nth-child(2) {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+.summoner-info-team100 div:first-child p:nth-child(3),
+.summoner-info-team200 div:first-child p:nth-child(3) {
+  font-family: "Lora", serif;
+  font-size: 11px;
+}
+.summoner-info-team100 div:first-child p:nth-child(3),
+.summoner-info-team200 div:first-child p:nth-child(3) {
+  margin: 0;
+}
+.summoner-info-team100 div .league-info-text p,
+.summoner-info-team200 div .league-info-text p {
+  font-size: 12px;
+}
+.summoner-info-team100 div .league-info-text p:first-child,
+.summoner-info-team200 div .league-info-text p:first-child {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+.summoner-info-team100 div:first-child img {
+  float: left;
+}
+.summoner-info-team100 div:nth-child(2) img {
+  float: right;
+  text-align: left;
+}
+.summoner-info-team100 .league-info-text p {
+  text-align: right;
+}
+.summoner-info-team200 div:first-child {
+  text-align: right;
+  float: right;
+}
+.summoner-info-team200 div:first-child img {
+  float: right;
+}
+.summoner-info-team200 div:first-child p {
+  text-align: right;
+}
+.summoner-info-team200 div:nth-child(2) img {
+  float: left;
+  text-align: left;
+}
+/* Images */
+.champ-icon {
+  margin: 2px 10px 0 10px;
+  display: inline-block;
+  overflow: hidden;
+  zoom: 0.66;
+  -moz-transform: scale(0.66);
+  -moz-transform-origin: 0 0;
+}
+.champ-icon-small {
+  display: inline-block;
+  overflow: hidden;
+  zoom: 0.333;
+  -moz-transform: scale(0.333);
+  -moz-transform-origin: 0 0;
+}
+.id-box {
+  display: inline-block;
+}
+.id-box:after {
+  background-color: #42444d;
+  color: white;
+  font-size: 9px;
+  height: inherit;
+  width: 50px;
+}
+.mostPlayedChampions tr:nth-child(odd) {
+  background-color: #eeeff1;
+}
+.mostPlayedChampions tr:nth-child(even) {
+  background-color: #f4f4f6;
+}
+.mostPlayedChampions tr:first-child {
+  background-color: #f7f7f8;
+}
+/** Match history **/
+.match-history {
+  margin-bottom: 3px;
+}
+.match-history-item {
+  width: 50px;
+  padding: 2px;
+  font-size: 10px;
+  font-weight: bold;
+  display: inline-block;
+  margin: 0;
+}
+[data-win='true'] {
+  background-color: #bddbbd;
+  border: 1px solid #8bc18b;
+}
+[data-win='true']:after {
+  content: "WIN";
+}
+[data-win='false'] {
+  background-color: #dbbdbd;
+  border: 1px solid #c18b8b;
+}
+[data-win='false']:after {
+  content: "LOSS";
+}
+/* Game message */
+.gamemessage {
+  background: #f2f2f2;
+  border: 1px solid #c5c5c5;
+  text-align: center;
+  padding: 3px;
+  font: 14px "Open Sans", sans-serif;
+  display: none;
+}
+/* Medal image */
+.medal {
+  margin: 0 5px 0 5px;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-15%);
+}
+/** Graph options **/
+.graphoptions {
+  font: 14px "Open Sans", sans-serif;
+  margin-top: 20px;
+}
+.optionsrow {
+  background: #f9f9f9;
+  border: 1px #efefef solid;
+  padding: 5px;
+  display: none;
+}
+.optionsrow > .row {
+  margin-bottom: 5px;
+}
+.optionsrow > .row:first-child,
+.optionsrow > .row:last-child {
+  padding-top: 17px;
+}
+.optionsrow > .row div:nth-child(2),
+.optionsrow > .row div:last-child {
+  text-align: right;
+}
+.optionsrow h5 {
+  margin: 0;
+  font-weight: bold;
+}
+.championselect {
+  height: 25px;
+  width: 100%;
+}
+.clickable:hover,
+.expandable {
+  cursor: pointer;
+}
+.level1,
+.level2,
+.level3 {
+  margin-left: 2px;
+  font-size: 9px;
+}
+.level1 {
+  color: #1414b8;
+}
+.level2 {
+  color: #ff6a00;
+}
+.level3 {
+  color: red;
+}
+/*# sourceMappingURL=/assets/leaguesite.css.map */
