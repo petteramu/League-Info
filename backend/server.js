@@ -5,7 +5,7 @@ var httpserver = require('http').Server(app);
 var io = require('socket.io')(httpserver);
 var RiotAPI = require('./API/api.js');
 var Database = require('./db.js');
-var serverController = require('./serverControllerV2.js');
+var serverController = require('./serverController.js');
 
 var server = function() {
     

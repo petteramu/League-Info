@@ -1,7 +1,9 @@
 # Leaguesite
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This website allows the user to check up players that are currently in a game.
+It comes with a server running on node which uses the RiotAPI to serve the data to the website through socket.io.
+
+The server is located in the "backend" folder and is run through the server.js file.
 
 ## Prerequisites
 
