@@ -43,7 +43,7 @@ export default Ember.Controller.extend({
     },
     
     coreDataEvent: function(event) {
-        this.gameData = event;
+        this.set('gameData', event);
         var i;
         for(i = 0; i < event['participants'].length; i++) {
             this.insertCoreDataToPairs(event['participants'][i]);
@@ -173,7 +173,7 @@ export default Ember.Controller.extend({
     
     insertLeagueDataToPairs: function(data) {
         var playerObj = this.getOrCreatePlayerPair(data.participantNo);
-        playerObj.set('league', data.league.toLowerCase());
+        playerObj.set('league', this.capitalizeFirstLetter(data.league.toLowerCase()));
         playerObj.set('division', data.division);
         playerObj.set('rankedWins', data.wins);
         playerObj.set('rankedLosses', data.losses);
@@ -183,6 +183,7 @@ export default Ember.Controller.extend({
     insertChampDataToPairs: function(data) {
         var playerObj = this.getOrCreatePlayerPair(data.participantNo);
         if(typeof data.playerOnChampion !== 'undefined') {
+            playerObj.set('championName', data.playerOnChampion.name);
             playerObj.set('championKills', data.playerOnChampion.kills);
             playerObj.set('championDeaths', data.playerOnChampion.deaths);
             playerObj.set('championAssists', data.playerOnChampion.assists);
@@ -236,7 +237,9 @@ export default Ember.Controller.extend({
     },
     
     insertMostPlayedDataToPairs: function(data) {
-        if(typeof data.data === 'undefined') return;
+        if(typeof data.data === 'undefined') {
+            return;
+        }
         console.log(data);
         var playerObj = this.getOrCreatePlayerPair(data.participantNo);
         var mp = [];
@@ -260,5 +263,9 @@ export default Ember.Controller.extend({
             });
         }
         playerObj.set('mostPlayed', mp);
+    },
+    
+    capitalizeFirstLetter: function(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 });

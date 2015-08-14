@@ -1,25 +1,33 @@
 <div class="row currentgame">
-    <div class="col-xs-12">
+    <div class="col-xs-13">
 
         <div class="row">
-            <div class="col-xs-12 header">
+            <div class="col-xs-13 header">
                 <h2>Game information</h2>
-                <div class="input-group player-search">
-                    {{input class="form-control player-search-input" placeholder="Search for player" value=playerName}}
-                    <span class="input-group-btn">
-                    <button class="btn btn-default" id="player-search" {{ action "getData" }}>Go!</button>
-                    </span>
+                <div class="input-group player-search-container">
+                    <form>
+                        {{input class="form-control player-search-input" placeholder="Search for player" value=playerName}}
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" id="" {{ action "getData" }}>Go!</button>
+                        </span>
+                    </form>
                 </div>
             </div>
         </div>
         
         {{#if gameData}}
-        <div class="row game-information">
-            <span>
-                Solo ranked 5v5
-                <br />
-                Game time: 10:05
-            </span>
+        <div class='row coreinfo'>
+            <div class='col-xs-12'>
+                <span class='info'>
+                    Game time: 14:37
+                </span>
+                <span class='info'>
+                    Ranked Solo 5x5
+                </span>
+                <span class='info'>
+                    Summoner's rift
+                </span>
+            </div>
         </div>
         {{/if}}
         

@@ -119,7 +119,7 @@ define('leaguesite/components/player-comp', ['exports', 'ember'], function (expo
   exports['default'] = Ember['default'].Component.extend({
     actions: {
       toggleDetails: function toggleDetails() {
-        this.$('.game-info-expand').slideToggle('slow');
+        this.$('.player-expand').slideToggle('slow');
       }
     }
   });
@@ -186,7 +186,7 @@ define('leaguesite/controllers/currentgame', ['exports', 'ember'], function (exp
         },
 
         coreDataEvent: function coreDataEvent(event) {
-            this.gameData = event;
+            this.set('gameData', event);
             var i;
             for (i = 0; i < event['participants'].length; i++) {
                 this.insertCoreDataToPairs(event['participants'][i]);
@@ -315,7 +315,7 @@ define('leaguesite/controllers/currentgame', ['exports', 'ember'], function (exp
 
         insertLeagueDataToPairs: function insertLeagueDataToPairs(data) {
             var playerObj = this.getOrCreatePlayerPair(data.participantNo);
-            playerObj.set('league', data.league.toLowerCase());
+            playerObj.set('league', this.capitalizeFirstLetter(data.league.toLowerCase()));
             playerObj.set('division', data.division);
             playerObj.set('rankedWins', data.wins);
             playerObj.set('rankedLosses', data.losses);
@@ -325,6 +325,7 @@ define('leaguesite/controllers/currentgame', ['exports', 'ember'], function (exp
         insertChampDataToPairs: function insertChampDataToPairs(data) {
             var playerObj = this.getOrCreatePlayerPair(data.participantNo);
             if (typeof data.playerOnChampion !== 'undefined') {
+                playerObj.set('championName', data.playerOnChampion.name);
                 playerObj.set('championKills', data.playerOnChampion.kills);
                 playerObj.set('championDeaths', data.playerOnChampion.deaths);
                 playerObj.set('championAssists', data.playerOnChampion.assists);
@@ -378,7 +379,9 @@ define('leaguesite/controllers/currentgame', ['exports', 'ember'], function (exp
         },
 
         insertMostPlayedDataToPairs: function insertMostPlayedDataToPairs(data) {
-            if (typeof data.data === 'undefined') return;
+            if (typeof data.data === 'undefined') {
+                return;
+            }
             console.log(data);
             var playerObj = this.getOrCreatePlayerPair(data.participantNo);
             var mp = [];
@@ -402,6 +405,10 @@ define('leaguesite/controllers/currentgame', ['exports', 'ember'], function (exp
                 });
             }
             playerObj.set('mostPlayed', mp);
+        },
+
+        capitalizeFirstLetter: function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
         }
     });
 
@@ -2967,7 +2974,7 @@ define('leaguesite/templates/components/form-element/vertical/textarea', ['expor
   }()));
 
 });
-define('leaguesite/templates/components/player-comp', ['exports'], function (exports) {
+define('leaguesite/templates/components/player-comp-old', ['exports'], function (exports) {
 
   'use strict';
 
@@ -2988,7 +2995,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
                 "column": 20
               }
             },
-            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+            "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
           },
           arity: 1,
           cachedFragment: null,
@@ -3039,7 +3046,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 16
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3094,7 +3101,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 24
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3164,7 +3171,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 24
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3234,7 +3241,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 24
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3305,7 +3312,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
                 "column": 24
               }
             },
-            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+            "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
           },
           arity: 1,
           cachedFragment: null,
@@ -3381,7 +3388,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 20
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3475,7 +3482,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
                 "column": 20
               }
             },
-            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+            "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
           },
           arity: 1,
           cachedFragment: null,
@@ -3526,7 +3533,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 16
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3581,7 +3588,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 24
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3656,7 +3663,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 24
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3726,7 +3733,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 24
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3797,7 +3804,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
                 "column": 24
               }
             },
-            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+            "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
           },
           arity: 1,
           cachedFragment: null,
@@ -3873,7 +3880,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
               "column": 20
             }
           },
-          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
         },
         arity: 0,
         cachedFragment: null,
@@ -3967,7 +3974,7 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
             "column": 6
           }
         },
-        "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        "moduleName": "leaguesite/templates/components/player-comp-old.hbs"
       },
       arity: 0,
       cachedFragment: null,
@@ -4408,6 +4415,1427 @@ define('leaguesite/templates/components/player-comp', ['exports'], function (exp
   }()));
 
 });
+define('leaguesite/templates/components/player-comp', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    var child0 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 19,
+              "column": 20
+            },
+            "end": {
+              "line": 23,
+              "column": 20
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","small");
+          var el2 = dom.createTextNode("\n                        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("W / ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("L");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"class","hidden-sm");
+          var el3 = dom.createTextNode("(");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("%)");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element9 = dom.childAt(fragment, [1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(element9,1,1);
+          morphs[1] = dom.createMorphAt(element9,3,3);
+          morphs[2] = dom.createMorphAt(dom.childAt(element9, [5]),1,1);
+          return morphs;
+        },
+        statements: [
+          ["content","pair.playerOnTeam1.championWins",["loc",[null,[21,24],[21,59]]]],
+          ["content","pair.playerOnTeam1.championLosses",["loc",[null,[21,63],[21,100]]]],
+          ["content","pair.playerOnTeam1.championWinrate",["loc",[null,[21,126],[21,164]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child1 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 30,
+              "column": 20
+            },
+            "end": {
+              "line": 35,
+              "column": 20
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1,"class","text-larger");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n                    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","small");
+          var el2 = dom.createTextNode("\n                        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("W / ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("L(");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("%)\n                    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element7 = dom.childAt(fragment, [1]);
+          var element8 = dom.childAt(fragment, [3]);
+          var morphs = new Array(5);
+          morphs[0] = dom.createMorphAt(element7,0,0);
+          morphs[1] = dom.createMorphAt(element7,2,2);
+          morphs[2] = dom.createMorphAt(element8,1,1);
+          morphs[3] = dom.createMorphAt(element8,3,3);
+          morphs[4] = dom.createMorphAt(element8,5,5);
+          return morphs;
+        },
+        statements: [
+          ["content","pair.playerOnTeam1.league",["loc",[null,[31,46],[31,75]]]],
+          ["content","pair.playerOnTeam1.division",["loc",[null,[31,76],[31,107]]]],
+          ["content","pair.playerOnTeam1.rankedWins",["loc",[null,[33,24],[33,57]]]],
+          ["content","pair.playerOnTeam1.rankedLosses",["loc",[null,[33,61],[33,96]]]],
+          ["content","pair.playerOnTeam1.rankedWinrate",["loc",[null,[33,98],[33,134]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child2 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 55,
+              "column": 20
+            },
+            "end": {
+              "line": 60,
+              "column": 20
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1,"class","text-larger");
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode(" ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n                    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","small");
+          var el2 = dom.createTextNode("\n                        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("W/");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("L(");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("%)\n                    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element5 = dom.childAt(fragment, [1]);
+          var element6 = dom.childAt(fragment, [3]);
+          var morphs = new Array(5);
+          morphs[0] = dom.createMorphAt(element5,0,0);
+          morphs[1] = dom.createMorphAt(element5,2,2);
+          morphs[2] = dom.createMorphAt(element6,1,1);
+          morphs[3] = dom.createMorphAt(element6,3,3);
+          morphs[4] = dom.createMorphAt(element6,5,5);
+          return morphs;
+        },
+        statements: [
+          ["content","pair.playerOnTeam2.league",["loc",[null,[56,46],[56,75]]]],
+          ["content","pair.playerOnTeam2.division",["loc",[null,[56,76],[56,107]]]],
+          ["content","pair.playerOnTeam2.rankedWins",["loc",[null,[58,24],[58,57]]]],
+          ["content","pair.playerOnTeam2.rankedLosses",["loc",[null,[58,59],[58,94]]]],
+          ["content","pair.playerOnTeam2.rankedWinrate",["loc",[null,[58,96],[58,132]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child3 = (function() {
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 68,
+              "column": 20
+            },
+            "end": {
+              "line": 72,
+              "column": 20
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","small");
+          var el2 = dom.createTextNode("\n                        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("W / ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("L");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          dom.setAttribute(el2,"class","hidden-sm");
+          var el3 = dom.createTextNode("(");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("%)");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n                    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element4 = dom.childAt(fragment, [1]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(element4,1,1);
+          morphs[1] = dom.createMorphAt(element4,3,3);
+          morphs[2] = dom.createMorphAt(dom.childAt(element4, [5]),1,1);
+          return morphs;
+        },
+        statements: [
+          ["content","pair.playerOnTeam2.championWins",["loc",[null,[70,24],[70,59]]]],
+          ["content","pair.playerOnTeam2.championLosses",["loc",[null,[70,63],[70,100]]]],
+          ["content","pair.playerOnTeam2.championWinrate",["loc",[null,[70,126],[70,164]]]]
+        ],
+        locals: [],
+        templates: []
+      };
+    }());
+    var child4 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 107,
+                "column": 16
+              },
+              "end": {
+                "line": 111,
+                "column": 16
+              }
+            },
+            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","champ-icon-small-wrapper");
+            var el2 = dom.createTextNode("\n                    ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element3 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createAttrMorph(element3, 'data-win');
+            morphs[1] = dom.createMorphAt(element3,1,1);
+            return morphs;
+          },
+          statements: [
+            ["attribute","data-win",["get","game.win",["loc",[null,[108,65],[108,73]]]]],
+            ["inline","spriteimage",[["get","game.sprite",["loc",[null,[109,34],[109,45]]]],48,"champ-icon-small",["get","champion.name",["loc",[null,[109,68],[109,81]]]]],[],["loc",[null,[109,20],[109,83]]]]
+          ],
+          locals: ["game"],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 104,
+              "column": 12
+            },
+            "end": {
+              "line": 113,
+              "column": 12
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","match-history");
+          var el2 = dom.createTextNode("\n                Last 10 matches:");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("br");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("            ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),3,3);
+          return morphs;
+        },
+        statements: [
+          ["block","each",[["get","pair.playerOnTeam1.matchHistory",["loc",[null,[107,24],[107,55]]]]],[],0,null,["loc",[null,[107,16],[111,25]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child5 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 129,
+                "column": 12
+              },
+              "end": {
+                "line": 136,
+                "column": 12
+              }
+            },
+            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("tr");
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("%");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n            ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element2 = dom.childAt(fragment, [1]);
+            var morphs = new Array(4);
+            morphs[0] = dom.createMorphAt(dom.childAt(element2, [1]),0,0);
+            morphs[1] = dom.createMorphAt(dom.childAt(element2, [3]),0,0);
+            morphs[2] = dom.createMorphAt(dom.childAt(element2, [5]),0,0);
+            morphs[3] = dom.createMorphAt(dom.childAt(element2, [7]),0,0);
+            return morphs;
+          },
+          statements: [
+            ["inline","spriteimage",[["get","champion.sprite",["loc",[null,[131,34],[131,49]]]],48,"champ-icon-small",["get","champion.name",["loc",[null,[131,72],[131,85]]]]],[],["loc",[null,[131,20],[131,87]]]],
+            ["content","champion.games",["loc",[null,[132,20],[132,38]]]],
+            ["content","champion.winrate",["loc",[null,[133,20],[133,40]]]],
+            ["content","champion.KDA",["loc",[null,[134,20],[134,36]]]]
+          ],
+          locals: ["champion"],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 117,
+              "column": 8
+            },
+            "end": {
+              "line": 139,
+              "column": 8
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","most-played");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("table");
+          dom.setAttribute(el2,"class","mostPlayedChampions");
+          var el3 = dom.createTextNode("\n            ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("tr");
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          dom.setAttribute(el4,"colspan","4");
+          var el5 = dom.createElement("h3");
+          var el6 = dom.createTextNode("Most played champions");
+          dom.appendChild(el5, el6);
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n            ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n            ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("tr");
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          var el5 = dom.createTextNode("Games");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          var el5 = dom.createTextNode("Winrate");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          var el5 = dom.createElement("abbr");
+          dom.setAttribute(el5,"title","Kills deaths assists");
+          var el6 = dom.createTextNode("KDA");
+          dom.appendChild(el5, el6);
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n            ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("            ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),5,5);
+          return morphs;
+        },
+        statements: [
+          ["block","each",[["get","pair.playerOnTeam1.mostPlayed",["loc",[null,[129,20],[129,49]]]]],[],0,null,["loc",[null,[129,12],[136,21]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child6 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 158,
+                "column": 16
+              },
+              "end": {
+                "line": 162,
+                "column": 16
+              }
+            },
+            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("                ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1,"class","champ-icon-small-wrapper");
+            var el2 = dom.createTextNode("\n                    ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element1 = dom.childAt(fragment, [1]);
+            var morphs = new Array(2);
+            morphs[0] = dom.createAttrMorph(element1, 'data-win');
+            morphs[1] = dom.createMorphAt(element1,1,1);
+            return morphs;
+          },
+          statements: [
+            ["attribute","data-win",["get","game.win",["loc",[null,[159,65],[159,73]]]]],
+            ["inline","spriteimage",[["get","game.sprite",["loc",[null,[160,34],[160,45]]]],48,"champ-icon-small",["get","champion.name",["loc",[null,[160,68],[160,81]]]]],[],["loc",[null,[160,20],[160,83]]]]
+          ],
+          locals: ["game"],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 155,
+              "column": 12
+            },
+            "end": {
+              "line": 164,
+              "column": 12
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","match-history");
+          var el2 = dom.createTextNode("\n                Last 10 matches:");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("br");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("            ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),3,3);
+          return morphs;
+        },
+        statements: [
+          ["block","each",[["get","pair.playerOnTeam2.matchHistory",["loc",[null,[158,24],[158,55]]]]],[],0,null,["loc",[null,[158,16],[162,25]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    var child7 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@1.13.3",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 179,
+                "column": 12
+              },
+              "end": {
+                "line": 186,
+                "column": 12
+              }
+            },
+            "moduleName": "leaguesite/templates/components/player-comp.hbs"
+          },
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("tr");
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            var el3 = dom.createTextNode("%");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n                ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createElement("td");
+            var el3 = dom.createComment("");
+            dom.appendChild(el2, el3);
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n            ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [1]);
+            var morphs = new Array(4);
+            morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]),0,0);
+            morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
+            morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]),0,0);
+            morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]),0,0);
+            return morphs;
+          },
+          statements: [
+            ["inline","spriteimage",[["get","champion.sprite",["loc",[null,[181,34],[181,49]]]],48,"champ-icon-small",["get","champion.name",["loc",[null,[181,72],[181,85]]]]],[],["loc",[null,[181,20],[181,87]]]],
+            ["content","champion.games",["loc",[null,[182,20],[182,38]]]],
+            ["content","champion.winrate",["loc",[null,[183,20],[183,40]]]],
+            ["content","champion.KDA",["loc",[null,[184,20],[184,36]]]]
+          ],
+          locals: ["champion"],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@1.13.3",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 167,
+              "column": 8
+            },
+            "end": {
+              "line": 189,
+              "column": 8
+            }
+          },
+          "moduleName": "leaguesite/templates/components/player-comp.hbs"
+        },
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","most-played");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("table");
+          dom.setAttribute(el2,"class","mostPlayedChampions");
+          var el3 = dom.createTextNode("\n            ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("tr");
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          dom.setAttribute(el4,"colspan","4");
+          var el5 = dom.createElement("h3");
+          var el6 = dom.createTextNode("Most played champions");
+          dom.appendChild(el5, el6);
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n            ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n            ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("tr");
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          var el5 = dom.createTextNode("Games");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          var el5 = dom.createTextNode("Winrate");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("th");
+          var el5 = dom.createElement("abbr");
+          dom.setAttribute(el5,"title","Kills deaths assists");
+          var el6 = dom.createTextNode("KDA");
+          dom.appendChild(el5, el6);
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n            ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("            ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1, 1]),5,5);
+          return morphs;
+        },
+        statements: [
+          ["block","each",[["get","pair.playerOnTeam2.mostPlayed",["loc",[null,[179,20],[179,49]]]]],[],0,null,["loc",[null,[179,12],[186,21]]]]
+        ],
+        locals: [],
+        templates: [child0]
+      };
+    }());
+    return {
+      meta: {
+        "revision": "Ember@1.13.3",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 191,
+            "column": 6
+          }
+        },
+        "moduleName": "leaguesite/templates/components/player-comp.hbs"
+      },
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","row h60 player-pair");
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-md-6 col-xs-7 team1-player");
+        var el3 = dom.createTextNode("\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","row row-no-padding");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-lg-5 col-md-6 col-sm-7 col-xs-7 one-line h60 v-align");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","champ-icon-wrapper h60");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"class","v-align-helper");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align user-agent-height");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6,"class","text-larger");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("small");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("W / ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("L");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-lg-4 col-md-3 hidden-sm hidden-xs one-line h60");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"class","v-align-helper");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("lb");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-lg-4 col-md-4 col-sm-6 col-xs-6 one-line h60");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"class","v-align-helper");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align");
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align");
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6,"class","v-align-helper");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("img");
+        dom.setAttribute(el6,"class","medal");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment(" divider ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-md-1 hidden-sm hidden-xs divider h60");
+        var el3 = dom.createTextNode("\n        vs.\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment(" player on team 2 ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-xs-6 team2-player");
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","row row-no-padding");
+        var el4 = dom.createTextNode("\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-lg-4 col-md-4 col-sm-6 col-xs-6 one-line h60");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"class","v-align-helper");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align");
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6,"class","v-align-helper");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("img");
+        dom.setAttribute(el6,"class","medal");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align");
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-lg-4 col-md-3 hidden-sm hidden-xs one-line h60");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"class","v-align-helper");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("lb");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","col-lg-5 col-md-6 col-sm-7 col-xs-7 one-line h60 v-align");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        dom.setAttribute(el5,"class","v-align-helper");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","v-align user-agent-height");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6,"class","text-larger");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("small");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("W / ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("L");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5,"class","champ-icon-wrapper h60");
+        var el6 = dom.createTextNode("\n                    ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n                ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","row player-expand row-no-padding");
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-xs-6 team1-expand");
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","inline-wrap");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","play-style");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h3");
+        var el6 = dom.createTextNode("Play style");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Most played role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("ADC");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(57 games)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Best performing role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("ADC");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(55% winrate)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Least played role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("MID");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(5 games)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Worst performing role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("TOP");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(35% winrate)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            \n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("            \n        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        \n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment(" divider ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-xs-1");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-xs-6 team2-expand");
+        var el3 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","inline-wrap");
+        var el4 = dom.createTextNode("\n            ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","play-style");
+        var el5 = dom.createTextNode("\n                ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("h3");
+        var el6 = dom.createTextNode("Play style");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Most played role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("ADC");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(57 games)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Best performing role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("ADC");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(55% winrate)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Least played role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("MID");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(5 games)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n                Worst performing role: ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("TOP");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("small");
+        var el6 = dom.createTextNode("(35% winrate)");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n            \n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("        ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n        \n");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("    ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element10 = dom.childAt(fragment, [0]);
+        var element11 = dom.childAt(element10, [1]);
+        var element12 = dom.childAt(element11, [1]);
+        var element13 = dom.childAt(element12, [1]);
+        var element14 = dom.childAt(element13, [5]);
+        var element15 = dom.childAt(element14, [4]);
+        var element16 = dom.childAt(element12, [3, 3]);
+        var element17 = dom.childAt(element12, [5]);
+        var element18 = dom.childAt(element17, [5, 1]);
+        var element19 = dom.childAt(element10, [9, 1]);
+        var element20 = dom.childAt(element19, [1]);
+        var element21 = dom.childAt(element20, [3, 1]);
+        var element22 = dom.childAt(element19, [3, 3]);
+        var element23 = dom.childAt(element19, [5]);
+        var element24 = dom.childAt(element23, [3]);
+        var element25 = dom.childAt(element24, [4]);
+        var element26 = dom.childAt(fragment, [2]);
+        var element27 = dom.childAt(element26, [1]);
+        var element28 = dom.childAt(element26, [7]);
+        var morphs = new Array(21);
+        morphs[0] = dom.createElementMorph(element11);
+        morphs[1] = dom.createMorphAt(dom.childAt(element13, [1]),1,1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element14, [1]),0,0);
+        morphs[3] = dom.createMorphAt(element15,0,0);
+        morphs[4] = dom.createMorphAt(element15,2,2);
+        morphs[5] = dom.createMorphAt(dom.childAt(element16, [1]),0,0);
+        morphs[6] = dom.createMorphAt(element16,3,3);
+        morphs[7] = dom.createMorphAt(dom.childAt(element17, [3]),1,1);
+        morphs[8] = dom.createAttrMorph(element18, 'src');
+        morphs[9] = dom.createAttrMorph(element21, 'src');
+        morphs[10] = dom.createMorphAt(dom.childAt(element20, [5]),1,1);
+        morphs[11] = dom.createMorphAt(dom.childAt(element22, [1]),0,0);
+        morphs[12] = dom.createMorphAt(element22,3,3);
+        morphs[13] = dom.createMorphAt(dom.childAt(element24, [1]),0,0);
+        morphs[14] = dom.createMorphAt(element25,0,0);
+        morphs[15] = dom.createMorphAt(element25,2,2);
+        morphs[16] = dom.createMorphAt(dom.childAt(element23, [5]),1,1);
+        morphs[17] = dom.createMorphAt(dom.childAt(element27, [1]),3,3);
+        morphs[18] = dom.createMorphAt(element27,3,3);
+        morphs[19] = dom.createMorphAt(dom.childAt(element28, [1]),3,3);
+        morphs[20] = dom.createMorphAt(element28,3,3);
+        return morphs;
+      },
+      statements: [
+        ["element","action",["toggleDetails"],[],["loc",[null,[2,48],[2,74]]]],
+        ["inline","spriteimage",[["get","pair.playerOnTeam1.sprite",["loc",[null,[6,34],[6,59]]]],50,["get","champ-icon",["loc",[null,[6,63],[6,73]]]]],[],["loc",[null,[6,20],[6,75]]]],
+        ["content","pair.playerOnTeam1.name",["loc",[null,[10,46],[10,73]]]],
+        ["content","pair.playerOnTeam1.championWins",["loc",[null,[11,27],[11,62]]]],
+        ["content","pair.playerOnTeam1.championLosses",["loc",[null,[11,66],[11,103]]]],
+        ["content","pair.playerOnTeam1.championName",["loc",[null,[18,24],[18,59]]]],
+        ["block","if",[["get","pair.playerOnTeam1.championName",["loc",[null,[19,26],[19,57]]]]],[],0,null,["loc",[null,[19,20],[23,27]]]],
+        ["block","if",[["get","pair.playerOnTeam1.league",["loc",[null,[30,26],[30,51]]]]],[],1,null,["loc",[null,[30,20],[35,27]]]],
+        ["attribute","src",["concat",["/assets/images/medals/",["get","pair.playerOnTeam1.league",["loc",[null,[37,107],[37,132]]]],".png"]]],
+        ["attribute","src",["concat",["/assets/images/medals/",["get","pair.playerOnTeam2.league",["loc",[null,[53,107],[53,132]]]],".png"]]],
+        ["block","if",[["get","pair.playerOnTeam2.league",["loc",[null,[55,26],[55,51]]]]],[],2,null,["loc",[null,[55,20],[60,27]]]],
+        ["content","pair.playerOnTeam2.championName",["loc",[null,[67,24],[67,59]]]],
+        ["block","if",[["get","pair.playerOnTeam2.championName",["loc",[null,[68,26],[68,57]]]]],[],3,null,["loc",[null,[68,20],[72,27]]]],
+        ["content","pair.playerOnTeam2.name",["loc",[null,[79,46],[79,73]]]],
+        ["content","pair.playerOnTeam2.championWins",["loc",[null,[80,27],[80,62]]]],
+        ["content","pair.playerOnTeam2.championLosses",["loc",[null,[80,66],[80,103]]]],
+        ["inline","spriteimage",[["get","pair.playerOnTeam2.sprite",["loc",[null,[83,34],[83,59]]]],48,["get","champ-icon",["loc",[null,[83,63],[83,73]]]]],[],["loc",[null,[83,20],[83,75]]]],
+        ["block","if",[["get","pair.playerOnTeam1.matchHistory",["loc",[null,[104,18],[104,49]]]]],[],4,null,["loc",[null,[104,12],[113,19]]]],
+        ["block","if",[["get","pair.playerOnTeam1.mostPlayed",["loc",[null,[117,14],[117,43]]]]],[],5,null,["loc",[null,[117,8],[139,15]]]],
+        ["block","if",[["get","pair.playerOnTeam2.matchHistory",["loc",[null,[155,18],[155,49]]]]],[],6,null,["loc",[null,[155,12],[164,19]]]],
+        ["block","if",[["get","pair.playerOnTeam2.mostPlayed",["loc",[null,[167,14],[167,43]]]]],[],7,null,["loc",[null,[167,8],[189,15]]]]
+      ],
+      locals: [],
+      templates: [child0, child1, child2, child3, child4, child5, child6, child7]
+    };
+  }()));
+
+});
 define('leaguesite/templates/currentgame', ['exports'], function (exports) {
 
   'use strict';
@@ -4420,11 +5848,11 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 16,
+              "line": 18,
               "column": 8
             },
             "end": {
-              "line": 24,
+              "line": 32,
               "column": 8
             }
           },
@@ -4438,15 +5866,33 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
           var el1 = dom.createTextNode("        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("div");
-          dom.setAttribute(el1,"class","row game-information");
+          dom.setAttribute(el1,"class","row coreinfo");
           var el2 = dom.createTextNode("\n            ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("span");
-          var el3 = dom.createTextNode("\n                Solo ranked 5v5\n                ");
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","col-xs-12");
+          var el3 = dom.createTextNode("\n                ");
           dom.appendChild(el2, el3);
-          var el3 = dom.createElement("br");
+          var el3 = dom.createElement("span");
+          dom.setAttribute(el3,"class","info");
+          var el4 = dom.createTextNode("\n                    Game time: 14:37\n                ");
+          dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n                Game time: 10:05\n            ");
+          var el3 = dom.createTextNode("\n                ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("span");
+          dom.setAttribute(el3,"class","info");
+          var el4 = dom.createTextNode("\n                    Ranked Solo 5x5\n                ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n                ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("span");
+          dom.setAttribute(el3,"class","info");
+          var el4 = dom.createTextNode("\n                    Summoner's rift\n                ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n            ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n        ");
@@ -4471,11 +5917,11 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 26,
+              "line": 34,
               "column": 8
             },
             "end": {
-              "line": 28,
+              "line": 36,
               "column": 8
             }
           },
@@ -4500,7 +5946,7 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
           return morphs;
         },
         statements: [
-          ["inline","player-comp",[],["pair",["subexpr","@mut",[["get","pair",["loc",[null,[27,32],[27,36]]]]],[],[]]],["loc",[null,[27,13],[27,38]]]]
+          ["inline","player-comp",[],["pair",["subexpr","@mut",[["get","pair",["loc",[null,[35,32],[35,36]]]]],[],[]]],["loc",[null,[35,13],[35,38]]]]
         ],
         locals: ["pair"],
         templates: []
@@ -4516,7 +5962,7 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 30,
+            "line": 38,
             "column": 6
           }
         },
@@ -4532,7 +5978,7 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
         var el2 = dom.createTextNode("\n    ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","col-xs-12");
+        dom.setAttribute(el2,"class","col-xs-13");
         var el3 = dom.createTextNode("\n\n        ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
@@ -4540,7 +5986,7 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n            ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
-        dom.setAttribute(el4,"class","col-xs-12 header");
+        dom.setAttribute(el4,"class","col-xs-13 header");
         var el5 = dom.createTextNode("\n                ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("h2");
@@ -4550,21 +5996,27 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
         var el5 = dom.createTextNode("\n                ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("div");
-        dom.setAttribute(el5,"class","input-group player-search");
+        dom.setAttribute(el5,"class","input-group player-search-container");
         var el6 = dom.createTextNode("\n                    ");
         dom.appendChild(el5, el6);
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n                    ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("span");
-        dom.setAttribute(el6,"class","input-group-btn");
-        var el7 = dom.createTextNode("\n                    ");
+        var el6 = dom.createElement("form");
+        var el7 = dom.createTextNode("\n                        ");
         dom.appendChild(el6, el7);
-        var el7 = dom.createElement("button");
-        dom.setAttribute(el7,"class","btn btn-default");
-        dom.setAttribute(el7,"id","player-search");
-        var el8 = dom.createTextNode("Go!");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n                        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("span");
+        dom.setAttribute(el7,"class","input-group-btn");
+        var el8 = dom.createTextNode("\n                        ");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createElement("button");
+        dom.setAttribute(el8,"class","btn btn-default");
+        dom.setAttribute(el8,"id","");
+        var el9 = dom.createTextNode("Go!");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("\n                        ");
         dom.appendChild(el7, el8);
         dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n                    ");
@@ -4597,7 +6049,7 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [0, 1]);
-        var element1 = dom.childAt(element0, [1, 1, 3]);
+        var element1 = dom.childAt(element0, [1, 1, 3, 1]);
         var element2 = dom.childAt(element1, [3, 1]);
         var morphs = new Array(4);
         morphs[0] = dom.createMorphAt(element1,1,1);
@@ -4607,10 +6059,10 @@ define('leaguesite/templates/currentgame', ['exports'], function (exports) {
         return morphs;
       },
       statements: [
-        ["inline","input",[],["class","form-control player-search-input","placeholder","Search for player","value",["subexpr","@mut",[["get","playerName",["loc",[null,[8,107],[8,117]]]]],[],[]]],["loc",[null,[8,20],[8,119]]]],
-        ["element","action",["getData"],[],["loc",[null,[10,71],[10,93]]]],
-        ["block","if",[["get","gameData",["loc",[null,[16,14],[16,22]]]]],[],0,null,["loc",[null,[16,8],[24,15]]]],
-        ["block","each",[["get","playerPairs",["loc",[null,[26,16],[26,27]]]]],[],1,null,["loc",[null,[26,8],[28,17]]]]
+        ["inline","input",[],["class","form-control player-search-input","placeholder","Search for player","value",["subexpr","@mut",[["get","playerName",["loc",[null,[9,111],[9,121]]]]],[],[]]],["loc",[null,[9,24],[9,123]]]],
+        ["element","action",["getData"],[],["loc",[null,[11,62],[11,84]]]],
+        ["block","if",[["get","gameData",["loc",[null,[18,14],[18,22]]]]],[],0,null,["loc",[null,[18,8],[32,15]]]],
+        ["block","each",[["get","playerPairs",["loc",[null,[34,16],[34,27]]]]],[],1,null,["loc",[null,[34,8],[36,17]]]]
       ],
       locals: [],
       templates: [child0, child1]
@@ -5483,7 +6935,7 @@ define('leaguesite/tests/controllers/currentgame.jshint', function () {
 
   module('JSHint - controllers');
   test('controllers/currentgame.js should pass jshint', function() { 
-    ok(false, 'controllers/currentgame.js should pass jshint.\ncontrollers/currentgame.js: line 239, col 46, Expected \'{\' and instead saw \'return\'.\n\n1 error'); 
+    ok(true, 'controllers/currentgame.js should pass jshint.'); 
   });
 
 });
@@ -5703,7 +7155,7 @@ catch(err) {
 if (runningTests) {
   require("leaguesite/tests/test-helper");
 } else {
-  require("leaguesite/app")["default"].create({"name":"leaguesite","version":"0.0.0+602b5364"});
+  require("leaguesite/app")["default"].create({"name":"leaguesite","version":"0.0.0+8c6016db"});
 }
 
 /* jshint ignore:end */
