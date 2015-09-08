@@ -1,10 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+    queryParams: ['playerName', 'region'],
     playerName: '',
+    region: 'euw',
     playerPairs: [],
+    team1_players: [],
+    team2_players: [],
     gameData: undefined,
-    nodeServerAddress: 'http://localhost:1337',
+    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
     
     socketIOService: Ember.inject.service('socket-io'),
     
@@ -16,6 +20,11 @@ export default Ember.Controller.extend({
         
         //Create event handlers
         socket.on('message', this.handleMessage, this);
+        
+        //Make a request immediatly if the search was made in the startscreen
+        if(this.get('playerName') !== '') {
+            this.makeDataRequest();
+        }
     },
     
     handleMessage: function(event) {console.log(event);
@@ -82,35 +91,59 @@ export default Ember.Controller.extend({
             this.insertChampDataToPairs(event['pairs'][i]);
         }
     },
-        
-    actions: {
-        getData: function() {
-            var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
+    
+    makeDataRequest: function() {
+        var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
             socket.emit('get:currentgame', {
                 name: this.playerName,
                 region: 'euw'
             });
-            
-            //Empty the player items list, so that even though the core data is not the first to be received,
-            //new player items are created for each
-            this.playerPairs.length = 0;
+
+        //Empty the player items list, so that even though the core data is not the first to be received,
+        //new player items are created for each
+        this.playerPairs.length = 0;    
+    },
+        
+    actions: {
+        getData: function() {
+            this.makeDataRequest();
         }
     },
     
     //Gets the participant number disregarding team(101 and 201 = 1)
-    getNormalizedParticipanNo: function(participantNo) {
+    getNormalizedParticipantNo: function(participantNo) {
         return (participantNo > 200) ? participantNo - 200 : participantNo - 100;
+    },
+    
+    getOrCreatePlayerObject: function(participantNo) {
+        var teamArray = (participantNo < 200) ? this.get('team1_players') : this.get('team2_players');
+        console.log(teamArray);
+        for(var i = 0; i < teamArray.length; i++) {
+            if(teamArray[i].participantNo === participantNo)
+                return teamArray[i];
+        }
+        
+        //Create classes
+        var PlayerObject = Ember.Object.extend({
+            winrate: function() {
+                return (this.get('rankedWins') * 100) / (this.get('rankedWins') + this.get('rankedLosses'));
+            },
+            league: "Unranked"
+        });
+        
+        var obj = PlayerObject.create();
+        teamArray.pushObject(obj);
+        return obj;
     },
     
     //Gets an existing player object if it exists or creates a new one
     getOrCreatePlayerPair: function(participantNo) {
         //Create classes
-
         var PlayerObject = Ember.Object.extend({
             winrate: function() {
                 return (this.get('rankedWins') * 100) / (this.get('rankedWins') + this.get('rankedLosses'));
             },
-            league: "unranked"
+            league: "Unranked"
         });
                                                     
         var PlayerPair = Ember.Object.extend({
@@ -119,7 +152,7 @@ export default Ember.Controller.extend({
         });
         
         //Find exissting
-        var normalized = this.getNormalizedParticipanNo(participantNo); //Normalized participantNo
+        var normalized = this.getNormalizedParticipantNo(participantNo); //Normalized participantNo
         var i;
         for(i = 0; i < this.playerPairs.length; i++) {
             if(this.playerPairs[i].participantNo === normalized) {
@@ -135,44 +168,26 @@ export default Ember.Controller.extend({
         return (participantNo < 200) ? obj.get('playerOnTeam1') : obj.get('playerOnTeam2');
     },
     
-    
-    
-    //Pairs up the participant data from the players on each corresponding team
-    //Player 1 on team 1 and player 2 on team 2 etc.
-    //Deprecated
-    createPlayerPairs: function(data) {
-        var i, i2;
-        for(i = 0; i < data['participants'].length; i++) {
-            
-            var participant = data['participants'][i];
-            for(i2 = 0; i2 < data['participants'].length; i2++) {
-                
-                var participant2 = data['participants'][i2];
-                if(participant.participantNo - participant2.participantNo === 100) { //Find pairs such as 101-201, 102-202 etc.
-                    this.playerPairs.pushObject({
-                        playerOnTeam1: this.createParticipantObject(participant),
-                        playerOnTeam2: this.createParticipantObject(participant2)
-                    });
-                }
-            }
-        }
-    },
-    
-    insertCoreDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerPair(data.participantNo);
         
+    insertCoreDataToPairs: function(data) {
+        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
+        
+        console.log(playerObj);
         playerObj.set('name', data.summonerName);
         playerObj.set('summonerId', data.summonerId);
         playerObj.set('participantNo', data.participantNo);
+        playerObj.set('normalizedParticipantNo', this.getNormalizedParticipantNo(data.participantNo));
         playerObj.set('sprite', {
             url: 'http://ddragon.leagueoflegends.com/cdn/' + this.gameData.version + '/img/sprite/' + data.championImage.sprite,
             x: -data.championImage.x,
             y: -data.championImage.y
         });
+        
+        console.log(playerObj);
     },
     
     insertLeagueDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerPair(data.participantNo);
+        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
         playerObj.set('league', this.capitalizeFirstLetter(data.league.toLowerCase()));
         playerObj.set('division', data.division);
         playerObj.set('rankedWins', data.wins);
@@ -181,7 +196,7 @@ export default Ember.Controller.extend({
     },
     
     insertChampDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerPair(data.participantNo);
+        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
         if(typeof data.playerOnChampion !== 'undefined') {
             playerObj.set('championName', data.playerOnChampion.name);
             playerObj.set('championKills', data.playerOnChampion.kills);
@@ -206,7 +221,7 @@ export default Ember.Controller.extend({
     },
     
     insertRankedDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerPair(data.participantNo);
+        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
         playerObj.set('rankedKills', data.kills);
         playerObj.set('rankedDeaths', data.deaths);
         playerObj.set('rankedAssists', data.assists);
@@ -214,7 +229,7 @@ export default Ember.Controller.extend({
     },
     
     insertMatchHistoryDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerPair(data.participantNo);
+        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
         var history = [];
         
         //Create new structure of data
@@ -240,8 +255,8 @@ export default Ember.Controller.extend({
         if(typeof data.data === 'undefined') {
             return;
         }
-        console.log(data);
-        var playerObj = this.getOrCreatePlayerPair(data.participantNo);
+        
+        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
         var mp = [];
         for(var i = 0; i < data.data.length; i++) {
             mp.push({

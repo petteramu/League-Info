@@ -1,0 +1,191 @@
+<div class='row h60 player-pair'>
+    <div class='col-md-6 col-xs-7 team1-player' {{action "toggleDetails"}}>
+        <div class='row row-no-padding'>
+            <div class='col-lg-5 col-md-6 col-sm-7 col-xs-7 one-line h60 v-align'>
+                <div class='champ-icon-wrapper h60'>
+                    {{spriteimage pair.playerOnTeam1.sprite 50 champ-icon}}
+                </div>
+                <span class='v-align-helper'></span>
+                <div class='v-align user-agent-height'>
+                    <span class='text-larger'>{{pair.playerOnTeam1.name}}</span><br />
+                    <small class='visible-xs visible-sm'>{{pair.playerOnTeam1.championWins}}W / {{pair.playerOnTeam1.championLosses}}L</small>
+                </div>
+            </div>
+
+            <div class='col-lg-4 col-md-3 hidden-sm hidden-xs one-line h60'>
+                <span class='v-align-helper'></span>
+                <div class='v-align'>
+                    <lb>{{pair.playerOnTeam1.championName}}</lb>
+                    {{#if pair.playerOnTeam1.championName}}
+                    <div class='small'>
+                        {{pair.playerOnTeam1.championWins}}W / {{pair.playerOnTeam1.championLosses}}L<span class='hidden-sm'>({{pair.playerOnTeam1.championWinrate}}%)</span>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class='col-lg-4 col-md-4 col-sm-6 col-xs-6 one-line h60'>
+                <span class='v-align-helper'></span>
+                <div class='v-align'>
+                    {{#if pair.playerOnTeam1.league}}
+                    <span class='text-larger'>{{pair.playerOnTeam1.league}} {{pair.playerOnTeam1.division}}</span>
+                    <div class='small'>
+                        {{pair.playerOnTeam1.rankedWins}}W / {{pair.playerOnTeam1.rankedLosses}}L({{pair.playerOnTeam1.rankedWinrate}}%)
+                    </div>
+                    {{/if}}
+                </div>
+                <div class='v-align'><span class='v-align-helper'></span><img src="/assets/images/medals/{{pair.playerOnTeam1.league}}.png" class='medal'></div>
+            </div>
+        </div>
+    </div>
+    <!-- divider -->
+    <div class='col-md-1 hidden-sm hidden-xs divider h60'>
+        vs.
+    </div>
+
+    <!-- player on team 2 -->
+    <div class='col-xs-6 team2-player'>
+
+        <div class='row row-no-padding'>
+
+            <div class='col-lg-4 col-md-4 col-sm-6 col-xs-6 one-line h60'>
+                <span class='v-align-helper'></span>
+                <div class='v-align'><span class='v-align-helper'></span><img src="/assets/images/medals/{{pair.playerOnTeam2.league}}.png" class='medal'></div>
+                <div class='v-align'>
+                    {{#if pair.playerOnTeam2.league}}
+                    <span class='text-larger'>{{pair.playerOnTeam2.league}} {{pair.playerOnTeam2.division}}</span>
+                    <div class='small'>
+                        {{pair.playerOnTeam2.rankedWins}}W/{{pair.playerOnTeam2.rankedLosses}}L({{pair.playerOnTeam2.rankedWinrate}}%)
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class='col-lg-4 col-md-3 hidden-sm hidden-xs one-line h60'>
+                <span class='v-align-helper'></span>
+                <div class='v-align'>
+                    <lb>{{pair.playerOnTeam2.championName}}</lb>
+                    {{#if pair.playerOnTeam2.championName}}
+                    <div class='small'>
+                        {{pair.playerOnTeam2.championWins}}W / {{pair.playerOnTeam2.championLosses}}L<span class='hidden-sm'>({{pair.playerOnTeam2.championWinrate}}%)</span>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class='col-lg-5 col-md-6 col-sm-7 col-xs-7 one-line h60 v-align'>
+                <span class='v-align-helper'></span>
+                <div class='v-align user-agent-height'>
+                    <span class='text-larger'>{{pair.playerOnTeam2.name}}</span><br />
+                    <small>{{pair.playerOnTeam2.championWins}}W / {{pair.playerOnTeam2.championLosses}}L</small>
+                </div>
+                <div class='champ-icon-wrapper h60'>
+                    {{spriteimage pair.playerOnTeam2.sprite 48 champ-icon}}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class='row player-expand row-no-padding'>
+    <div class='col-xs-6 team1-expand'>
+
+        <div class='inline-wrap'>
+            <div class='play-style'>
+                <h3>Play style</h3>
+                Most played role: <b>ADC</b><small>(57 games)</small><br />
+                Best performing role: <b>ADC</b><small>(55% winrate)</small><br /><br />
+                Least played role: <b>MID</b><small>(5 games)</small><br />
+                Worst performing role: <b>TOP</b><small>(35% winrate)</small>
+            </div>
+            
+            {{#if pair.playerOnTeam1.matchHistory}}
+            <div class='match-history'>
+                Last 10 matches:<br />
+                {{#each pair.playerOnTeam1.matchHistory as |game|}}
+                <div class='champ-icon-small-wrapper' data-win={{game.win}}>
+                    {{spriteimage game.sprite 48 "champ-icon-small" champion.name}}
+                </div>
+                {{/each}}
+            </div>
+            {{/if}}
+            
+        </div>
+        
+        {{#if pair.playerOnTeam1.mostPlayed}}
+        <div class='most-played'>
+            <table class='mostPlayedChampions'>
+            <tr>
+                <th colspan="4"><h3>Most played champions</h3></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Games</th>
+                <th>Winrate</th>
+                <th><abbr title="Kills deaths assists">KDA</abbr></th>
+            </tr>
+            {{#each pair.playerOnTeam1.mostPlayed as |champion|}}
+            <tr>
+                <td>{{spriteimage champion.sprite 48 "champ-icon-small" champion.name}}</td>
+                <td>{{champion.games}}</td>
+                <td>{{champion.winrate}}%</td>
+                <td>{{champion.KDA}}</td>
+            </tr>
+            {{/each}}
+            </table>
+        </div>
+        {{/if}}
+
+    </div>
+    <!-- divider -->
+    <div class='col-xs-1'></div>
+    <div class='col-xs-6 team2-expand'>
+
+        <div class='inline-wrap'>
+            <div class='play-style'>
+                <h3>Play style</h3>
+                Most played role: <b>ADC</b><small>(57 games)</small><br />
+                Best performing role: <b>ADC</b><small>(55% winrate)</small><br /><br />
+                Least played role: <b>MID</b><small>(5 games)</small><br />
+                Worst performing role: <b>TOP</b><small>(35% winrate)</small>
+            </div>
+            
+            {{#if pair.playerOnTeam2.matchHistory}}
+            <div class='match-history'>
+                Last 10 matches:<br />
+                {{#each pair.playerOnTeam2.matchHistory as |game|}}
+                <div class='champ-icon-small-wrapper' data-win={{game.win}}>
+                    {{spriteimage game.sprite 48 "champ-icon-small" champion.name}}
+                </div>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+        
+        {{#if pair.playerOnTeam2.mostPlayed}}
+        <div class='most-played'>
+            <table class='mostPlayedChampions'>
+            <tr>
+                <th colspan="4"><h3>Most played champions</h3></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Games</th>
+                <th>Winrate</th>
+                <th><abbr title="Kills deaths assists">KDA</abbr></th>
+            </tr>
+            {{#each pair.playerOnTeam2.mostPlayed as |champion|}}
+            <tr>
+                <td>{{spriteimage champion.sprite 48 "champ-icon-small" champion.name}}</td>
+                <td>{{champion.games}}</td>
+                <td>{{champion.winrate}}%</td>
+                <td>{{champion.KDA}}</td>
+            </tr>
+            {{/each}}
+            </table>
+        </div>
+        {{/if}}
+    </div>
+</div>

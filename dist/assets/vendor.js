@@ -96536,8 +96536,8 @@ define('ember-bootstrap/components/bs-form-element', ['exports', 'ember', 'ember
     init: function init() {
       this._super();
       if (!Ember['default'].isBlank(this.get('property'))) {
-        Ember['default'].Binding.from('model.' + this.get('property')).to('value').connect(this);
-        Ember['default'].Binding.from('model.errors.' + this.get('property')).to('errors').connect(this);
+        Ember['default'].Binding.from("model." + this.get('property')).to('value').connect(this);
+        Ember['default'].Binding.from("model.errors." + this.get('property')).to('errors').connect(this);
       }
     }
   });
@@ -97050,57 +97050,57 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
     cssClass: null,
     optionIdPath: "id",
     optionValuePath: null,
-    optionLabelPath: "text",
+    optionLabelPath: 'text',
     optionLabelSelectedPath: null,
-    optionHeadlinePath: "text",
-    optionDescriptionPath: "description",
+    optionHeadlinePath: 'text',
+    optionDescriptionPath: 'description',
     placeholder: null,
     multiple: false,
     allowClear: false,
     enabled: true,
     query: null,
-    typeaheadSearchingText: "Searching…",
-    typeaheadNoMatchesText: "No matches found",
-    typeaheadErrorText: "Loading failed",
+    typeaheadSearchingText: 'Searching…',
+    typeaheadNoMatchesText: 'No matches found',
+    typeaheadErrorText: 'Loading failed',
     searchEnabled: true,
     minimumInputLength: null,
     maximumInputLength: null,
-    valueSeparator: ",",
+    valueSeparator: ',',
 
     // internal state
     _hasSelectedMissingItems: false,
-    _hasPendingContentPromise: Ember['default'].computed.alias("content.isPending"),
-    _hasFailedContentPromise: Ember['default'].computed.alias("content.isRejected"),
-    _hasPendingValuePromise: Ember['default'].computed.alias("value.isPending"),
-    _hasFailedValuePromise: Ember['default'].computed.alias("value.isRejected"),
-    _typeaheadMode: Ember['default'].computed.bool("query"),
+    _hasPendingContentPromise: Ember['default'].computed.alias('content.isPending'),
+    _hasFailedContentPromise: Ember['default'].computed.alias('content.isRejected'),
+    _hasPendingValuePromise: Ember['default'].computed.alias('value.isPending'),
+    _hasFailedValuePromise: Ember['default'].computed.alias('value.isRejected'),
+    _typeaheadMode: Ember['default'].computed.bool('query'),
 
     didInsertElement: function didInsertElement() {
       var self = this,
           options = {},
-          optionIdPath = this.get("optionIdPath"),
-          optionLabelPath = this.get("optionLabelPath"),
-          optionLabelSelectedPath = this.get("optionLabelSelectedPath"),
-          optionHeadlinePath = this.get("optionHeadlinePath"),
-          optionDescriptionPath = this.get("optionDescriptionPath"),
-          content = this.get("content");
+          optionIdPath = this.get('optionIdPath'),
+          optionLabelPath = this.get('optionLabelPath'),
+          optionLabelSelectedPath = this.get('optionLabelSelectedPath'),
+          optionHeadlinePath = this.get('optionHeadlinePath'),
+          optionDescriptionPath = this.get('optionDescriptionPath'),
+          content = this.get('content');
 
       // ensure select2 is loaded
       Ember['default'].assert("select2 has to exist on Ember.$.fn.select2", typeof Ember['default'].$.fn.select2 === "function");
 
       // setup
-      options.placeholder = this.get("placeholder");
-      options.multiple = this.get("multiple");
-      options.allowClear = this.get("allowClear");
-      options.minimumResultsForSearch = this.get("searchEnabled") ? 0 : -1;
-      options.minimumInputLength = this.get("minimumInputLength");
-      options.maximumInputLength = this.get("maximumInputLength");
+      options.placeholder = this.get('placeholder');
+      options.multiple = this.get('multiple');
+      options.allowClear = this.get('allowClear');
+      options.minimumResultsForSearch = this.get('searchEnabled') ? 0 : -1;
+      options.minimumInputLength = this.get('minimumInputLength');
+      options.maximumInputLength = this.get('maximumInputLength');
 
       // ensure there is a value separator if needed (= when in multiple selection with value binding)
-      var missesValueSeperator = this.get("multiple") && this.get("optionValuePath") && !this.get("valueSeparator");
+      var missesValueSeperator = this.get('multiple') && this.get('optionValuePath') && !this.get('valueSeparator');
       Ember['default'].assert("select2#didInsertElement: You must specify a valueSeparator when in multiple mode.", !missesValueSeperator);
 
-      options.separator = this.get("valueSeparator");
+      options.separator = this.get('valueSeparator');
 
       // override select2's default id fetching behavior
       options.id = function (e) {
@@ -97111,7 +97111,7 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
       Ember['default'].assert("To use allowClear, you have to specify a placeholder", !options.allowClear || options.placeholder);
 
       // search can't be disabled for multiple selection mode
-      var illegalSearchInMultipleMode = options.multiple && !this.get("searchEnabled");
+      var illegalSearchInMultipleMode = options.multiple && !this.get('searchEnabled');
       Ember['default'].assert("Search field can't be disabled for multiple selection mode", !illegalSearchInMultipleMode);
 
       /*
@@ -97172,10 +97172,10 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
       options.query = function (query) {
         var select2 = this;
 
-        if (self.get("_typeaheadMode")) {
-          var deferred = Ember['default'].RSVP.defer("select2#query: " + query.term);
+        if (self.get('_typeaheadMode')) {
+          var deferred = Ember['default'].RSVP.defer('select2#query: ' + query.term);
 
-          self.sendAction("query", query, deferred);
+          self.sendAction('query', query, deferred);
 
           deferred.promise.then(function (result) {
             var data = result;
@@ -97203,7 +97203,7 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
             });
           });
         } else {
-          Ember['default'].assert("select2 has no content!", self.get("content"));
+          Ember['default'].assert("select2 has no content!", self.get('content'));
 
           var filteredContent = self.get("content").reduce(function (results, item) {
             // items may contain children, so filter them, too
@@ -97241,7 +97241,7 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         `typeaheadSearchingText`
        */
       options.formatSearching = function () {
-        var text = self.get("typeaheadSearchingText");
+        var text = self.get('typeaheadSearchingText');
 
         return Ember['default'].String.htmlSafe(text);
       };
@@ -97251,7 +97251,7 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         html-escaped user input
        */
       options.formatNoMatches = function (term) {
-        var text = self.get("typeaheadNoMatchesText");
+        var text = self.get('typeaheadNoMatchesText');
         if (text instanceof Ember['default'].Handlebars.SafeString) {
           text = text.string;
         }
@@ -97266,7 +97266,7 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         rejection reason
        */
       options.formatAjaxError = function (jqXHR, textStatus, errorThrown) {
-        var text = self.get("typeaheadErrorText");
+        var text = self.get('typeaheadErrorText');
 
         return Ember['default'].String.htmlSafe(Ember['default'].String.fmt(text, errorThrown));
       };
@@ -97300,14 +97300,14 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         // but make sure there is an appropriate error just in case.
         Ember['default'].assert("select2#initSelection has been called without an \"" + "optionValuePath\" set.", optionValuePath);
 
-        Ember['default'].assert("select2#initSelection can not map string values to full objects " + "in typeahead mode. Please open a github issue if you have questions to this.", !self.get("_typeaheadMode"));
+        Ember['default'].assert("select2#initSelection can not map string values to full objects " + "in typeahead mode. Please open a github issue if you have questions to this.", !self.get('_typeaheadMode'));
 
         var values;
         var filteredContent = [];
 
         // only split select2's string value on valueSeparator when in multiple mode
-        if (self.get("multiple")) {
-          var separator = self.get("valueSeparator");
+        if (self.get('multiple')) {
+          var separator = self.get('valueSeparator');
           values = value.split(separator);
         } else {
           values = [value];
@@ -97315,7 +97315,7 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
 
         // for every object, check if its optionValuePath is in the selected
         // values array and save it to the right position in filteredContent
-        var contentLength = get(content, "length"),
+        var contentLength = get(content, 'length'),
             unmatchedValues = values.length,
             matchIndex;
 
@@ -97354,11 +97354,11 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         // END loop over content
 
         if (unmatchedValues === 0) {
-          self.set("_hasSelectedMissingItems", false);
+          self.set('_hasSelectedMissingItems', false);
         } else {
           // disable the select2 element if there are keys left in the values
           // array that were not matched to an object
-          self.set("_hasSelectedMissingItems", true);
+          self.set('_hasSelectedMissingItems', true);
 
           Ember['default'].warn("select2#initSelection was not able to map each \"" + optionValuePath + "\" to an object from \"content\". The remaining " + "keys are: " + values + ". The input will be disabled until a) the " + "desired objects is added to the \"content\" array or b) the " + "\"value\" is changed.", !values.length);
         }
@@ -97377,7 +97377,7 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         The value will be read from the `cssClass` binding
        */
       options.containerCssClass = options.dropdownCssClass = function () {
-        return self.get("cssClass") || "";
+        return self.get('cssClass') || '';
       };
 
       this._select = this.$().select2(options);
@@ -97389,12 +97389,12 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         this.selectionChanged(data);
       }));
 
-      this.addObserver("content.[]", this.valueChanged);
-      this.addObserver("content.@each." + optionLabelPath, this.valueChanged);
-      this.addObserver("content.@each." + optionLabelSelectedPath, this.valueChanged);
-      this.addObserver("content.@each." + optionHeadlinePath, this.valueChanged);
-      this.addObserver("content.@each." + optionDescriptionPath, this.valueChanged);
-      this.addObserver("value", this.valueChanged);
+      this.addObserver('content.[]', this.valueChanged);
+      this.addObserver('content.@each.' + optionLabelPath, this.valueChanged);
+      this.addObserver('content.@each.' + optionLabelSelectedPath, this.valueChanged);
+      this.addObserver('content.@each.' + optionHeadlinePath, this.valueChanged);
+      this.addObserver('content.@each.' + optionDescriptionPath, this.valueChanged);
+      this.addObserver('value', this.valueChanged);
 
       // trigger initial data sync to set select2 to the external "value"
       this.valueChanged();
@@ -97421,12 +97421,12 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
         this._select.select2("destroy");
       }
 
-      this.removeObserver("content.[]", this.valueChanged);
-      this.removeObserver("content.@each." + this.get("optionLabelPath"), this.valueChanged);
-      this.removeObserver("content.@each." + this.get("optionLabelSelectedPath"), this.valueChanged);
-      this.removeObserver("content.@each." + this.get("optionHeadlinePath"), this.valueChanged);
-      this.removeObserver("content.@each." + this.get("optionDescriptionPath"), this.valueChanged);
-      this.removeObserver("value", this.valueChanged);
+      this.removeObserver('content.[]', this.valueChanged);
+      this.removeObserver('content.@each.' + this.get('optionLabelPath'), this.valueChanged);
+      this.removeObserver('content.@each.' + this.get('optionLabelSelectedPath'), this.valueChanged);
+      this.removeObserver('content.@each.' + this.get('optionHeadlinePath'), this.valueChanged);
+      this.removeObserver('content.@each.' + this.get('optionDescriptionPath'), this.valueChanged);
+      this.removeObserver('value', this.valueChanged);
     },
 
     /**
@@ -97456,8 +97456,8 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
       }
 
       this.set("value", value);
-      Ember['default'].run.schedule("actions", this, function () {
-        this.sendAction("didSelect", value, this);
+      Ember['default'].run.schedule('actions', this, function () {
+        this.sendAction('didSelect', value, this);
       });
     },
 
@@ -97499,9 +97499,9 @@ define('ember-select-2/components/select-2', ['exports', 'ember'], function (exp
     /**
      * Watch properties that determine the disabled state of the input.
      */
-    watchDisabled: Ember['default'].observer("_hasSelectedMissingItems", "_hasPendingContentPromise", "_hasFailedContentPromise", "_hasPendingValuePromise", "_hasFailedValuePromise", "enabled", function () {
+    watchDisabled: Ember['default'].observer('_hasSelectedMissingItems', '_hasPendingContentPromise', '_hasFailedContentPromise', '_hasPendingValuePromise', '_hasFailedValuePromise', 'enabled', function () {
       var select = this._select,
-          disabled = this.get("_hasSelectedMissingItems") || this.get("_hasPendingContentPromise") || this.get("_hasFailedContentPromise") || this.get("_hasPendingValuePromise") || this.get("_hasFailedValuePromise") || !this.get("enabled");
+          disabled = this.get('_hasSelectedMissingItems') || this.get('_hasPendingContentPromise') || this.get('_hasFailedContentPromise') || this.get('_hasPendingValuePromise') || this.get('_hasFailedValuePromise') || !this.get('enabled');
 
       if (select) {
         Ember['default'].run(function () {

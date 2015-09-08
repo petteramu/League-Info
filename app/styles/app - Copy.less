@@ -1,0 +1,330 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,700,600,300);
+html, body {
+    background-color: #0F3B5F;
+}
+* {
+    font: 14px 'Open Sans';
+}
+
+.currentgame {
+    background-color: hsl(230, 10%, 97%);
+    border: hsl(0, 0%, 90%) 1px solid;
+    
+    > .row {
+        border-top: hsl(0, 0%, 90%) 1px solid;
+    }
+    
+    > row:first-of-type {
+        border-top: none;
+    }
+}
+
+.header {
+    background-color: hsl(230, 8%, 28%);
+    color: white;
+    padding: 5px;
+    
+    h3 {
+        margin: 0;
+    }
+    
+    > div {
+        font-size: 20px;
+    }
+    
+    > * {
+        display: inline-block;
+    }
+}
+
+.player-search-container {
+    height: 100%;
+    width: 25%;
+    float: right;
+    display: inline-block;
+    
+    button {
+        width: auto;
+        display: inline-block;
+    }
+    
+    .player-search-input {
+        display: inline-block;
+        width: 80%;
+    }
+}
+
+.player-pair {
+    margin-top: 1px;
+}
+
+.player-expand, .player-pair {
+    border-top: hsl(0, 0%, 90%) 1px solid;
+}
+
+.coreinfo {
+    padding: 5px;
+}
+
+.nopadding {
+    padding-left: 0 !imporant;
+    margin: 0 !imporant;
+}
+
+.row-no-padding > [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.info {
+    padding-left: 15px;
+    
+    &:first-of-type {
+        padding-left: 0px;
+    }
+}
+
+/* Images */
+.champ-icon {
+    overflow: hidden;
+    zoom: 0.8;
+    -moz-transform:scale(0.8);
+    -moz-transform-origin: 0 0;
+    margin: 10px;
+}
+
+.champ-icon-small {
+    overflow: hidden;
+    zoom: 0.4;
+    width: 50px;
+    height: 54px;
+    -moz-transform:scale(0.4);
+    -moz-transform-origin: 0 0;
+}
+
+.team2-player .champ-icon-wrapper{
+    margin-right: 5px;
+}
+
+.champ-icon-wrapper {
+    width: 50px;
+    display: inline-block;
+}
+
+.champ-icon-small-wrapper {
+    width: 20px;
+    height: 24px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+[data-win='true'] {
+    border-bottom: 4px solid hsl(120, 80%, 40%);
+}
+
+[data-win='false'] {
+    border-bottom: 4px solid hsl(0, 80%, 40%);
+}
+
+.match-history {
+    margin-top: 10px;
+}
+
+.text-larger {
+    font-size: 14px;
+    font-weight: 600;
+    vertical-align: top;
+}
+
+.medal {
+    width: 35px;
+    height: 35px;
+}
+
+.team1-player:first-of-type {
+    border-left: 5px hsl(210, 50%, 50%) solid;
+}
+
+.team2-player:last-of-type {
+    border-right: 5px hsl(10, 50%, 50%) solid;
+}
+
+.team2-player > .row > div:last-child{
+    text-align: right
+}
+
+.player-expand {
+    background-color: #f5f5f5;
+    padding: 6px;
+    display: none;
+}
+
+.small {
+    font-size: 10px;
+}
+
+.divider {
+    position: relative;
+    text-align: center;
+    transform: translateY(30%);
+    color: #b3b3b3;
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+}
+
+th, td {
+    font-size: 12px;
+    text-align: center;
+}
+
+.inline-wrap, .most-played {
+    display: inline-block;
+}
+
+.inline-wrap, play-style {
+    vertical-align: top;
+}
+
+.play-style {
+    font-size: 12px;
+}
+
+.match-history {
+    display: inline-block;
+    margin-top: 15px;
+    vertical-align: bottom;
+}
+
+.team2-expand > div:first-child, .team1-expand > div:last-child {
+    float: right;
+}
+
+.nopadding {
+    padding: 0;
+}
+
+lb {
+    font-weight: 600;
+}
+
+.h60 {
+    height: 60px;
+}
+
+.h50 {
+    height: 50px;
+}
+
+.one-line > * {
+    display: inline-block;
+    padding-left: 2px;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.v-align {
+    vertical-align: middle;
+    
+    display: inline-block; //Might break game information
+}
+
+.v-align-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+span.v-align-helper {
+    width: 0px;
+}
+
+.user-agent-height {
+    height: auto;
+}
+
+/* Firefox hack */
+html[data-useragent*='Firefox'] .user-agent-height {
+    height: 55px;
+}
+
+/************************/
+/*     Startscreen
+/************************/
+.startscreen {
+    color: hsl(0, 0%, 95%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0F3B5F;
+    text-align: center;
+    
+    img {
+        border-radius: 15px;
+        opacity: 0.75;
+        width: 600px;
+        box-shadow: 2px black;
+        margin-bottom: 50px;
+    }
+    
+    a, a:active, a:hover, a:visited {
+        color: white;
+    }
+    
+    .small-header {
+        font-size: 24px;
+    }
+}
+
+//A header that is different from the standard in bootstrap
+.title-header {
+    font-size: 48px;
+    font-weight: 400;
+}
+
+//Pointing box
+.arrow_box {
+    height: 20px;
+    margin-left: -170px;
+    margin-top: 7px;
+	position: absolute;
+	background: #88b7d5;
+    display: inline-block;
+//	border: 1px solid #c2e1f5;
+}
+
+.arrow_box:after, .arrow_box:before {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-left-color: #88b7d5;
+	border-width: 10px;
+	margin-top: -10px;
+}
+
+.arrow_box:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-left-color: #c2e1f5;
+	border-width: 9px;
+	margin-top: -9px;
+}
+
+#search-message {
+    display: none;
+}
