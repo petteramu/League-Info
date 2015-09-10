@@ -92,10 +92,11 @@ export default Ember.Controller.extend({
         }
     },
     
-    makeDataRequest: function() {
+    makeDataRequest: function(name) {
+        var queryName = name || this.playerName;
         var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
             socket.emit('get:currentgame', {
-                name: this.playerName,
+                name: queryName,
                 region: 'euw'
             });
 

@@ -1,0 +1,87 @@
+<div class='row player-container row-no-padding' np={{player.normalizedParticipantNo}} {{ action "toggleDetails" }}>
+
+    <div class='col-lg-4 col-md-4 col-sm-5 col-xs-6 col-sm-push-9 col-xs-push-6 col-md-push-0 one-line h60 f-left'>
+        <span class='v-align-helper'></span>
+        <div class='v-align medal-wrapper'><span class='v-align-helper'></span><img src="{{player.league}}.png" class='medal'></div>
+        <div class='v-align'>
+            <span class='text-larger'>{{player.league}} {{player.division}}</span>
+            <div class='small'>
+                {{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)
+            </div>
+        </div>
+    </div>
+
+    <div class='col-lg-3 col-sm-3 hidden-xs hidden-md one-line h60'>
+        <span class='v-align-helper'></span>
+        <div class='v-align'>
+            <lb>{{player.championName}}</lb>
+            <div class='small'>
+                {{player.championWins}}W/{{player.championLosses}}L
+            </div>
+        </div>
+    </div>
+
+    <div class='col-lg-5 col-md-8 col-sm-4 col-xs-6 col-sm-pull-8 col-xs-pull-6 col-md-pull-0 one-line h60 v-align'>
+        <span class='v-align-helper'></span>
+        <div class='v-align user-agent-height'>
+            <span class='text-larger'>{{player.name}}</span><br />
+            <small class='hidden-lg hidde-sm visible-md visible-xs'>{{player.championWins}}W/{{player.championLosses}}L</small>
+        </div>
+        <div class='champ-icon-wrapper h60'>
+            {{spriteimage player.sprite 50 champ-icon}}
+        </div>
+    </div>
+</div>
+
+<!-- Expanded informnation -->
+<div class='row expandable player-expand'>
+
+    <div class='inline-wrap'>
+        {{#if player.playStyle}}
+        <div class='play-style'>
+            <h3>Play style</h3>
+            Most played role: <b>ADC</b><small>(57 games)</small><br />
+            Best performing role: <b>ADC</b><small>(55% winrate)</small><br /><br />
+            Least played role: <b>MID</b><small>(5 games)</small><br />
+            Worst performing role: <b>TOP</b><small>(35% winrate)</small>
+        </div>
+        {{/if}}
+
+        {{#if player.matchHistory}}
+        <div class='match-history'>
+            Last 10 matches:<br />
+            {{#each player.matchHistory as |game|}}
+            <div class='champ-icon-small-wrapper' data-win={{game.win}}>
+                {{spriteimage game.sprite 48 "champ-icon-small" champion.name}}
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+
+    </div>
+
+    {{#if player.mostPlayed}}
+    <div class='most-played'>
+        <table class='mostPlayedChampions'>
+        <tr>
+            <th colspan="4"><h3>Most played champions</h3></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>Games</th>
+            <th>Winrate</th>
+            <th><abbr title="Kills deaths assists">KDA</abbr></th>
+        </tr>
+        {{#each player.mostPlayed as |champion|}}
+        <tr>
+            <td>{{spriteimage champion.sprite 48 "champ-icon-small" champion.name}}</td>
+            <td>{{champion.games}}</td>
+            <td>{{champion.winrate}}%</td>
+            <td>{{champion.KDA}}</td>
+        </tr>
+        {{/each}}
+        </table>
+    </div>
+    {{/if}}
+
+</div>

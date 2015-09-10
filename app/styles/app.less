@@ -102,12 +102,12 @@ html, body {
     -moz-transform-origin: 0 0;
 }
 
-.team2-player .champ-icon-wrapper{
+.team2-player{
     margin-right: 5px;
-    
 }
 
 .champ-icon-wrapper {
+    margin-right: 8px;
     width: 50px;
     display: inline-block;
 }
@@ -138,6 +138,7 @@ html, body {
 }
 
 .medal {
+    display: inline-block;
     width: 35px;
     height: 35px;
 }
@@ -219,8 +220,13 @@ th, td {
     display: none;
 }
 
+.player-container {
+    border-bottom: 1px solid hsl(0, 0%, 90%);
+}
+
 .team1-container {
     background-color: hsl(230, 10%, 97%);
+    
     .player-expand {
         border-left: solid lightgrey 5px;
         padding-right: 50px;
@@ -230,14 +236,18 @@ th, td {
     }
 
     .player-container {
-        border-bottom: 1px solid hsl(0, 0%, 90%);
         border-left: 5px hsl(210, 50%, 50%) solid;
+        
+        .medal-wrapper {
+            text-align: right;
+        }
     }
 }
     
 
 .team2-container {
     background-color: hsl(230, 10%, 97%);
+    
     .player-expand {
         border-right: solid lightgrey 5px;
         .most-played {
@@ -246,25 +256,26 @@ th, td {
     }
 
     .player-container {
-        border-bottom: 1px solid hsl(0, 0%, 90%);
-        @media(max-width: @screen-md-max) and (min-width: @screen-md-min) {
-            div:last-child {
-                text-align: right;
-            }
-        }
 
         @media(max-width: @screen-sm-max) {
             .medal-wrapper {
                 float: right;
             }
         }
-    //    border-left: 1px hsl(0, 0%, 90%) solid;
+
+        @media(min-width: @screen-md-min) {
+            > div:last-child {
+                text-align: right;
+            }
+        }
+
         @media(max-width: @screen-sm-max) {
             border: none;
         }
 
 
         > div:last-child {
+            padding-right: 15px;
             border-right: 5px hsl(10, 50%, 50%) solid;
 
             @media(max-width: @screen-sm-max) {
@@ -373,7 +384,7 @@ html[data-useragent*='Firefox'] .user-agent-height {
     color: hsl(0, 0%, 95%);
     font-size: 48px;
     font-weight: 400;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     width: 100%;
     text-align: center;
 }
@@ -384,7 +395,7 @@ html[data-useragent*='Firefox'] .user-agent-height {
     margin-left: -170px;
     margin-top: 7px;
 	position: absolute;
-	background: #88b7d5;
+	background: hsl(220, 50%, 20%);
     display: inline-block;
 //	border: 1px solid #c2e1f5;
 }
@@ -402,14 +413,14 @@ html[data-useragent*='Firefox'] .user-agent-height {
 
 .arrow_box:after {
 	border-color: rgba(136, 183, 213, 0);
-	border-left-color: #88b7d5;
+	border-left-color: hsl(220, 50%, 20%);
 	border-width: 10px;
 	margin-top: -10px;
 }
 
 .arrow_box:before {
 	border-color: rgba(194, 225, 245, 0);
-	border-left-color: #c2e1f5;
+	border-left-color: hsl(220, 50%, 20%);
 	border-width: 9px;
 	margin-top: -9px;
 }

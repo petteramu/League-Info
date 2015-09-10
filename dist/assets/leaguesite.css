@@ -80,10 +80,11 @@ body {
   -moz-transform: scale(0.4);
   -moz-transform-origin: 0 0;
 }
-.team2-player .champ-icon-wrapper {
+.team2-player {
   margin-right: 5px;
 }
 .champ-icon-wrapper {
+  margin-right: 8px;
   width: 50px;
   display: inline-block;
 }
@@ -108,6 +109,7 @@ body {
   vertical-align: top;
 }
 .medal {
+  display: inline-block;
   width: 35px;
   height: 35px;
 }
@@ -176,6 +178,9 @@ play-style {
   padding: 5px 7px 5px 7px;
   display: none;
 }
+.player-container {
+  border-bottom: 1px solid #e6e6e6;
+}
 .team1-container {
   background-color: #f7f7f8;
 }
@@ -187,8 +192,10 @@ play-style {
   float: right;
 }
 .team1-container .player-container {
-  border-bottom: 1px solid #e6e6e6;
   border-left: 5px #407fbf solid;
+}
+.team1-container .player-container .medal-wrapper {
+  text-align: right;
 }
 .team2-container {
   background-color: #f7f7f8;
@@ -199,17 +206,14 @@ play-style {
 .team2-container .player-expand .most-played {
   float: right;
 }
-.team2-container .player-container {
-  border-bottom: 1px solid #e6e6e6;
-}
-@media (max-width: 1200px) and (min-width: 992px) {
-  .team2-container .player-container div:last-child {
-    text-align: right;
-  }
-}
 @media (max-width: 992px) {
   .team2-container .player-container .medal-wrapper {
     float: right;
+  }
+}
+@media (min-width: 992px) {
+  .team2-container .player-container > div:last-child {
+    text-align: right;
   }
 }
 @media (max-width: 992px) {
@@ -218,6 +222,7 @@ play-style {
   }
 }
 .team2-container .player-container > div:last-child {
+  padding-right: 15px;
   border-right: 5px #bf5540 solid;
 }
 @media (max-width: 992px) {
@@ -308,7 +313,7 @@ html[data-useragent*='Firefox'] .user-agent-height {
   color: #f2f2f2;
   font-size: 48px;
   font-weight: 400;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
   width: 100%;
   text-align: center;
 }
@@ -317,7 +322,7 @@ html[data-useragent*='Firefox'] .user-agent-height {
   margin-left: -170px;
   margin-top: 7px;
   position: absolute;
-  background: #88b7d5;
+  background: #192a4d;
   display: inline-block;
 }
 .arrow_box:after,
@@ -333,13 +338,13 @@ html[data-useragent*='Firefox'] .user-agent-height {
 }
 .arrow_box:after {
   border-color: rgba(136, 183, 213, 0);
-  border-left-color: #88b7d5;
+  border-left-color: #192a4d;
   border-width: 10px;
   margin-top: -10px;
 }
 .arrow_box:before {
   border-color: rgba(194, 225, 245, 0);
-  border-left-color: #c2e1f5;
+  border-left-color: #192a4d;
   border-width: 9px;
   margin-top: -9px;
 }
