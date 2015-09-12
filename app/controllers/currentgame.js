@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from '../config/environment';
 
 export default Ember.Controller.extend({
     queryParams: ['playerName', 'region'],
@@ -8,9 +9,22 @@ export default Ember.Controller.extend({
     team1_players: [],
     team2_players: [],
     gameData: undefined,
-    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
+    gameStartTime: undefined, //Used to keep track of time in-game.
     
+    //Used to identify which game is to be shown in the case several are requested.
+    //Starts as undefined to show that no game has been requested yet.
+    currentGameId: undefined,
+    
+    coreStageReached: false,
+    leagueStageReached: false,
+    championStageReached: false,
+    mostplayedStageReached: false,
+    matchhistoryStageReached: false,
+    
+    //Insert the socket-io service
     socketIOService: Ember.inject.service('socket-io'),
+//    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
+    nodeServerAddress: 'http://127.0.0.1:8080',
     
     init: function() {
         this._super.apply(this, arguments);
@@ -21,17 +35,32 @@ export default Ember.Controller.extend({
         //Create event handlers
         socket.on('message', this.handleMessage, this);
         
-        //Make a request immediatly if the search was made in the startscreen
-        if(this.get('playerName') !== '') {
-            this.makeDataRequest();
-        }
+        //Start the process of updating in-game time
+        var _this = this;
+        setInterval(function() {
+            _this.increaseGameTime.apply(_this);
+        }, 1000);
     },
     
-    handleMessage: function(event) {console.log(event);
-        if(typeof event['error'] !== 'undefined') {
-            console.log("Error returned from server");
-            return;
-        }
+    //The following 3 methods and properties handle the updating of the game time
+    ingameTime: 0,
+    
+    //Returns a readable format of the in game time(mm:ss)
+    readableGameTime: function() {
+        var min = Math.floor(this.ingameTime / 60);
+        var sec = Math.floor(this.ingameTime % 60);
+
+        return min + ":" + (sec < 10 ? '0' : '') + sec;
+    }.property('ingameTime'),
+    
+    //Increases the game time by 1 second
+    increaseGameTime: function() {
+        this.set('ingameTime', this.get('ingameTime') + 1);
+    },
+    
+    //Takes the response from the server and sends the data on to the correct insertion-functions
+    handleMessage: function(event) {
+        if(config.debug) { console.log(event); }
         
         if(typeof event['core'] !== 'undefined') {
             this.coreDataEvent(event['core']);
@@ -48,18 +77,42 @@ export default Ember.Controller.extend({
         else if(typeof event['matchhistory'] !== 'undefined') {
             this.matchHistoryEvent(event['matchhistory']);
         }
+        else if(typeof event['error'] !== 'undefined') {
+            if(event['error']['type'] === 'crucial') {
+                this.set('crucialError', event['error']['error']);
+            }
+            else {
+                //Each player object needs to know about the errors to display the information to the user
+                this.insertErrorMessages(event['error']);
+            }
+        }
         
     },
     
+    //Insert error messages in the player objects
+    insertErrorMessages: function(error) {
+        this.team1_players.forEach(function(element) {
+            element.set(error['type'] + 'error', error['error']);
+        });
+        
+        this.team2_players.forEach(function(element) {
+            element.set(error['type'] + 'error', error['error']);
+        });
+    },
+    
     coreDataEvent: function(event) {
+        this.set('coreStageReached', true);
         this.set('gameData', event);
         var i;
         for(i = 0; i < event['participants'].length; i++) {
             this.insertCoreDataToPairs(event['participants'][i]);
         }
+        
+        this.set('ingameTime', event.gameLength);
     },
     
     matchHistoryEvent: function(event) {
+        this.set('matchhistoryStageReached', true);
         this.matchHistoryData = event;
         var i;
         for(i = 0; i < event.data.length; i++) {
@@ -68,6 +121,7 @@ export default Ember.Controller.extend({
     },
     
     leagueDataEvent: function(event) {
+        this.set('leagueStageReached', true);
         this.leagueData = event;
         var i;
         for(i = 0; i < event.length; i++) {
@@ -76,6 +130,7 @@ export default Ember.Controller.extend({
     },
     
     mostPlayedEvent: function(event) {
+        this.set('mostplayedStageReached', true);
         //TODO: endre data struktur fra server på alle events
         this.mostPlayedData = event;
         var i;
@@ -85,6 +140,7 @@ export default Ember.Controller.extend({
     },
     
     champDataEvent: function(event) {
+        this.set('championStageReached', true);
         this.champData = event;
         var i;
         for(i = 0; i < event['pairs'].length; i++) {
@@ -92,17 +148,40 @@ export default Ember.Controller.extend({
         }
     },
     
-    makeDataRequest: function(name) {
-        var queryName = name || this.playerName;
-        var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
-            socket.emit('get:currentgame', {
-                name: queryName,
-                region: 'euw'
-            });
-
+    resetData: function() {
         //Empty the player items list, so that even though the core data is not the first to be received,
         //new player items are created for each
-        this.playerPairs.length = 0;    
+        this.team1_players.length = 0;
+        this.team2_players.length = 0;
+        
+        //Reset the data staging object
+        this.set('coreStageReached', false);
+        
+        //Remove errors
+        this.set('crucialError', false);
+        
+        //Sets the currentGameId to "waiting" such that it is considered true when creating the handlebars template
+        this.set('currentGameId', true);  
+    },
+    
+    makeDataRequest: function(name) {
+        this.resetData();
+        
+        var queryName = name || this.playerName;
+        var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
+        socket.emit('get:currentgame', {
+            name: queryName,
+            region: 'euw'
+        });
+    },
+    
+    getRandomGame: function(region) {
+        this.resetData();
+        
+        var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
+        socket.emit('get:randomgame', {
+            region: 'euw'
+        });
     },
         
     actions: {
@@ -120,8 +199,9 @@ export default Ember.Controller.extend({
         var teamArray = (participantNo < 200) ? this.get('team1_players') : this.get('team2_players');
         console.log(teamArray);
         for(var i = 0; i < teamArray.length; i++) {
-            if(teamArray[i].participantNo === participantNo)
+            if(teamArray[i].participantNo === participantNo) {
                 return teamArray[i];
+            }
         }
         
         //Create classes
@@ -129,46 +209,17 @@ export default Ember.Controller.extend({
             winrate: function() {
                 return (this.get('rankedWins') * 100) / (this.get('rankedWins') + this.get('rankedLosses'));
             },
-            league: "Unranked"
+            league: "Unranked",
+            hasLeagueData: false,
+            hasChampionData: false,
+            hasMostPlayedData: false,
+            hasMatchHistoryData: false
         });
         
         var obj = PlayerObject.create();
         teamArray.pushObject(obj);
         return obj;
     },
-    
-    //Gets an existing player object if it exists or creates a new one
-    getOrCreatePlayerPair: function(participantNo) {
-        //Create classes
-        var PlayerObject = Ember.Object.extend({
-            winrate: function() {
-                return (this.get('rankedWins') * 100) / (this.get('rankedWins') + this.get('rankedLosses'));
-            },
-            league: "Unranked"
-        });
-                                                    
-        var PlayerPair = Ember.Object.extend({
-            playerOnTeam1: PlayerObject.create(),
-            playerOnTeam2: PlayerObject.create()
-        });
-        
-        //Find exissting
-        var normalized = this.getNormalizedParticipantNo(participantNo); //Normalized participantNo
-        var i;
-        for(i = 0; i < this.playerPairs.length; i++) {
-            if(this.playerPairs[i].participantNo === normalized) {
-                return (participantNo < 200) ? this.playerPairs[i].playerOnTeam1 : this.playerPairs[i].playerOnTeam2;
-            }
-        }
-        //Create new participant object if not found
-        var obj = PlayerPair.create({
-            participantNo: normalized
-        });
-        
-        this.playerPairs.pushObject(obj);
-        return (participantNo < 200) ? obj.get('playerOnTeam1') : obj.get('playerOnTeam2');
-    },
-    
         
     insertCoreDataToPairs: function(data) {
         var playerObj = this.getOrCreatePlayerObject(data.participantNo);

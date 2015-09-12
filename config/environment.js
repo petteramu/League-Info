@@ -4,6 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'leaguesite',
     environment: environment,
+    debug: true,
     baseURL: '/',
     locationType: 'auto',
     EmberENV: {
@@ -40,7 +41,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.debug = true;
   }
 
   return ENV;

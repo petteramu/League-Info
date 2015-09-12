@@ -13,23 +13,38 @@
 
     <div class='col-lg-3 col-md-3 col-sm-4 hidden-xs hidden-md one-line h60'>
         <span class='v-align-helper'></span>
+        
+        {{#if player.championerror}}
+        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+        
+        {{else}}
         <div class='v-align'>
+            <!-- Only show this info if there are data available -->
+            {{#if player.championWins}}
             <lb>{{player.championName}}</lb>
             <div class='small'>
                 {{player.championWins}}W/{{player.championLosses}}L
             </div>
+            {{/if}}
         </div>
+        {{/if}}
     </div>
 
     <div class='col-lg-4 col-md-4 col-sm-3 col-xs-6 one-line h60 f-right'>
         <span class='v-align-helper'></span>
+        
+        {{#if player.leagueerror}}
+        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+        
+        {{else}}
         <div class='v-align'>
             <span class='text-larger'>{{player.league}} {{player.division}}</span>
             <div class='small'>
                 {{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)
             </div>
         </div>
-        <div class='v-align medal-wrapper'><span class='v-align-helper'></span><img src="{{player.league}}.png" class='medal'></div>
+        <div class='v-align medal-wrapper'><span class='v-align-helper'></span><img src="assets/images/medals/{{player.league}}.png" class='medal'></div>
+        {{/if}}
     </div>
 </div>
 

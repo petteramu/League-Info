@@ -6,8 +6,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('navbar');
-  this.route('currentgame');
+  this.route('currentgame', { path: '/currentgame' });
 });
 
 export default Router;

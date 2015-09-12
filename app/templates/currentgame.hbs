@@ -15,33 +15,51 @@
                 </div>
             </div>
         </div>
-
-        <div class='row coreinfo'>
-            <div class='col-xs-12'>
-                <span class='info'>
-                    Game time: 14:37
-                </span>
-                <span class='info'>
-                    Ranked Solo 5x5
-                </span>
-                <span class='info'>
-                    Summoner's rift
-                </span>
-            </div>
-        </div>
         
-        <div class='row'>
-            <div class='team1-container col-lg-6 col-md-6 col-xs-12'>
-                {{#each team1_players as |player|}}
-                    {{player-comp player=player}}
-                {{/each}}
-            </div>
-            
-            <div class='team2-container col-lg-6 col-md-6 col-xs-12'>
-                {{#each team2_players as |player|}}
-                     {{player-comp-team2 player=player}}
-                {{/each}}
+        {{#if crucialError}}
+        <div class='row danger-row'>
+            <div class='col-xs-12 alert alert-danger' role='alert'>
+                {{crucialError}}
             </div>
         </div>
+        {{else}}
+            {{#if gameData}}
+            <div class='row coreinfo'>
+                <div class='col-xs-12'>
+                    <span class='info'>
+                        Game time: {{readableGameTime}}
+                    </span>
+                    <span class='info'>
+                        {{gameData.readableQueue}}
+                    </span>
+                    <span class='info'>
+                        {{gameData.readableMap}}
+                    </span>
+                </div>
+            </div>
+            {{/if}}
+
+            {{#if coreStageReached}}
+            <div class='row'>
+                <div class='team1-container col-lg-6 col-md-6 col-xs-12'>
+                    {{#each team1_players as |player|}}
+                        {{player-comp player=player}}
+                    {{/each}}
+                </div>
+
+                <div class='team2-container col-lg-6 col-md-6 col-xs-12'>
+                    {{#each team2_players as |player|}}
+                         {{player-comp-team2 player=player}}
+                    {{/each}}
+                </div>
+            </div>
+            {{else}}
+                {{#if currentGameId}}
+                    <div class='row core-loading-row'>
+                        <img src="assets/select2-spinner.gif">
+                    </div>
+                {{/if}}
+            {{/if}}
+        {{/if}}
     </div>
 </div>

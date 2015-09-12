@@ -21,6 +21,10 @@ html, body {
     > row:first-of-type {
         border-top: none;
     }
+    
+    > div > .row {
+        background-color: hsl(230, 10%, 97%); //Will be overridden by many of the children
+    }
 }
 
 .header {
@@ -215,6 +219,7 @@ th, td {
 
 .player-expand {
     border-top: hsl(0, 0%, 90%) 1px solid;
+    border-bottom: hsl(0, 0%, 94%) 1px solid;
     background-color: #f5f5f5;
     padding: 5px 7px 5px 7px;
     display: none;
@@ -236,7 +241,9 @@ th, td {
     }
 
     .player-container {
-        border-left: 5px hsl(210, 50%, 50%) solid;
+        > div:first-child {
+            border-left: 5px hsl(210, 50%, 50%) solid;
+        }
         
         .medal-wrapper {
             text-align: right;
@@ -292,6 +299,17 @@ th, td {
     }
 }
 
+.danger-row {
+//    background-color: hsl(0, 50%, 65%);
+    text-align: center;
+    padding: 5px;
+    font-weight: 700;
+    
+    > div {
+        margin: 0;
+    }
+}
+
 .f-right {
     float: right;
 }
@@ -338,6 +356,11 @@ lb {
 
 span.v-align-helper {
     width: 0px;
+}
+
+.core-loading-row {
+    text-align: center;
+    padding: 5px;
 }
 
 .user-agent-height {
@@ -427,4 +450,9 @@ html[data-useragent*='Firefox'] .user-agent-height {
 
 #search-message {
     display: none;
+}
+
+//glyphicons
+.glyphicon-warning-sign {
+    color: red;
 }

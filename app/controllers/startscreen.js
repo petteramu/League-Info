@@ -10,6 +10,11 @@ export default Ember.Controller.extend({
             else {
                 Ember.$("#search-message").css("display", "inline-block");
             }
+        },
+        
+        randomGame: function() {
+            this.transitionToRoute('currentgame', {queryParams: {randomGame: true, region: 'euw' }})
+                .then(this.controllerFor('currentgame').getRandomGame());
         }
     }
 });

@@ -16,6 +16,9 @@ body {
 .currentgame > row:first-of-type {
   border-top: none;
 }
+.currentgame > div > .row {
+  background-color: #f7f7f8;
+}
 .header {
   background-color: #383a42;
   color: #f2f2f2;
@@ -174,6 +177,7 @@ play-style {
 }
 .player-expand {
   border-top: #e6e6e6 1px solid;
+  border-bottom: #f0f0f0 1px solid;
   background-color: #f5f5f5;
   padding: 5px 7px 5px 7px;
   display: none;
@@ -191,7 +195,7 @@ play-style {
 .team1-container .player-expand .most-played {
   float: right;
 }
-.team1-container .player-container {
+.team1-container .player-container > div:first-child {
   border-left: 5px #407fbf solid;
 }
 .team1-container .player-container .medal-wrapper {
@@ -236,6 +240,14 @@ play-style {
     float: left;
   }
 }
+.danger-row {
+  text-align: center;
+  padding: 5px;
+  font-weight: 700;
+}
+.danger-row > div {
+  margin: 0;
+}
 .f-right {
   float: right;
 }
@@ -272,6 +284,10 @@ lb {
 }
 span.v-align-helper {
   width: 0px;
+}
+.core-loading-row {
+  text-align: center;
+  padding: 5px;
 }
 .user-agent-height {
   height: auto;
@@ -350,5 +366,8 @@ html[data-useragent*='Firefox'] .user-agent-height {
 }
 #search-message {
   display: none;
+}
+.glyphicon-warning-sign {
+  color: red;
 }
 /*# sourceMappingURL=/assets/leaguesite.css.map */
