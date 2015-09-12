@@ -1,9 +1,11 @@
 # Leaguesite
 
 This website allows the user to check up players that are currently in a game.
-It comes with a server running on node which uses the RiotAPI to serve the data to the website through socket.io.
+It shows information such as league placement, games on current character, most played characters and match history.
+Planned features: Most frequent role, ability to write notes, champion select helper.
 
-The server is located in the "backend" folder and is run through the server.js file.
+It is used with a server running on node which uses the RiotAPI to serve the data to the website through socket.io.
+The server is ran using the code from the https://github.com/petteramu/League-Data-Server project.
 
 ## Prerequisites
 
