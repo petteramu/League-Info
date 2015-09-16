@@ -23,12 +23,11 @@ export default Ember.Controller.extend({
     
     //Insert the socket-io service
     socketIOService: Ember.inject.service('socket-io'),
-//    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
-    nodeServerAddress: 'http://127.0.0.1:8080',
+    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
     
     init: function() {
         this._super.apply(this, arguments);
-
+        
         //Get the socket
         var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
         
@@ -197,7 +196,6 @@ export default Ember.Controller.extend({
     
     getOrCreatePlayerObject: function(participantNo) {
         var teamArray = (participantNo < 200) ? this.get('team1_players') : this.get('team2_players');
-        console.log(teamArray);
         for(var i = 0; i < teamArray.length; i++) {
             if(teamArray[i].participantNo === participantNo) {
                 return teamArray[i];
@@ -224,7 +222,6 @@ export default Ember.Controller.extend({
     insertCoreDataToPairs: function(data) {
         var playerObj = this.getOrCreatePlayerObject(data.participantNo);
         
-        console.log(playerObj);
         playerObj.set('name', data.summonerName);
         playerObj.set('summonerId', data.summonerId);
         playerObj.set('participantNo', data.participantNo);

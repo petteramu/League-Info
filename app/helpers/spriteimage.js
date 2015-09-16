@@ -12,7 +12,7 @@ export default Ember.Handlebars.registerBoundHelper('spriteimage', function(spri
         
         var c = givenClass || 'champ-icon';
         
-        return new Ember.Handlebars.SafeString("<img " + alt + " src='assets/images/div/transparent.png' class='" + c + "'style='background-image: url(" + url + ");background-position: " + x + "px " + y + "px; width: " + size + "px; height: " + size + "px;'>");
+        return new Ember.Handlebars.SafeString("<img " + alt + " src='assets/images/div/transparent.png' class='" + c + "'style='background-image: url(" + url + ");background-position: " + x + "px " + y + "px; width: " + size + "px; height: " + size + "px;' title='" + name + "'>");
     }
     else {
         return new Ember.Handlebars.SafeString("<img src='assets/images/div/transparent.png' class='champ-icon'>");

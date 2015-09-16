@@ -2,7 +2,7 @@
 
     <div class='col-lg-5 col-md-8 col-sm-5 col-xs-6 one-line h60 v-align'>
         <div class='champ-icon-wrapper h60'>
-            {{spriteimage player.sprite 50 champ-icon}}
+            {{spriteimage player.sprite 50 champ-icon player.championName}}
         </div>
         <span class='v-align-helper'></span>
         <div class='v-align user-agent-height'>
@@ -37,7 +37,7 @@
         <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
         
         {{else}}
-        <div class='v-align'>
+        <div class='v-align league-text'>
             <span class='text-larger'>{{player.league}} {{player.division}}</span>
             <div class='small'>
                 {{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)
