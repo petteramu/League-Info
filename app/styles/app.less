@@ -189,7 +189,9 @@ th, td {
 
 .most-played {
     display: inline-block;
-    
+}
+
+.most-played, .play-style {
     th {
         padding-bottom: 2px;
     }
@@ -200,6 +202,17 @@ th, td {
     
     tr:first-child {
         border-bottom: none;
+    }
+}
+
+.play-style {
+    td:first-child {
+        text-align: left;
+    }
+    
+    th {
+        font-weight: 600;
+        padding: 0 3px 0 3px;
     }
 }
 
@@ -223,7 +236,7 @@ th, td {
 
 .player-expand {
     border-top: hsl(0, 0%, 90%) 1px solid;
-    border-bottom: hsl(0, 0%, 94%) 1px solid;
+    border-bottom: hsl(0, 0%, 94%) 2px solid;
     background-color: #f5f5f5;
     padding: 5px 7px 5px 7px;
     display: none;
@@ -231,6 +244,10 @@ th, td {
 
 .player-container {
     border-bottom: 1px solid hsl(0, 0%, 90%);
+    
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .team1-container {
@@ -304,7 +321,6 @@ th, td {
 }
 
 .danger-row {
-//    background-color: hsl(0, 50%, 65%);
     text-align: center;
     padding: 5px;
     font-weight: 700;
@@ -417,7 +433,6 @@ html[data-useragent*='Firefox'] .user-agent-height {
     font-weight: 400;
     margin-bottom: 25px;
     width: 100%;
-//    text-align: center;
     font-family: "Montserrat";
     margin: 25px 0 15px 0;
 }
@@ -428,9 +443,9 @@ html[data-useragent*='Firefox'] .user-agent-height {
     margin-left: -170px;
     margin-top: 7px;
 	position: absolute;
-	background: hsl(220, 50%, 20%);
+	background: hsl(210, 50%, 50%);
     display: inline-block;
-//	border: 1px solid #c2e1f5;
+    color: white;
 }
 
 .arrow_box:after, .arrow_box:before {
@@ -446,14 +461,14 @@ html[data-useragent*='Firefox'] .user-agent-height {
 
 .arrow_box:after {
 	border-color: rgba(136, 183, 213, 0);
-	border-left-color: hsl(220, 50%, 20%);
+	border-left-color: hsl(210, 50%, 50%);
 	border-width: 10px;
 	margin-top: -10px;
 }
 
 .arrow_box:before {
 	border-color: rgba(194, 225, 245, 0);
-	border-left-color: hsl(220, 50%, 20%);
+	border-left-color: hsl(210, 50%, 50%);
 	border-width: 9px;
 	margin-top: -9px;
 }

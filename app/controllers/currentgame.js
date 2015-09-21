@@ -24,6 +24,7 @@ export default Ember.Controller.extend({
     //Insert the socket-io service
     socketIOService: Ember.inject.service('socket-io'),
     nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
+//    nodeServerAddress: 'http://localhost:8080',
     
     init: function() {
         this._super.apply(this, arguments);
@@ -75,6 +76,9 @@ export default Ember.Controller.extend({
         }
         else if(typeof event['matchhistory'] !== 'undefined') {
             this.matchHistoryEvent(event['matchhistory']);
+        }
+        else if(typeof event['roles'] !== 'undefined') {
+            this.rolesEvent(event['roles']);
         }
         else if(typeof event['error'] !== 'undefined') {
             if(event['error']['type'] === 'crucial') {
@@ -144,6 +148,14 @@ export default Ember.Controller.extend({
         var i;
         for(i = 0; i < event['pairs'].length; i++) {
             this.insertChampDataToPairs(event['pairs'][i]);
+        }
+    },
+    
+    rolesEvent: function(event) {
+        this.champData = event;
+        var i;
+        for(i = 0; i < event['data'].length; i++) {
+            this.insertRoleData(event['data'][i]);
         }
     },
     
@@ -327,6 +339,11 @@ export default Ember.Controller.extend({
             });
         }
         playerObj.set('mostPlayed', mp);
+    },
+    
+    insertRoleData: function(data) {
+        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
+        playerObj.set('roles', data.roles);
     },
     
     capitalizeFirstLetter: function(string) {

@@ -1,13 +1,5 @@
-Options +FollowSymLinks
-
-# Redirect currentgame references to the root directory
 RewriteEngine On
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{THE_REQUEST} ^GET\ \?(([^&\s]*&)*)playerName=([^&\s]+)&?([^\s]*)
+RewriteRule ^(.*)$ /currentgame/%3?%1%4 [L]
 
-RewriteRule .*currentgame.* http://leaguealot.com/?active=cg [QSA,R=302]
-
-# RewriteRule .*active=cg.* http://leaguealot.com/currentgame/
-
-# Old redirect
-# Redirect 302 /currentgame http://leaguealot.com/
+RewriteRule ^currentgame/(.*) index.php?playerName=$1 [L]

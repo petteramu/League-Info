@@ -52,19 +52,70 @@
 <div class='row expandable player-expand'>
 
     <div class='inline-wrap'>
-        {{#if player.playStyle}}
+        {{#if player.roles}}
         <div class='play-style'>
             <h3>Play style</h3>
-            Most played role: <b>ADC</b><small>(57 games)</small><br />
-            Best performing role: <b>ADC</b><small>(55% winrate)</small><br /><br />
-            Least played role: <b>MID</b><small>(5 games)</small><br />
-            Worst performing role: <b>TOP</b><small>(35% winrate)</small>
+            <table>
+                <tr>
+                    <th>Role</th>
+                    <th>Games</th>
+                    <th>Percent</th>
+                </tr>
+            
+            {{#if player.roles.Top}}
+                <tr>
+                    <td>{{player.roles.Top.role}}</td>
+                    <td>{{player.roles.Top.games}}</td>
+                    <td>{{player.roles.Top.percent}}%</td>
+                </tr>
+            {{/if}}
+            
+            {{#if player.roles.Jungle}}
+                <tr>
+                    <td>{{player.roles.Jungle.role}}</td>
+                    <td>{{player.roles.Jungle.games}}</td>
+                    <td>{{player.roles.Jungle.percent}}%</td>
+                </tr>
+            {{/if}}
+            
+            {{#if player.roles.Mid}}
+                <tr>
+                    <td>{{player.roles.Mid.role}}</td>
+                    <td>{{player.roles.Mid.games}}</td>
+                    <td>{{player.roles.Mid.percent}}%</td>
+                </tr>
+            {{/if}}
+            
+            {{#if player.roles.Adc}}
+                <tr>
+                    <td>{{player.roles.Adc.role}}</td>
+                    <td>{{player.roles.Adc.games}}</td>
+                    <td>{{player.roles.Adc.percent}}%</td>
+                </tr>
+            {{/if}}
+            
+            {{#if player.roles.Support}}
+                <tr>
+                    <td>{{player.roles.Support.role}}</td>
+                    <td>{{player.roles.Support.games}}</td>
+                    <td>{{player.roles.Support.percent}}%</td>
+                </tr>
+            {{/if}}
+            
+            {{#if player.roles.Other}}
+                <tr>
+                    <td>{{player.roles.Other.role}}</td>
+                    <td>{{player.roles.Other.games}}</td>
+                    <td>{{player.roles.Other.percent}}%</td>
+                </tr>
+            {{/if}}
+            </table>
         </div>
         {{/if}}
 
         {{#if player.matchHistory}}
         <div class='match-history'>
-            Last 10 matches:<br />
+            <h3>Last 10 matches</h3>
             {{#each player.matchHistory as |game|}}
             <div class='champ-icon-small-wrapper' data-win={{game.win}}>
                 {{spriteimage game.sprite 48 "champ-icon-small" champion.name}}
