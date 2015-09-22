@@ -18,15 +18,19 @@
         <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
         
         {{else}}
-        <div class='v-align'>
-            <!-- Only show this info if there are data available -->
-            {{#if player.championWins}}
-            <lb>{{player.championName}}</lb>
-            <div class='small'>
-                {{player.championWins}}W/{{player.championLosses}}L
+            {{#if stages.champdata}}
+            <div class='v-align'>
+                <!-- Only show this info if there are data available -->
+                {{#if player.championWins}}
+                <lb>{{player.championName}}</lb>
+                <div class='small'>
+                    {{player.championWins}}W/{{player.championLosses}}L
+                </div>
+                {{/if}}
             </div>
+            {{else}}
+            <div class='v-align'><img src='assets/select2-spinner.gif'></div>
             {{/if}}
-        </div>
         {{/if}}
     </div>
 
@@ -37,13 +41,17 @@
         <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
         
         {{else}}
-        <div class='v-align league-text'>
-            <span class='text-larger'>{{player.league}} {{player.division}}</span>
-            <div class='small'>
-                {{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)
+            {{#if stages.leaguedata}}
+            <div class='v-align league-text'>
+                <span class='text-larger'>{{player.league}} {{player.division}}</span>
+                <div class='small'>
+                    {{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)
+                </div>
             </div>
-        </div>
-        <div class='v-align medal-wrapper'><span class='v-align-helper'></span><img src="assets/images/medals/{{player.league}}.png" class='medal'></div>
+            <div class='v-align medal-wrapper'><span class='v-align-helper'></span><img src="assets/images/medals/{{player.league}}.png" class='medal'></div>
+            {{else}}
+            <div class='v-align'><img src='assets/select2-spinner.gif'></div>
+            {{/if}}
         {{/if}}
     </div>
 </div>
@@ -52,102 +60,121 @@
 <div class='row expandable player-expand'>
 
     <div class='inline-wrap'>
-        {{#if player.roles}}
         <div class='play-style'>
             <h3>Play style</h3>
-            <table>
-                <tr>
-                    <th>Role</th>
-                    <th>Games</th>
-                    <th>Percent</th>
-                </tr>
-            
-            {{#if player.roles.Top}}
-                <tr>
-                    <td>{{player.roles.Top.role}}</td>
-                    <td>{{player.roles.Top.games}}</td>
-                    <td>{{player.roles.Top.percent}}%</td>
-                </tr>
-            {{/if}}
-            
-            {{#if player.roles.Jungle}}
-                <tr>
-                    <td>{{player.roles.Jungle.role}}</td>
-                    <td>{{player.roles.Jungle.games}}</td>
-                    <td>{{player.roles.Jungle.percent}}%</td>
-                </tr>
-            {{/if}}
-            
-            {{#if player.roles.Mid}}
-                <tr>
-                    <td>{{player.roles.Mid.role}}</td>
-                    <td>{{player.roles.Mid.games}}</td>
-                    <td>{{player.roles.Mid.percent}}%</td>
-                </tr>
-            {{/if}}
-            
-            {{#if player.roles.Adc}}
-                <tr>
-                    <td>{{player.roles.Adc.role}}</td>
-                    <td>{{player.roles.Adc.games}}</td>
-                    <td>{{player.roles.Adc.percent}}%</td>
-                </tr>
-            {{/if}}
-            
-            {{#if player.roles.Support}}
-                <tr>
-                    <td>{{player.roles.Support.role}}</td>
-                    <td>{{player.roles.Support.games}}</td>
-                    <td>{{player.roles.Support.percent}}%</td>
-                </tr>
-            {{/if}}
-            
-            {{#if player.roles.Other}}
-                <tr>
-                    <td>{{player.roles.Other.role}}</td>
-                    <td>{{player.roles.Other.games}}</td>
-                    <td>{{player.roles.Other.percent}}%</td>
-                </tr>
-            {{/if}}
-            </table>
-        </div>
-        {{/if}}
+            {{#if player.roleserror}}
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            {{else}}
+                {{#if stages.roles}}
+                <table>
+                    <tr>
+                        <th>Role</th>
+                        <th>Games</th>
+                        <th>Percent</th>
+                    </tr>
 
-        {{#if player.matchHistory}}
+                    {{#if player.roles.Top}}
+                        <tr>
+                            <td>{{player.roles.Top.role}}</td>
+                            <td>{{player.roles.Top.games}}</td>
+                            <td>{{player.roles.Top.percent}}%</td>
+                        </tr>
+                    {{/if}}
+
+                    {{#if player.roles.Jungle}}
+                        <tr>
+                            <td>{{player.roles.Jungle.role}}</td>
+                            <td>{{player.roles.Jungle.games}}</td>
+                            <td>{{player.roles.Jungle.percent}}%</td>
+                        </tr>
+                    {{/if}}
+
+                    {{#if player.roles.Mid}}
+                        <tr>
+                            <td>{{player.roles.Mid.role}}</td>
+                            <td>{{player.roles.Mid.games}}</td>
+                            <td>{{player.roles.Mid.percent}}%</td>
+                        </tr>
+                    {{/if}}
+
+                    {{#if player.roles.Adc}}
+                        <tr>
+                            <td>{{player.roles.Adc.role}}</td>
+                            <td>{{player.roles.Adc.games}}</td>
+                            <td>{{player.roles.Adc.percent}}%</td>
+                        </tr>
+                    {{/if}}
+
+                    {{#if player.roles.Support}}
+                        <tr>
+                            <td>{{player.roles.Support.role}}</td>
+                            <td>{{player.roles.Support.games}}</td>
+                            <td>{{player.roles.Support.percent}}%</td>
+                        </tr>
+                    {{/if}}
+
+                    {{#if player.roles.Other}}
+                        <tr>
+                            <td>{{player.roles.Other.role}}</td>
+                            <td>{{player.roles.Other.games}}</td>
+                            <td>{{player.roles.Other.percent}}%</td>
+                        </tr>
+                    {{/if}}
+                    </table>
+                
+                {{else}}
+                <div class='v-align'><img src='assets/select2-spinner.gif'></div>
+                {{/if}}
+            {{/if}}
+        </div>
+
         <div class='match-history'>
             <h3>Last 10 matches</h3>
-            {{#each player.matchHistory as |game|}}
-            <div class='champ-icon-small-wrapper' data-win={{game.win}}>
-                {{spriteimage game.sprite 48 "champ-icon-small" champion.name}}
-            </div>
-            {{/each}}
+            {{#if player.roleserror}}
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            {{else}}
+                {{#if stages.matchhistory}}
+                    {{#each player.matchHistory as |game|}}
+                    <div class='champ-icon-small-wrapper' data-win={{game.win}}>
+                        {{spriteimage game.sprite 48 "champ-icon-small" champion.name}}
+                    </div>
+                    {{/each}}
+                {{else}}
+                <div class='v-align'><img src='assets/select2-spinner.gif'></div>
+                {{/if}}
+            {{/if}}
         </div>
-        {{/if}}
 
     </div>
 
-    {{#if player.mostPlayed}}
     <div class='most-played'>
         <table class='mostPlayedChampions'>
         <tr>
             <th colspan="4"><h3>Most played champions</h3></th>
         </tr>
-        <tr>
-            <th></th>
-            <th>Games</th>
-            <th>Winrate</th>
-            <th><abbr title="Kills deaths assists">KDA</abbr></th>
-        </tr>
-        {{#each player.mostPlayed as |champion|}}
-        <tr>
-            <td>{{spriteimage champion.sprite 48 "champ-icon-small" champion.name}}</td>
-            <td>{{champion.games}}</td>
-            <td>{{champion.winrate}}%</td>
-            <td>{{champion.KDA}}</td>
-        </tr>
-        {{/each}}
+            {{#if player.roleserror}}
+            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            {{else}}
+                {{#if stages.mostplayed}}
+                <tr>
+                    <th></th>
+                    <th>Games</th>
+                    <th>Winrate</th>
+                    <th><abbr title="Kills deaths assists">KDA</abbr></th>
+                </tr>
+                    {{#each player.mostPlayed as |champion|}}
+                    <tr>
+                        <td>{{spriteimage champion.sprite 48 "champ-icon-small" champion.name}}</td>
+                        <td>{{champion.games}}</td>
+                        <td>{{champion.winrate}}%</td>
+                        <td>{{champion.KDA}}</td>
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <div class='v-align'><img src='assets/select2-spinner.gif'></div>
+                {{/if}}
+            {{/if}}
         </table>
     </div>
-    {{/if}}
 
 </div>

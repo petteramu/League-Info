@@ -38,17 +38,17 @@
             </div>
             {{/if}}
 
-            {{#if coreStageReached}}
+            {{#if stages.core}}
             <div class='row'>
                 <div class='team1-container col-lg-6 col-md-6 col-xs-12'>
                     {{#each team1_players as |player|}}
-                        {{player-comp player=player}}
+                        {{player-comp player=player stages=stages}}
                     {{/each}}
                 </div>
 
                 <div class='team2-container col-lg-6 col-md-6 col-xs-12'>
                     {{#each team2_players as |player|}}
-                         {{player-comp-team2 player=player}}
+                         {{player-comp-team2 player=player stages=stages}}
                     {{/each}}
                 </div>
             </div>

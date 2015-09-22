@@ -15,12 +15,6 @@ export default Ember.Controller.extend({
     //Starts as undefined to show that no game has been requested yet.
     currentGameId: undefined,
     
-    coreStageReached: false,
-    leagueStageReached: false,
-    championStageReached: false,
-    mostplayedStageReached: false,
-    matchhistoryStageReached: false,
-    
     //Insert the socket-io service
     socketIOService: Ember.inject.service('socket-io'),
     nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
@@ -40,6 +34,18 @@ export default Ember.Controller.extend({
         setInterval(function() {
             _this.increaseGameTime.apply(_this);
         }, 1000);
+    
+        //Create the class for stages
+        var stageClass = Ember.Object.extend({
+            core: false,
+            leaguedata: false,
+            champdata: false,
+            mostplayed: false,
+            matchhistory: false,
+            roles: false
+        });
+        
+        this.set('stages', stageClass.create());
     },
     
     //The following 3 methods and properties handle the updating of the game time
@@ -61,6 +67,12 @@ export default Ember.Controller.extend({
     //Takes the response from the server and sends the data on to the correct insertion-functions
     handleMessage: function(event) {
         if(config.debug) { console.log(event); }
+        
+        //Update the stage
+        var keys = Object.keys(event);
+        if(keys.length == 1) {
+            (this.get('stages')).set(keys[0], true);
+        }
         
         if(typeof event['core'] !== 'undefined') {
             this.coreDataEvent(event['core']);
@@ -104,7 +116,6 @@ export default Ember.Controller.extend({
     },
     
     coreDataEvent: function(event) {
-        this.set('coreStageReached', true);
         this.set('gameData', event);
         var i;
         for(i = 0; i < event['participants'].length; i++) {
@@ -115,7 +126,6 @@ export default Ember.Controller.extend({
     },
     
     matchHistoryEvent: function(event) {
-        this.set('matchhistoryStageReached', true);
         this.matchHistoryData = event;
         var i;
         for(i = 0; i < event.data.length; i++) {
@@ -124,7 +134,6 @@ export default Ember.Controller.extend({
     },
     
     leagueDataEvent: function(event) {
-        this.set('leagueStageReached', true);
         this.leagueData = event;
         var i;
         for(i = 0; i < event.length; i++) {
@@ -133,7 +142,6 @@ export default Ember.Controller.extend({
     },
     
     mostPlayedEvent: function(event) {
-        this.set('mostplayedStageReached', true);
         //TODO: endre data struktur fra server på alle events
         this.mostPlayedData = event;
         var i;
@@ -143,7 +151,6 @@ export default Ember.Controller.extend({
     },
     
     champDataEvent: function(event) {
-        this.set('championStageReached', true);
         this.champData = event;
         var i;
         for(i = 0; i < event['pairs'].length; i++) {
@@ -152,6 +159,7 @@ export default Ember.Controller.extend({
     },
     
     rolesEvent: function(event) {
+        
         this.champData = event;
         var i;
         for(i = 0; i < event['data'].length; i++) {
