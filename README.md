@@ -7,6 +7,8 @@ Planned features: Most frequent role, ability to write notes, champion select he
 It is used with a server running on node which uses the RiotAPI to serve the data to the website through socket.io.
 The server is ran using the code from the https://github.com/petteramu/League-Data-Server project.
 
+A running implementation of the site is available at http://leaguealot.com
+
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
