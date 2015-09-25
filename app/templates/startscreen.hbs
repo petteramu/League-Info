@@ -1,21 +1,17 @@
 <div class='startscreen'>
-    <span class='v-align-helper'></span>
-    <div class='v-align'>
-        <p class='title-header'>Leaguealot</p>
-        <p>Welcome to Leaguealot. This site aims to deliver all the information you need while in game</p><br />
+    <p>Welcome to Leaguealot. This site aims to deliver all the information you need while in game</p><br />
 <!--        <img src="assets/images/div/preview.png" />-->
 
-        <p clasS='small-header'>Search for ingame players</p>
+    <p clasS='small-header'>Search for ingame players</p>
 
-        <form class="form-inline no-margin">
-            <div class="form-group">
-                <div class='arrow_box' id='search-message'>This field cannot be empty</div>
+    <form class="form-inline no-margin">
+        <div class="form-group">
+            <div class='arrow_box' id='search-message'>This field cannot be empty</div>
 
-                {{input class="form-control" placeholder="Summoner name" value=summonerName}}
-            </div>
-            <button type="submit" class="btn btn-default" {{ action "proceedSearch" }}>Search</button>
-        </form>
-        
-        <a href='' class='small-link' {{ action "randomGame" }}>(Or test the site with a featured game)</a>
-    </div>
+            {{input class="form-control" placeholder="Summoner name" value=summonerName}}
+        </div>
+        <button type="submit" class="btn btn-default" {{ action "proceedSearch" }}>Search</button>
+    </form>
+
+    <a href='' class='small-link' {{ action "randomGame" }}>(Or test the site with a featured game)</a>
 </div>

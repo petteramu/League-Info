@@ -180,7 +180,15 @@ export default Ember.Controller.extend({
         this.set('crucialError', false);
         
         //Sets the currentGameId to "waiting" such that it is considered true when creating the handlebars template
-        this.set('currentGameId', true);  
+        this.set('currentGameId', true);
+        
+        //Reset states
+        (this.get('stages')).set('core', false);
+        (this.get('stages')).set('leaguedata', false);
+        (this.get('stages')).set('champdata', false);
+        (this.get('stages')).set('mostplayed', false);
+        (this.get('stages')).set('matchhistory', false);
+        (this.get('stages')).set('roles', false);
     },
     
     makeDataRequest: function(name) {
