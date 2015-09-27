@@ -5,17 +5,42 @@
 @screen-sm-max: 992px;
 @screen-sm-min: 768px;
 
+
 html, body {
-//    background-color: #0F3B5F;
+    height: 100%;
     background-color: hsl(230, 7%, 97%);
 }
+
+//Make sure site uses 100% of the viewport
+#ember364 {
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    width: 100%;
+}
+
+.banner {
+    width: 100%;
+    background-color: hsl(210, 5%, 20%);
+    border-bottom: 3px solid hsl(210, 5%, 35%);
+    padding: 3px;
+}
+
+.content {
+    flex: 1;
+}
+
+//Set fonts
 * {
     font: 14px 'Open Sans';
 }
 
 .currentgame {
-    margin-top: 10%;
-//    border: hsl(0, 0%, 25%) 1px solid;
+    margin-top: 10px;
     
     .team1-container, .team2-container {
         border-bottom: hsl(0, 0%, 90%) 1px solid;
@@ -32,7 +57,6 @@ html, body {
 
 .header {
     color: hsl(230, 8%, 24%);
-    padding: 12px 5px 12px 5px;
     
     h2 {
         margin: 0;
@@ -47,13 +71,16 @@ html, body {
     }
 }
 
+.header-row {
+    padding: 12px 5px 12px 5px;
+}
+
 .player-search-container {
     @media(min-width: @screen-sm-min) {
         text-align: right;
     }
     
-    > div {
-        transform: translateY(30%);
+    div {
         display: inline-block;
     }
 }
@@ -278,13 +305,6 @@ th, td {
     }
 
     .player-container {
-
-        @media(max-width: @screen-sm-max) {
-            .medal-wrapper {
-                float: right;
-            }
-        }
-
         @media(min-width: @screen-md-min) {
             > div:last-child {
                 text-align: right;
@@ -394,12 +414,8 @@ html[data-useragent*='Firefox'] .user-agent-height {
 /*     Startscreen
 /************************/
 .startscreen {
+    margin-top: 20px;
     color: hsl(230, 8%, 24%);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     background-color: hsl(230, 7%, 97%);
     text-align: center;
     
@@ -413,10 +429,6 @@ html[data-useragent*='Firefox'] .user-agent-height {
     
     a, a:active, a:hover, a:visited {
         color: hsl(30, 100%, 45%);
-    }
-    
-    .small-header {
-        font-size: 24px;
     }
 }
 
@@ -434,10 +446,14 @@ html[data-useragent*='Firefox'] .user-agent-height {
     font-family: "Montserrat";
     display: inline-block;
 }
+    
+.search-header {
+    color: hsl(230, 8%, 24%);
+    font-size: 24px;
+}
 
 .small-header {
     font-size: 16px;
-    margin-left: 15px;
 }
 
 //Pointing box
@@ -483,15 +499,4 @@ html[data-useragent*='Firefox'] .user-agent-height {
 //glyphicons
 .glyphicon-warning-sign {
     color: red;
-}
-
-.top-banner {
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 100%;
-    height: 100px;
-    background-color: hsl(210, 5%, 20%);
-    z-index: 1;
-    border-bottom: 3px solid hsl(210, 5%, 20%);
 }
