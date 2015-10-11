@@ -145,7 +145,12 @@ html, body {
     }
 }
 
+.player-pair {
+    margin-top: 1px;
+}
+
 .coreinfo {
+//    border-bottom: hsl(0, 0%, 90%) 1px solid;
     padding: 5px;
     background-color: hsl(230, 10%, 97%);
 }
@@ -168,13 +173,6 @@ html, body {
     }
 }
 
-.name-hover {
-    background-color: @header-color;
-    border-radius: 2px;
-    color: white;
-    padding: 2px;
-}
-
 /* Champin Images */
 .champ-icon {
     width: 40px;
@@ -187,16 +185,12 @@ html, body {
 }
 
 .champ-icon-large {
-    width: 80px;
-    height: 80px;
-}
-
-.summoner-spells-wrapper {
-    margin-left: 5px;
-    img {
-        width: 40px;
-        height: 40px;
-    }
+    overflow: hidden;
+    zoom: 1.35;
+    width: 48px;
+    height: 48px;
+    -moz-transform:scale(1.15);
+    -moz-transform-origin: 0 0;
 }
 
 .team2-player{
@@ -345,7 +339,6 @@ th, td {
 }
 
 .team1-container {
-    padding-right: 0 !important;
     background-color: hsl(230, 10%, 97%);
 
     .player-container {
@@ -365,7 +358,6 @@ th, td {
     
 
 .team2-container {
-    padding-left: 0 !important;
     background-color: hsl(230, 10%, 97%);
 
     .player-container {
@@ -566,8 +558,8 @@ html[data-useragent*='Firefox'] .user-agent-height {
     
     padding-bottom: 10px;
     padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
     
     font-size: 12px;
     

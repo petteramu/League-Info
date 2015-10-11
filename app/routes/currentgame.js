@@ -9,5 +9,11 @@ export default Ember.Route.extend({
         this.render('currentgame', {
             controller: 'currentgame'
         });
+    },
+    
+    actions: {
+        setAsSelected: function(participantNo) {console.log(1);
+//            this.controllerFor('currentgame').setSelectedPlayer(this.getOrCreatePlayerObject(participantNo));
+        }   
     }
 });

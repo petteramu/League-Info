@@ -2,18 +2,17 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     didInsertElement: function() {
-        var normPartNo = this.$('.player-container').attr('np');
-        Ember.$('[np="' + normPartNo + '"]').hover(function() {
-            Ember.$('[np="' + normPartNo + '"]').css('background-color', '#f1f1f1');
+        this.$().hover(function() {
+            Ember.$(".player-name", this).addClass('name-hover');
         }, function() {
-            Ember.$('[np="' + normPartNo + '"]').css('background-color', '#f5f5f5');
+            Ember.$(".player-name", this).removeClass('name-hover');
         });
     },
     
     actions: {
-        toggleDetails: function() {
-            var normPartNo = this.$('.player-container').attr('np');
-            Ember.$('[np="' + normPartNo + '"] + .player-expand').slideToggle(100);
+        select: function() {
+            var normPartNo = this.$('.player-container').attr('participant-number');
+            this.sendAction('playerWasSelected', normPartNo);
         }
     }
 });

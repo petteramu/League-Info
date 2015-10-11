@@ -1,7 +1,7 @@
 {
   "name": "leaguesite",
   "version": "0.0.0",
-  "description": "Small description for leaguesite goes here",
+  "description": "A site that shows information on the current game of a player",
   "private": true,
   "directories": {
     "doc": "doc",
@@ -22,6 +22,7 @@
     "bootstrap": "^3.3.5",
     "broccoli-asset-rev": "^2.0.2",
     "ember-bootstrap": "0.1.3",
+    "ember-browserify": "^1.0.5",
     "ember-cli": "1.13.1",
     "ember-cli-app-version": "0.4.0",
     "ember-cli-babel": "^5.0.0",
@@ -42,6 +43,7 @@
     "ember-select-2": "1.3.0",
     "ember-websockets": "1.2.2",
     "karma": "^0.13.2",
-    "karma-jasmine": "^0.2.2"
+    "karma-jasmine": "^0.2.2",
+    "popmotion": "^3.1.3"
   }
 }

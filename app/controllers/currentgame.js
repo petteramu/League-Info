@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from '../config/environment';
+import ui from 'npm:popmotion';
 
 export default Ember.Controller.extend({
     queryParams: ['playerName', 'region'],
@@ -10,6 +11,7 @@ export default Ember.Controller.extend({
     team2_players: [],
     gameData: undefined,
     gameStartTime: undefined, //Used to keep track of time in-game.
+    selectedPlayer: null, //The player that is being shown detailed information about
     
     //Used to identify which game is to be shown in the case several are requested.
     //Starts as undefined to show that no game has been requested yet.
@@ -17,8 +19,8 @@ export default Ember.Controller.extend({
     
     //Insert the socket-io service
     socketIOService: Ember.inject.service('socket-io'),
-    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
-//    nodeServerAddress: 'http://localhost:8080',
+//    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
+    nodeServerAddress: 'http://localhost:8080',
     
     init: function() {
         this._super.apply(this, arguments);
@@ -38,8 +40,8 @@ export default Ember.Controller.extend({
         //Create the class for stages
         var stageClass = Ember.Object.extend({
             core: false,
-            leaguedata: false,
-            champdata: false,
+            league: false,
+            champion: false,
             mostplayed: false,
             matchhistory: false,
             roles: false
@@ -76,12 +78,13 @@ export default Ember.Controller.extend({
         
         if(typeof event['core'] !== 'undefined') {
             this.coreDataEvent(event['core']);
+            this.startAnimation();
         }
-        else if(typeof event['leaguedata'] !== 'undefined') {
-            this.leagueDataEvent(event['leaguedata']);
+        else if(typeof event['league'] !== 'undefined') {
+            this.leagueDataEvent(event['league']);
         }
-        else if(typeof event['champdata'] !== 'undefined') {
-            this.champDataEvent(event['champdata']);
+        else if(typeof event['champion'] !== 'undefined') {
+            this.champDataEvent(event['champion']);
         }
         else if(typeof event['mostplayed'] !== 'undefined') {
             this.mostPlayedEvent(event['mostplayed']);
@@ -92,8 +95,8 @@ export default Ember.Controller.extend({
         else if(typeof event['roles'] !== 'undefined') {
             this.rolesEvent(event['roles']);
         }
-        else if(typeof event['error'] !== 'undefined') {
-            if(event['error']['type'] === 'crucial') {
+        else if(typeof event['error'] !== 'undefined') {console.log(1);
+            if(event['error']['crucial'] === true) {console.log(2);
                 this.set('crucialError', event['error']['error']);
             }
             else {
@@ -117,12 +120,17 @@ export default Ember.Controller.extend({
     
     coreDataEvent: function(event) {
         this.set('gameData', event);
-        var i;
-        for(i = 0; i < event['participants'].length; i++) {
-            this.insertCoreDataToPairs(event['participants'][i]);
-        }
         
-        this.set('ingameTime', event.gameLength);
+        //Insert data into the relevant objects
+        var i;
+        for(i = 0; i < event['blueTeam'].length; i++) {
+            this.insertCoreDataToPairs(event['blueTeam'][i]);
+        }
+        for(i = 0; i < event['redTeam'].length; i++) {
+            this.insertCoreDataToPairs(event['redTeam'][i]);
+        }
+        //Set game time in seconds
+        this.set('ingameTime', (new Date() -  new Date(event.gameStartTime)) / 1000);
     },
     
     matchHistoryEvent: function(event) {
@@ -145,25 +153,27 @@ export default Ember.Controller.extend({
         //TODO: endre data struktur fra server på alle events
         this.mostPlayedData = event;
         var i;
-        for(i = 0; i < event['pairs'].length; i++) {
-            this.insertMostPlayedDataToPairs(event['pairs'][i]);
+        for(var pNo in event) {
+            if(event.hasOwnProperty(pNo)) {
+                this.insertMostPlayedDataToPairs(event[pNo], pNo);
+            }
         }
     },
     
     champDataEvent: function(event) {
         this.champData = event;
         var i;
-        for(i = 0; i < event['pairs'].length; i++) {
-            this.insertChampDataToPairs(event['pairs'][i]);
+        for(i = 0; i < event.length; i++) {
+            this.insertChampDataToPairs(event[i]);
         }
     },
     
     rolesEvent: function(event) {
         
-        this.champData = event;
+        this.roleData = event;
         var i;
-        for(i = 0; i < event['data'].length; i++) {
-            this.insertRoleData(event['data'][i]);
+        for(i = 0; i < event.length; i++) {
+            this.insertRoleData(event[i]);
         }
     },
     
@@ -182,10 +192,13 @@ export default Ember.Controller.extend({
         //Sets the currentGameId to "waiting" such that it is considered true when creating the handlebars template
         this.set('currentGameId', true);
         
+        //Reset the selected player
+        this.set('selectedPlayer', null);
+        
         //Reset states
         (this.get('stages')).set('core', false);
-        (this.get('stages')).set('leaguedata', false);
-        (this.get('stages')).set('champdata', false);
+        (this.get('stages')).set('league', false);
+        (this.get('stages')).set('champion', false);
         (this.get('stages')).set('mostplayed', false);
         (this.get('stages')).set('matchhistory', false);
         (this.get('stages')).set('roles', false);
@@ -214,6 +227,14 @@ export default Ember.Controller.extend({
     actions: {
         getData: function() {
             this.makeDataRequest();
+        },
+    
+        /**
+         * Sets the currently selected player
+         * @param {Integer} participantNo
+         */
+        setSelectedPlayer: function(participantNo) {
+            this.set('selectedPlayer', this.getOrCreatePlayerObject(participantNo));
         }
     },
     
@@ -225,7 +246,7 @@ export default Ember.Controller.extend({
     getOrCreatePlayerObject: function(participantNo) {
         var teamArray = (participantNo < 200) ? this.get('team1_players') : this.get('team2_players');
         for(var i = 0; i < teamArray.length; i++) {
-            if(teamArray[i].participantNo === participantNo) {
+            if(teamArray[i].participantNo == participantNo) {
                 return teamArray[i];
             }
         }
@@ -235,11 +256,8 @@ export default Ember.Controller.extend({
             winrate: function() {
                 return (this.get('rankedWins') * 100) / (this.get('rankedWins') + this.get('rankedLosses'));
             },
-            league: "Unranked",
-            hasLeagueData: false,
-            hasChampionData: false,
-            hasMostPlayedData: false,
-            hasMatchHistoryData: false
+            participantNo: participantNo,
+            league: "Unranked"
         });
         
         var obj = PlayerObject.create();
@@ -252,15 +270,18 @@ export default Ember.Controller.extend({
         
         playerObj.set('name', data.summonerName);
         playerObj.set('summonerId', data.summonerId);
-        playerObj.set('participantNo', data.participantNo);
         playerObj.set('normalizedParticipantNo', this.getNormalizedParticipantNo(data.participantNo));
-        playerObj.set('sprite', {
-            url: 'http://ddragon.leagueoflegends.com/cdn/' + this.gameData.version + '/img/sprite/' + data.championImage.sprite,
-            x: -data.championImage.x,
-            y: -data.championImage.y
-        });
+        playerObj.set('participantNo', data.participantNo);
+        playerObj.set('runes', data.runes);
+        playerObj.set('masteries', data.masteries);
+        playerObj.set('summonerSpell1', data.summonerSpell1);
+        playerObj.set('summonerSpell2', data.summonerSpell2);
+        playerObj.set('image', 'http://ddragon.leagueoflegends.com/cdn/' + this.gameData.version + '/img/champion/' + data.championImage.full);
         
-        console.log(playerObj);
+        //Set the selected player to be participant no 101
+        if(data.participantNo == 101) {
+            this.set('selectedPlayer', playerObj);
+        }
     },
     
     insertLeagueDataToPairs: function(data) {
@@ -274,27 +295,15 @@ export default Ember.Controller.extend({
     
     insertChampDataToPairs: function(data) {
         var playerObj = this.getOrCreatePlayerObject(data.participantNo);
-        if(typeof data.playerOnChampion !== 'undefined') {
-            playerObj.set('championName', data.playerOnChampion.name);
-            playerObj.set('championKills', data.playerOnChampion.kills);
-            playerObj.set('championDeaths', data.playerOnChampion.deaths);
-            playerObj.set('championAssists', data.playerOnChampion.assists);
-            playerObj.set('championKDA', ((data.playerOnChampion.kills + data.playerOnChampion.assists) / data.playerOnChampion.deaths).toFixed(1));
-            playerObj.set('championWins', data.playerOnChampion.wins);
-            playerObj.set('championLosses', data.playerOnChampion.losses);
-            playerObj.set('championGames', data.playerOnChampion.wins + data.playerOnChampion.losses);
-            playerObj.set('championWinrate', ((data.playerOnChampion.wins * 100) / (data.playerOnChampion.wins + data.playerOnChampion.losses)).toFixed(1));
-        }
-        
-        if(typeof data.average !== 'undefined') {
-            playerObj.set('championAverageKills', data.average.kills);
-            playerObj.set('championAverageDeaths', data.average.deaths);
-            playerObj.set('championAverageAssists', data.average.assists);
-            playerObj.set('championAverageKDA', ((data.average.kills + data.average.assists) / data.average.deaths).toFixed(1));
-            playerObj.set('championAverageWins', data.average.wins);
-            playerObj.set('championAverageLosses', data.average.losses);
-            playerObj.set('championAverageWinrate', ((data.average.wins * 100) / (data.average.wins + data.average.losses)).toFixed(1));
-        }
+        playerObj.set('championName', data.championName);
+        playerObj.set('championKills', data.championKills);
+        playerObj.set('championDeaths', data.championDeaths);
+        playerObj.set('championAssists', data.championAssists);
+        playerObj.set('championKDA', ((data.championKills + data.championAssists) / data.championDeaths).toFixed(1));
+        playerObj.set('championWins', data.championWins);
+        playerObj.set('championLosses', data.championLosses);
+        playerObj.set('championGames', data.championWins + data.championLosses);
+        playerObj.set('championWinrate', ((data.championWins * 100) / (data.championWins + data.championLosses)).toFixed(1));
     },
     
     insertRankedDataToPairs: function(data) {
@@ -314,11 +323,7 @@ export default Ember.Controller.extend({
             var gameObj = {
                 championId: data.games[i].championId,
                 win: data.games[i].winner,
-                sprite: {
-                    x: -data.games[i].championImage.x,
-                    y: -data.games[i].championImage.y,
-                    url: 'http://ddragon.leagueoflegends.com/cdn/' + this.matchHistoryData.version + '/img/sprite/' + data.games[i].championImage.sprite
-                }
+                image: 'http://ddragon.leagueoflegends.com/cdn/' + this.get('gameData').version + '/img/champion/' + data.games[i].championImage.full
             };
             
             //Insert into array
@@ -328,30 +333,28 @@ export default Ember.Controller.extend({
         playerObj.set("matchHistory", history);
     },
     
-    insertMostPlayedDataToPairs: function(data) {
-        if(typeof data.data === 'undefined') {
+    insertMostPlayedDataToPairs: function(data, participantNo) {
+        //If there do not exists data for this participant, return
+        if(typeof data === 'undefined') {
             return;
         }
         
-        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
+        //Find the player object
+        var playerObj = this.getOrCreatePlayerObject(participantNo);
         var mp = [];
-        for(var i = 0; i < data.data.length; i++) {
+        for(var i = 0; i < data.length; i++) {
             mp.push({
-                championId: data.data[i].championId,
-                wins: data.data[i].wins,
-                losses: data.data[i].losses,
-                kills: data.data[i].kills,
-                deaths: data.data[i].deaths,
-                assists: data.data[i].assists,
-                games: data.data[i].wins + data.data[i].losses,
-                winrate: ((data.data[i].wins * 100) / ( data.data[i].wins + data.data[i].losses)).toFixed(1),
-                name: data.data[i].name,
-                KDA: ((data.data[i].kills + data.data[i].assists) / data.data[i].deaths).toFixed(1),
-                sprite: {
-                    url: 'http://ddragon.leagueoflegends.com/cdn/' + this.mostPlayedData.version + '/img/sprite/' + data.data[i].championImage.sprite,
-                    x: -data.data[i].championImage.x,
-                    y: -data.data[i].championImage.y
-                }
+                championId: data[i].championId,
+                wins: data[i].wins,
+                losses: data[i].losses,
+                kills: data[i].kills,
+                deaths: data[i].deaths,
+                assists: data[i].assists,
+                games: data[i].wins + data[i].losses,
+                winrate: ((data[i].wins * 100) / ( data[i].wins + data[i].losses)).toFixed(1),
+                name: data[i].name,
+                KDA: ((data[i].kills + data[i].assists) / data[i].deaths).toFixed(1),
+                image: 'http://ddragon.leagueoflegends.com/cdn/' + this.get('gameData').version + '/img/champion/' + data[i].championImage.full
             });
         }
         playerObj.set('mostPlayed', mp);
@@ -362,7 +365,33 @@ export default Ember.Controller.extend({
         playerObj.set('roles', data.roles);
     },
     
+    /**
+     * Capitalizes the first letter of the given string
+     * @param {String} string
+     */
     capitalizeFirstLetter: function(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+    
+    //////////
+    //Animations
+    //////////
+    
+    startAnimation: function() {
+        var actor = new ui.Actor({
+            element: '.player-rows',
+            values: {
+                y: 50
+            }
+        });
+        var anim = new ui.Tween({
+            duration: 500,
+            values: {
+                y: 0,
+                opacity: 1
+            }
+        });
+        
+        actor.start(anim);
     }
 });

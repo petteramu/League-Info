@@ -1,12 +1,12 @@
-<div class='row player-container row-no-padding' np={{player.normalizedParticipantNo}} {{ action "toggleDetails" }}>
+<div class='row player-container row-no-padding' participant-number={{player.participantNo}} np={{player.normalizedParticipantNo}} {{ action "select" }}>
 
-    <div class='col-lg-5 col-md-8 col-sm-5 col-xs-6 one-line h60 v-align'>
+    <div class='col-lg-5 col-md-8 col-sm-5 col-xs-5 col-xs-push-1 col-sm-push-0 one-line h60 v-align'>
         <div class='champ-icon-wrapper h60'>
-            {{spriteimage player.sprite 50 champ-icon player.championName}}
+            <img src="{{player.image}}" class='champ-icon'>
         </div>
         <span class='v-align-helper'></span>
         <div class='v-align user-agent-height'>
-            <span class='text-larger'>{{player.name}}</span><br />
+            <span class='text-larger player-name'>{{player.name}}</span><br />
             <small class='hidden-lg hidde-sm visible-md visible-xs'>{{player.championWins}}W/{{player.championLosses}}L</small>
         </div>
     </div>
@@ -18,7 +18,7 @@
         <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
         
         {{else}}
-            {{#if stages.champdata}}
+            {{#if stages.champion}}
             <div class='v-align'>
                 <!-- Only show this info if there are data available -->
                 {{#if player.championWins}}
@@ -41,12 +41,14 @@
         <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
         
         {{else}}
-            {{#if stages.leaguedata}}
+            {{#if stages.league}}
             <div class='v-align league-text'>
                 <span class='text-larger'>{{player.league}} {{player.division}}</span>
+                {{#if player.rankedWins}}
                 <div class='small'>
                     {{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)
                 </div>
+                {{/if}}
             </div>
             <div class='v-align medal-wrapper'><span class='v-align-helper'></span><img src="assets/images/medals/{{player.league}}.png" class='medal'></div>
             {{else}}
@@ -72,54 +74,15 @@
                         <th>Games</th>
                         <th>Percent</th>
                     </tr>
-
-                    {{#if player.roles.Top}}
+                    
+                    {{#each player.roles as |role|}}
                         <tr>
-                            <td>{{player.roles.Top.role}}</td>
-                            <td>{{player.roles.Top.games}}</td>
-                            <td>{{player.roles.Top.percent}}%</td>
+                            <td>{{role.role}}</td>
+                            <td>{{role.games}}</td>
+                            <td>{{role.percent}}%</td>
                         </tr>
-                    {{/if}}
+                    {{/each}}
 
-                    {{#if player.roles.Jungle}}
-                        <tr>
-                            <td>{{player.roles.Jungle.role}}</td>
-                            <td>{{player.roles.Jungle.games}}</td>
-                            <td>{{player.roles.Jungle.percent}}%</td>
-                        </tr>
-                    {{/if}}
-
-                    {{#if player.roles.Mid}}
-                        <tr>
-                            <td>{{player.roles.Mid.role}}</td>
-                            <td>{{player.roles.Mid.games}}</td>
-                            <td>{{player.roles.Mid.percent}}%</td>
-                        </tr>
-                    {{/if}}
-
-                    {{#if player.roles.Adc}}
-                        <tr>
-                            <td>{{player.roles.Adc.role}}</td>
-                            <td>{{player.roles.Adc.games}}</td>
-                            <td>{{player.roles.Adc.percent}}%</td>
-                        </tr>
-                    {{/if}}
-
-                    {{#if player.roles.Support}}
-                        <tr>
-                            <td>{{player.roles.Support.role}}</td>
-                            <td>{{player.roles.Support.games}}</td>
-                            <td>{{player.roles.Support.percent}}%</td>
-                        </tr>
-                    {{/if}}
-
-                    {{#if player.roles.Other}}
-                        <tr>
-                            <td>{{player.roles.Other.role}}</td>
-                            <td>{{player.roles.Other.games}}</td>
-                            <td>{{player.roles.Other.percent}}%</td>
-                        </tr>
-                    {{/if}}
                     </table>
                 
                 {{else}}

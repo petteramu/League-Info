@@ -1,10 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    didInsertElement: function() {
+        this.$().hover(function() {
+            Ember.$(".player-name", this).addClass('name-hover');
+        }, function() {
+            Ember.$(".player-name", this).removeClass('name-hover');
+        });
+    },
     actions: {
-        toggleDetails: function() {
-            var normPartNo = this.$('.player-container').attr('np');
-            Ember.$('[np="' + normPartNo + '"] + .player-expand').slideToggle('slow');
+        select: function() {
+            var normPartNo = this.$('.player-container').attr('participant-number');
+            this.sendAction('playerWasSelected', normPartNo);
         }
     }
 });
