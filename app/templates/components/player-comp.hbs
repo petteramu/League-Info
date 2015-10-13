@@ -1,143 +1,60 @@
-<div class='row player-container row-no-padding' participant-number={{player.participantNo}} np={{player.normalizedParticipantNo}} {{ action "select" }}>
-
-    <div class='col-lg-5 col-md-8 col-sm-5 col-xs-5 col-xs-push-1 col-sm-push-0 one-line h60 v-align'>
-        <div class='champ-icon-wrapper h60'>
-            <img src="{{player.image}}" class='champ-icon'>
-        </div>
-        <span class='v-align-helper'></span>
-        <div class='v-align user-agent-height'>
-            <span class='text-larger player-name'>{{player.name}}</span><br />
-            <small class='hidden-lg hidde-sm visible-md visible-xs'>{{player.championWins}}W/{{player.championLosses}}L</small>
-        </div>
-    </div>
-
-    <div class='col-lg-3 col-md-3 col-sm-4 hidden-xs hidden-md one-line h60'>
-        <span class='v-align-helper'></span>
+<div class='player-container h60 flex-row center flex-stretch' participant-number={{player.participantNo}} np={{player.normalizedParticipantNo}} {{ action "select" }}>
+    <!-- The champion icon and player -->
+    <span class='flex-row name-wrapper center'>
+        <!-- Team identifier -->
+        <span class='team-identifier' alt='Blue team'></span>
         
-        {{#if player.championerror}}
+        <!-- Champion icon -->
+        <img src="{{player.image}}" class='champ-icon'>
+        
+        <!-- Player name -->
+        <span class='flex-column padded'>
+            <span class='text-larger player-name'>{{player.name}}</span>
+            <span class='small hidden-lg hidden-sm visible-md visible-xs'>{{player.championWins}}W/{{player.championLosses}}L</span>
+        </span>
+    </span>
+
+    <!-- Champion name and stats -->
+    <!-- Display error if there was an error received -->
+    {{#if player.championerror}}
+        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+    
+    {{else}}
+        <!-- Check to see if the stage has been reached -->    
+        {{#if stages.champion}}
+            <!-- Only show this info if there are data available -->
+            {{#if player.championGames}}
+                <span class='flex-column champion-wrapper hidden-xs hidden-sm'>
+                    <span class='text-larger'>{{player.championName}}</span>
+                    <span class='small'>{{player.championWins}}W/{{player.championLosses}}L</span>
+                </span>
+            {{/if}}
+        <!-- Show loading sign if the stage has not been reached -->
+        {{else}}
+            <span class='v-align'><img src='assets/select2-spinner.gif'></span>
+        {{/if}}
+    {{/if}}
+
+    <!-- The League icon and ranked stats -->
+    {{#if player.leagueerror}}
         <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
         
+    {{else}}
+        {{#if stages.league}}
+            <span class='flex-row league-wrapper'>
+                <!-- Player name -->
+                <span class='flex-column padded'>
+                    <span class='text-larger player-name'>{{player.league}} {{player.division}}</span>
+                    {{#if player.rankedWins}}
+                        <span class='small'>{{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)</span>
+                    {{/if}}
+                </span>
+
+                <!-- Medal icon -->
+                <img src="assets/images/medals/{{player.league}}.png" class='medal'>
+            </span>
         {{else}}
-            {{#if stages.champion}}
-            <div class='v-align'>
-                <!-- Only show this info if there are data available -->
-                {{#if player.championWins}}
-                <lb>{{player.championName}}</lb>
-                <div class='small'>
-                    {{player.championWins}}W/{{player.championLosses}}L
-                </div>
-                {{/if}}
-            </div>
-            {{else}}
-            <div class='v-align'><img src='assets/select2-spinner.gif'></div>
-            {{/if}}
+        <span class='v-align'><img src='assets/select2-spinner.gif'></span>
         {{/if}}
-    </div>
-
-    <div class='col-lg-4 col-md-4 col-sm-3 col-xs-6 one-line h60 f-right'>
-        <span class='v-align-helper'></span>
-        
-        {{#if player.leagueerror}}
-        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-        
-        {{else}}
-            {{#if stages.league}}
-            <div class='v-align league-text'>
-                <span class='text-larger'>{{player.league}} {{player.division}}</span>
-                {{#if player.rankedWins}}
-                <div class='small'>
-                    {{player.rankedWins}}W/{{player.rankedLosses}}L({{player.rankedWinrate}}%)
-                </div>
-                {{/if}}
-            </div>
-            <div class='v-align medal-wrapper'><span class='v-align-helper'></span><img src="assets/images/medals/{{player.league}}.png" class='medal'></div>
-            {{else}}
-            <div class='v-align'><img src='assets/select2-spinner.gif'></div>
-            {{/if}}
-        {{/if}}
-    </div>
-</div>
-
-<!-- Expanded informnation -->
-<div class='row expandable player-expand'>
-
-    <div class='inline-wrap'>
-        <div class='play-style'>
-            <h3>Play style</h3>
-            {{#if player.roleserror}}
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            {{else}}
-                {{#if stages.roles}}
-                <table>
-                    <tr>
-                        <th>Role</th>
-                        <th>Games</th>
-                        <th>Percent</th>
-                    </tr>
-                    
-                    {{#each player.roles as |role|}}
-                        <tr>
-                            <td>{{role.role}}</td>
-                            <td>{{role.games}}</td>
-                            <td>{{role.percent}}%</td>
-                        </tr>
-                    {{/each}}
-
-                    </table>
-                
-                {{else}}
-                <div class='v-align'><img src='assets/select2-spinner.gif'></div>
-                {{/if}}
-            {{/if}}
-        </div>
-
-        <div class='match-history'>
-            <h3>Last 10 matches</h3>
-            {{#if player.roleserror}}
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            {{else}}
-                {{#if stages.matchhistory}}
-                    {{#each player.matchHistory as |game|}}
-                    <div class='champ-icon-small-wrapper' data-win={{game.win}}>
-                        {{spriteimage game.sprite 48 "champ-icon-small" champion.name}}
-                    </div>
-                    {{/each}}
-                {{else}}
-                <div class='v-align'><img src='assets/select2-spinner.gif'></div>
-                {{/if}}
-            {{/if}}
-        </div>
-
-    </div>
-
-    <div class='most-played'>
-        <table class='mostPlayedChampions'>
-        <tr>
-            <th colspan="4"><h3>Most played champions</h3></th>
-        </tr>
-            {{#if player.roleserror}}
-            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            {{else}}
-                {{#if stages.mostplayed}}
-                <tr>
-                    <th></th>
-                    <th>Games</th>
-                    <th>Winrate</th>
-                    <th><abbr title="Kills deaths assists">KDA</abbr></th>
-                </tr>
-                    {{#each player.mostPlayed as |champion|}}
-                    <tr>
-                        <td>{{spriteimage champion.sprite 48 "champ-icon-small" champion.name}}</td>
-                        <td>{{champion.games}}</td>
-                        <td>{{champion.winrate}}%</td>
-                        <td>{{champion.KDA}}</td>
-                    </tr>
-                    {{/each}}
-                {{else}}
-                <div class='v-align'><img src='assets/select2-spinner.gif'></div>
-                {{/if}}
-            {{/if}}
-        </table>
-    </div>
-
+    {{/if}}
 </div>

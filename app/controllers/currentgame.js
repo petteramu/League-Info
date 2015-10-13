@@ -20,7 +20,10 @@ export default Ember.Controller.extend({
     //Insert the socket-io service
     socketIOService: Ember.inject.service('socket-io'),
 //    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
-    nodeServerAddress: 'http://localhost:8080',
+    
+    /* The ip to the AWS server */
+    nodeServerAddress: 'http://52.29.67.242:80',
+//    nodeServerAddress: 'http://localhost:8080',
     
     init: function() {
         this._super.apply(this, arguments);

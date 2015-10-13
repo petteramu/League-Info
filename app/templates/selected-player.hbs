@@ -4,27 +4,43 @@
             <h2>{{selectedPlayer.name}}</h2>
         </div>
 
-        <div class='col-sm-6 col-xs-12 expanded-league wrapper-row-reverse center'>
+        <div class='col-sm-6 col-xs-12 expanded-league flex-row-reverse center'>
             <h2>{{selectedPlayer.league}} {{selectedPlayer.division}}</h2>
             <img src="assets/images/medals/{{selectedPlayer.league}}.png" class='medal'>
         </div>
     </div>
 
     <div class='row'>
-        <div class='col-xs-12 wrapper-row'>
+        <div class='col-sm-4 col-xs-12 flex-row'>
             <img src="{{selectedPlayer.image}}" class='champ-icon-large'>
-
-            <ul class='list-unstyled expanded-champion-info'>
-                <li>{{selectedPlayer.championName}}</li>
-                <li>{{selectedPlayer.championGames}} Games</li>
-                <li>{{selectedPlayer.championWinrate}}% Winrate</li>
-                <li>{{selectedPlayer.championKDA}} KDA</li>
-            </ul>
             
-            <div class='wrapper summoner-spells-wrapper'>
+            <div class='flex-column summoner-spells-wrapper'>
                 <img class='summoner-spell' src="http://ddragon.leagueoflegends.com/cdn/5.19.1/img/spell/{{selectedPlayer.summonerSpell1.image.full}}" alt="{{selectedPlayer.summonerSpell1.name}}">
                 <img class='summoner-spell' src="http://ddragon.leagueoflegends.com/cdn/5.19.1/img/spell/{{selectedPlayer.summonerSpell2.image.full}}" alt="{{selectedPlayer.summonerSpell2.name}}">
             </div>
+
+            <ul class='list-unstyled expanded-champion-info'>
+                {{#if selectedPlayer.championGames}}
+                    <li>{{selectedPlayer.championName}}</li>
+                    <li>{{selectedPlayer.championGames}} Games</li>
+                    <li>{{selectedPlayer.championWinrate}}% Winrate</li>
+                    <li>{{selectedPlayer.championKDA}} KDA</li>
+                {{/if}}
+            </ul>
+        </div>
+
+        <div class='col-sm-4 col-xs-12'>
+            <h3>Champion notes</h3>
+            <p>Coming soon.</p>
+        </div>
+
+        <div class='col-sm-4 col-xs-12 flex-column'>
+            <h3>Runes:</h3>
+            <ul class='list-unstyled rune-list'>
+                {{#each selectedPlayer.runes as |rune|}}
+                    <li>x {{rune.count}} <img class="rune-image" src="http://ddragon.leagueoflegends.com/cdn/5.19.1/img/rune/{{rune.image.full}}"> {{rune.description}}</li>
+                {{/each}}
+            </ul>
         </div>
     </div>
     <div class='row'>
@@ -90,24 +106,14 @@
             </table>
         </div>
 
-        <div class='col-lg-4 col-xs-12 wrapper'>
+        <div class='col-lg-4 col-xs-12 flex-column'>
             <div>
                 <h3>Player notes</h3>
                 <p>Coming soon.</p>
             </div>
-            <div>
-                <h3>Champion notes</h3>
-                <p>Coming soon.</p>
-            </div>
         </div>
-
-        <div class='col-lg-4 col-xs-6 wrapper'>
-            <h3>Runes:</h3>
-                <ul class='list-unstyled rune-list'>
-                    {{#each selectedPlayer.runes as |rune|}}
-                        <li>x {{rune.count}} <img class="rune-image" src="http://ddragon.leagueoflegends.com/cdn/5.19.1/img/rune/{{rune.image.full}}"> {{rune.description}}</li>
-                    {{/each}}
-                </ul>
+        
+        <div class='col-lg-4 col-xs-12'>
             <h3>Masteries:</h3>
             <ul class='list-unstyled mastery-list'>
                 <li>Offense: {{selectedPlayer.masteries.offense}}</li>

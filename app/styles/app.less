@@ -5,6 +5,7 @@
 @screen-sm-max: 992px;
 @screen-sm-min: 768px;
 @header-color: hsl(230, 8%, 24%);
+@player-container-bg: hsl(230, 10%, 97%);
 
 
 html, body {
@@ -22,23 +23,33 @@ html, body {
     width: 100%;
 }
 
-.wrapper {
+.flex-column {
     display: flex;
     flex-direction: column;
 }
 
-.wrapper-row {
+.flex-row {
     display: flex;
     flex-direction: row;
 }
 
-.wrapper-row-reverse {
+.flex-row-reverse {
     display: flex;
     flex-direction: row-reverse;
 }
 
+.flex-stretch {
+    justify-content: space-between;
+}
+
 .center {
     align-items: center;
+}
+
+.row-reverse-md {
+    @media(min-width: @screen-md-min) {
+        flex-direction: row-reverse;
+    }
 }
 
 .content {
@@ -91,19 +102,22 @@ html, body {
 }
 
 .player-rows {
+    > div:nth-child(2) {
+        border-top: hsl(0, 0%, 90%) 1px solid;
+    }
+    
     //For animation purposes
     opacity: 0;
     
-    &:first-of-type {
-        border-top: hsl(0, 0%, 90%) 1px solid;
-    }
-}
-
-.player-rows {
-    
     .team1-container, .team2-container {
-//        border-bottom: hsl(0, 0%, 90%) 1px solid;
-        border-top: hsl(0, 0%, 90%) 1px solid;
+        padding: 0 !important;
+        
+        /* Give a right border as long as we are on small devices
+         * This is because the right side, which usually has a border
+         * is at these devices below the team1-container instead of besides */
+        @media(max-width: @screen-md-min) {
+            border-right: 1px solid hsl(0, 0%, 90%);
+        }
     }
     
     > row:first-of-type {
@@ -111,7 +125,7 @@ html, body {
     }
     
     > div > .row {
-        background-color: hsl(230, 10%, 97%); //Will be overridden by many of the children
+        background-color: @player-container-bg; //Will be overridden by many of the children
     }
 }
 
@@ -160,6 +174,10 @@ html, body {
     padding-right: 0 !important;
 }
 
+.row-no-margin {
+    margin: 0 !important;
+}
+
 .info {
     padding-left: 15px;
     
@@ -192,7 +210,7 @@ html, body {
 }
 
 .summoner-spells-wrapper {
-    margin-left: 5px;
+    margin-left: 2px;
     img {
         width: 40px;
         height: 40px;
@@ -338,61 +356,88 @@ th, td {
 
 .player-container {
     border-bottom: 1px solid hsl(0, 0%, 90%);
+    padding-left: 15px;
+    padding-right: 15px;
+    
+    &:hover {
+        cursor: pointer;
+        background-color: darken(@player-container-bg, 3%);
+    }
     
     &:hover {
         cursor: pointer;
     }
-}
 
-.team1-container {
-    padding-right: 0 !important;
-    background-color: hsl(230, 10%, 97%);
+    .player-name {
+        color: @header-color;
+    }
 
-    .player-container {
-        > div:first-child {
-            border-left: 5px hsl(210, 50%, 50%) solid;
-        }
-        
-        .medal-wrapper {
-            text-align: right;
-        }
-        
-        .champ-icon {
-            margin-left: 10px;
-        }
+    .name-wrapper {
+        width: 210px;
+    }
+
+    .champion-wrapper {
+        width: 110px;
+    }
+
+    .league-wrapper {
+        .flex-stretch;
+        width: 140px;
     }
 }
     
+.team-identifier {
+    position: relative;
+    content: "";
+    height: 59px;
+    right: 15px;
+    border-left: 5px solid hsl(210, 50%, 50%);
+}
 
-.team2-container {
-    padding-left: 0 !important;
+
+.team1-container {
+    background-color: hsl(230, 10%, 97%);
+}
+    
+
+.team2-container {    
     background-color: hsl(230, 10%, 97%);
 
     .player-container {
+        
+        /* Set color of team two tema */
+        .team-identifier {
+            border: 0;
+            border-right: 5px solid hsl(10, 50%, 50%);
+        }
+        
+        /* Set up team identifier to be to the right in high resolution devices */
         @media(min-width: @screen-md-min) {
-            > div:last-child {
-                text-align: right;
+            .team-identifier {
+                left: 15px;
             }
         }
 
-        @media(max-width: @screen-sm-max) {
-            border: none;
+        /* Reverse container, as well as the player name/champion image(span#1) and league info(span#2) wrappers
+         * But only as long as we are not on mobile devices */
+        @media(min-width: @screen-md-min) {
+            .flex-row-reverse;
+            > span:first-child, > span:last-child {
+                .flex-row-reverse;
+            }
         }
-
-
-        > div:last-child {
-            padding-right: 15px;
-            border-right: 5px hsl(10, 50%, 50%) solid;
-
-            @media(max-width: @screen-sm-max) {
-                border-left: 5px hsl(10, 50%, 50%) solid; 
-                border-right: none;
-            } 
+        
+        /* Do not stretch the league-wrapper whenever we are on larger devices */
+        .league-wrapper {
+            @media(min-width: @screen-md-min) {
+                .flex-stretch;
+            }
         }
-
-        .champ-icon-wrapper {
-            @media(max-width: @screen-sm-max) {
-                float: left; 
+        
+        /* Set border for larger devices */
+        @media(min-width: @screen-md-min) {
+            > div:last-child {
+                text-align: right;
             }
         }
     }
@@ -408,52 +453,9 @@ th, td {
     }
 }
 
-.f-right {
-    float: right;
-}
-
-.f-left {
-    float: left;
-}
-
-.nopadding {
-    padding: 0;
-}
-
-lb {
-    font-weight: 600;
-}
 
 .h60 {
     height: 60px;
-}
-
-.h50 {
-    height: 50px;
-}
-
-.one-line > * {
-    display: inline-block;
-    padding-left: 2px;
-}
-
-.no-wrap {
-    white-space: nowrap;
-}
-
-.v-align {
-    vertical-align: middle;
-    display: inline-block; //Might break game information
-}
-
-.v-align-helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-}
-
-span.v-align-helper {
-    width: 0px;
 }
 
 .core-loading-row {
@@ -637,5 +639,21 @@ html[data-useragent*='Firefox'] .user-agent-height {
     .rune-image {
         width: 15px;
         height: 15px;
+    }
+}
+
+.padded {
+    padding: 5px;
+}
+
+.hidden-xs {
+    @media(max-width: @screen-sm-min) {
+        display: none;
+    }
+}
+
+.hidden-sm {
+    @media(min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+        display: none;
     }
 }
