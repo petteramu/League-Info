@@ -7,15 +7,25 @@ export default Ember.Controller.extend({
     queryParams: ['playerName', 'region'],
     playerName: '',
     region: 'euw',
-    playerPairs: [],
+    
+    /* Holds the player objects of each team */
     team1_players: [],
     team2_players: [],
-    gameData: undefined,
-    gameStartTime: undefined, //Used to keep track of time in-game.
-    selectedPlayer: null, //The player that is being shown detailed information about
     
-    //Used to identify which game is to be shown in the case several are requested.
-    //Starts as undefined to show that no game has been requested yet.
+    /* The core data of the game is held onto in this variable
+     * This is because we use some of the data after insertion into
+     * the player objects, such as the version number */
+    gameData: undefined,
+    
+    /* Used to keep track of time in-game */
+    gameStartTime: undefined,
+    
+    /* The player that is being shown detailed information about */
+    selectedPlayer: null,
+    
+    /* Used to identify which game is to be shown in the case several are requested.
+     * Starts as undefined to show that no game has been requested yet.
+     * Is used in the currentgame template to show when we have requested data */
     currentGameId: undefined,
     
     //Insert the socket-io service
@@ -24,22 +34,25 @@ export default Ember.Controller.extend({
     /* The ip to the AWS data server */
     nodeServerAddress: 'http://52.29.67.242:80',
     
+    /* Runs on initialization of this controller 
+     * Sets up everything we need */
     init: function() {
         this._super.apply(this, arguments);
         
-        //Get the socket
         var socket = this.get('socketIOService').socketFor(this.nodeServerAddress);
         
-        //Create event handlers
+        /* Delegate events to the 'handleMessage' method */
         socket.on('message', this.handleMessage, this);
         
-        //Start the process of updating in-game time
+        /* Start the process of incrementing in-game time */
         var _this = this;
         setInterval(function() {
             _this.increaseGameTime.apply(_this);
         }, 1000);
     
-        //Create the class for stages
+        /* Create the class for stages
+         * These are used to determine whether or not
+         * we display loading symbols */
         var stageClass = Ember.Object.extend({
             core: false,
             league: false,
@@ -55,9 +68,9 @@ export default Ember.Controller.extend({
     //The following 3 methods and properties handle the updating of the game time
     ingameTime: 0,
     
-    //Returns a readable format of the in game time(mm:ss)
+    /* Creates a readable string of the time elapsed in game */
     readableGameTime: function() {
-        var min = Math.floor(this.ingameTime / 60) || 0;
+        var min = Math.floor(this.ingameTime / 60);
         var sec = Math.floor(this.ingameTime % 60);
         return min + ":" + (sec < 10 ? '0' : '') + sec;
     }.property('ingameTime'),
@@ -67,7 +80,15 @@ export default Ember.Controller.extend({
         this.set('ingameTime', this.get('ingameTime') + 1);
     },
     
-    //Takes the response from the server and sends the data on to the correct insertion-functions
+    /* Handles the messages received from the server
+     * Currently these messages can only contain data
+     * representing some form of information on the game
+     * or statistics on the players in it.
+     * The data received is delegated to a function that handles
+     * the data based on the keys in the JSON data.
+     *
+     * @param {JSON} event The event data received
+     */
     handleMessage: function(event) {
         if(config.debug) { console.log(event); }
         
@@ -108,7 +129,10 @@ export default Ember.Controller.extend({
         
     },
     
-    //Insert error messages in the player objects
+    /* Insert error messages in the player objects
+     * Needs to be reworked with the new PlayerObjects
+     * @param {Object} error
+     */
     insertErrorMessages: function(error) {
         this.team1_players.forEach(function(element) {
             element.set(error['type'] + 'error', error['error']);
@@ -297,10 +321,6 @@ export default Ember.Controller.extend({
         teamArray.pushObject(obj);
         return obj;
     },
-    
-    ////////////
-    //Animations
-    ////////////
     
     /* The animation played on the game information
      * after the core data is received */
