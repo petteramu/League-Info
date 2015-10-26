@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import config from '../config/environment';
 import ui from 'npm:popmotion';
+import PlayerObject from '../datamodel/PlayerObject';
 
 export default Ember.Controller.extend({
     queryParams: ['playerName', 'region'],
@@ -19,11 +20,9 @@ export default Ember.Controller.extend({
     
     //Insert the socket-io service
     socketIOService: Ember.inject.service('socket-io'),
-//    nodeServerAddress: 'http://ns-petteramu.rhcloud.com:8000',
     
-    /* The ip to the AWS server */
+    /* The ip to the AWS data server */
     nodeServerAddress: 'http://52.29.67.242:80',
-//    nodeServerAddress: 'http://localhost:8080',
     
     init: function() {
         this._super.apply(this, arguments);
@@ -58,9 +57,8 @@ export default Ember.Controller.extend({
     
     //Returns a readable format of the in game time(mm:ss)
     readableGameTime: function() {
-        var min = Math.floor(this.ingameTime / 60);
+        var min = Math.floor(this.ingameTime / 60) || 0;
         var sec = Math.floor(this.ingameTime % 60);
-
         return min + ":" + (sec < 10 ? '0' : '') + sec;
     }.property('ingameTime'),
     
@@ -98,8 +96,8 @@ export default Ember.Controller.extend({
         else if(typeof event['roles'] !== 'undefined') {
             this.rolesEvent(event['roles']);
         }
-        else if(typeof event['error'] !== 'undefined') {console.log(1);
-            if(event['error']['crucial'] === true) {console.log(2);
+        else if(typeof event['error'] !== 'undefined') {
+            if(event['error']['crucial'] === true) {
                 this.set('crucialError', event['error']['error']);
             }
             else {
@@ -121,65 +119,98 @@ export default Ember.Controller.extend({
         });
     },
     
+    /* Inserts the core data to the individual
+     * player objects
+     * @param {JSON} The data sent from the server
+     */
     coreDataEvent: function(event) {
         this.set('gameData', event);
         
         //Insert data into the relevant objects
         var i;
         for(i = 0; i < event['blueTeam'].length; i++) {
-            this.insertCoreDataToPairs(event['blueTeam'][i]);
+            var playerObj = this.getOrCreatePlayerObject(event['blueTeam'][i].participantNo);
+            playerObj.insertCoreData(event['blueTeam'][i], event.version);
         }
         for(i = 0; i < event['redTeam'].length; i++) {
-            this.insertCoreDataToPairs(event['redTeam'][i]);
+            var playerObj = this.getOrCreatePlayerObject(event['redTeam'][i].participantNo);
+            playerObj.insertCoreData(event['redTeam'][i], event.version);
         }
         //Set game time in seconds
-        this.set('ingameTime', (new Date() -  new Date(event.gameStartTime)) / 1000);
+        this.set('ingameTime', (new Date() - new Date(event.gameStartTime)) / 1000);
     },
     
+    /* Inserts the match history data into the individual
+     * player objects
+     * @param {JSON} The data sent from the server
+     */
     matchHistoryEvent: function(event) {
         this.matchHistoryData = event;
         var i;
         for(i = 0; i < event.data.length; i++) {
-            this.insertMatchHistoryDataToPairs(event.data[i]);
+            var playerObj = this.getOrCreatePlayerObject(event.data[i].participantNo);
+            playerObj.insertMatchHistoryData(event.data[i], this.get('gameData').version);
         }
     },
     
+    /* Inserts the league data into the individual
+     * player objects
+     * @param {JSON} The data sent from the server
+     */
     leagueDataEvent: function(event) {
         this.leagueData = event;
         var i;
         for(i = 0; i < event.length; i++) {
-            this.insertLeagueDataToPairs(event[i]);
+            var playerObj = this.getOrCreatePlayerObject(event[i].participantNo);
+            playerObj.insertLeagueData(event[i]);
         }
     },
     
+    /* Inserts the most played champion data into the individual
+     * player objects
+     * @param {JSON} The data sent from the server
+     */
     mostPlayedEvent: function(event) {
         //TODO: endre data struktur fra server på alle events
         this.mostPlayedData = event;
         var i;
         for(var pNo in event) {
             if(event.hasOwnProperty(pNo)) {
-                this.insertMostPlayedDataToPairs(event[pNo], pNo);
+                var playerObj = this.getOrCreatePlayerObject(pNo);
+                playerObj.insertMostPlayedData(event[pNo], this.get('gameData').version);
             }
         }
     },
     
+    /* Inserts the champion statistics data into the individual
+     * player objects
+     * @param {JSON} The data sent from the server
+     */
     champDataEvent: function(event) {
         this.champData = event;
         var i;
         for(i = 0; i < event.length; i++) {
-            this.insertChampDataToPairs(event[i]);
+            var playerObj = this.getOrCreatePlayerObject(event[i].participantNo);
+            playerObj.insertChampionData(event[i]);
         }
     },
     
+    /* Inserts the role data into the individual
+     * player objects
+     * @param {JSON} The data sent from the server
+     */
     rolesEvent: function(event) {
         
         this.roleData = event;
         var i;
         for(i = 0; i < event.length; i++) {
-            this.insertRoleData(event[i]);
+            var playerObj = this.getOrCreatePlayerObject(event[i].participantNo);
+            playerObj.setRoleData(event[i]);
         }
     },
     
+    /* Resets all the data from the previously requested games
+     */
     resetData: function() {
         //Empty the player items list, so that even though the core data is not the first to be received,
         //new player items are created for each
@@ -207,6 +238,11 @@ export default Ember.Controller.extend({
         (this.get('stages')).set('roles', false);
     },
     
+    /* Requests data on an ongoing game from the Data Server
+     * If a name is given as a parameter, that name will be sent to the server
+     * if not, the value of the "playerName" input will be used
+     * @param {String} name
+     */
     makeDataRequest: function(name) {
         this.resetData();
         
@@ -218,6 +254,9 @@ export default Ember.Controller.extend({
         });
     },
     
+    /* Requests a random game from the data server
+     * @param {String} region
+     */
     getRandomGame: function(region) {
         this.resetData();
         
@@ -226,7 +265,7 @@ export default Ember.Controller.extend({
             region: 'euw'
         });
     },
-        
+    
     actions: {
         getData: function() {
             this.makeDataRequest();
@@ -241,145 +280,30 @@ export default Ember.Controller.extend({
         }
     },
     
-    //Gets the participant number disregarding team(101 and 201 = 1)
-    getNormalizedParticipantNo: function(participantNo) {
-        return (participantNo > 200) ? participantNo - 200 : participantNo - 100;
-    },
-    
+    /* Returns a player object representing the given participant number
+     * Will return an existing player object of such exists
+     * or create a new one if not
+     */
     getOrCreatePlayerObject: function(participantNo) {
         var teamArray = (participantNo < 200) ? this.get('team1_players') : this.get('team2_players');
         for(var i = 0; i < teamArray.length; i++) {
-            if(teamArray[i].participantNo == participantNo) {
+            if(teamArray[i].get('participantNo') == participantNo) {
                 return teamArray[i];
             }
         }
         
-        //Create classes
-        var PlayerObject = Ember.Object.extend({
-            winrate: function() {
-                return (this.get('rankedWins') * 100) / (this.get('rankedWins') + this.get('rankedLosses'));
-            },
-            participantNo: participantNo,
-            league: "Unranked"
-        });
-        
         var obj = PlayerObject.create();
+        obj.setParticipantNo(participantNo);
         teamArray.pushObject(obj);
         return obj;
     },
-        
-    insertCoreDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
-        
-        playerObj.set('name', data.summonerName);
-        playerObj.set('summonerId', data.summonerId);
-        playerObj.set('normalizedParticipantNo', this.getNormalizedParticipantNo(data.participantNo));
-        playerObj.set('participantNo', data.participantNo);
-        playerObj.set('runes', data.runes);
-        playerObj.set('masteries', data.masteries);
-        playerObj.set('summonerSpell1', data.summonerSpell1);
-        playerObj.set('summonerSpell2', data.summonerSpell2);
-        playerObj.set('image', 'http://ddragon.leagueoflegends.com/cdn/' + this.gameData.version + '/img/champion/' + data.championImage.full);
-        
-        //Set the selected player to be participant no 101
-        if(data.participantNo == 101) {
-            this.set('selectedPlayer', playerObj);
-        }
-    },
     
-    insertLeagueDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
-        playerObj.set('league', this.capitalizeFirstLetter(data.league.toLowerCase()));
-        playerObj.set('division', data.division);
-        playerObj.set('rankedWins', data.wins);
-        playerObj.set('rankedLosses', data.losses);
-        playerObj.set('rankedWinrate', ((data.wins * 100) / (data.wins + data.losses)).toFixed(1));
-    },
-    
-    insertChampDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
-        playerObj.set('championName', data.championName);
-        playerObj.set('championKills', data.championKills);
-        playerObj.set('championDeaths', data.championDeaths);
-        playerObj.set('championAssists', data.championAssists);
-        playerObj.set('championKDA', ((data.championKills + data.championAssists) / data.championDeaths).toFixed(1));
-        playerObj.set('championWins', data.championWins);
-        playerObj.set('championLosses', data.championLosses);
-        playerObj.set('championGames', data.championWins + data.championLosses);
-        playerObj.set('championWinrate', ((data.championWins * 100) / (data.championWins + data.championLosses)).toFixed(1));
-    },
-    
-    insertRankedDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
-        playerObj.set('rankedKills', data.kills);
-        playerObj.set('rankedDeaths', data.deaths);
-        playerObj.set('rankedAssists', data.assists);
-        playerObj.set('rankedKDA', ((data.kills + data.assists) / data.deaths).toFixed(1));
-    },
-    
-    insertMatchHistoryDataToPairs: function(data) {
-        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
-        var history = [];
-        
-        //Create new structure of data
-        for(var i = 0; i < data.games.length; i++) {
-            var gameObj = {
-                championId: data.games[i].championId,
-                win: data.games[i].winner,
-                image: 'http://ddragon.leagueoflegends.com/cdn/' + this.get('gameData').version + '/img/champion/' + data.games[i].championImage.full
-            };
-            
-            //Insert into array
-            history.push(gameObj);
-        }
-        
-        playerObj.set("matchHistory", history);
-    },
-    
-    insertMostPlayedDataToPairs: function(data, participantNo) {
-        //If there do not exists data for this participant, return
-        if(typeof data === 'undefined') {
-            return;
-        }
-        
-        //Find the player object
-        var playerObj = this.getOrCreatePlayerObject(participantNo);
-        var mp = [];
-        for(var i = 0; i < data.length; i++) {
-            mp.push({
-                championId: data[i].championId,
-                wins: data[i].wins,
-                losses: data[i].losses,
-                kills: data[i].kills,
-                deaths: data[i].deaths,
-                assists: data[i].assists,
-                games: data[i].wins + data[i].losses,
-                winrate: ((data[i].wins * 100) / ( data[i].wins + data[i].losses)).toFixed(1),
-                name: data[i].name,
-                KDA: ((data[i].kills + data[i].assists) / data[i].deaths).toFixed(1),
-                image: 'http://ddragon.leagueoflegends.com/cdn/' + this.get('gameData').version + '/img/champion/' + data[i].championImage.full
-            });
-        }
-        playerObj.set('mostPlayed', mp);
-    },
-    
-    insertRoleData: function(data) {
-        var playerObj = this.getOrCreatePlayerObject(data.participantNo);
-        playerObj.set('roles', data.roles);
-    },
-    
-    /**
-     * Capitalizes the first letter of the given string
-     * @param {String} string
-     */
-    capitalizeFirstLetter: function(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    },
-    
-    //////////
+    ////////////
     //Animations
-    //////////
+    ////////////
     
+    /* The animation played on the game information
+     * after the core data is received */
     startAnimation: function() {
         var actor = new ui.Actor({
             element: '.player-rows',
