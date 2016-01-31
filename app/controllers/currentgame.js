@@ -32,7 +32,8 @@ export default Ember.Controller.extend({
     socketIOService: Ember.inject.service('socket-io'),
     
     /* The ip to the AWS data server */
-    nodeServerAddress: 'http://52.29.67.242:80',
+    //nodeServerAddress: 'http://52.29.67.242:80',
+    nodeServerAddress: 'http://localhost:8080',
     
     /* Runs on initialization of this controller 
      * Sets up everything we need */
@@ -89,7 +90,7 @@ export default Ember.Controller.extend({
      *
      * @param {JSON} event The event data received
      */
-    handleMessage: function(event) {
+    handleMessage: function(event) { console.log(event);
         if(config.debug) { console.log(event); }
         
         //Update the stage

@@ -35,12 +35,8 @@
         </div>
 
         <div class='col-sm-4 col-xs-12 flex-column'>
-            <h3>Runes:</h3>
-            <ul class='list-unstyled rune-list'>
-                {{#each selectedPlayer.runes as |rune|}}
-                    <li>x{{rune.count}} <img class="rune-image" src="http://ddragon.leagueoflegends.com/cdn/5.19.1/img/rune/{{rune.image.full}}"> {{rune.description}}</li>
-                {{/each}}
-            </ul>
+            <h3>Masteries:</h3>
+            {{masteries-comp masteries=selectedPlayer.masteries}}
         </div>
     </div>
     <div class='row'>
@@ -53,22 +49,29 @@
                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                 {{else}}
                     {{#if stages.mostplayed}}
-                    <tr>
-                        <th></th>
-                        <th>Games</th>
-                        <th>Winrate</th>
-                        <th><abbr title="Kills+Assists/Deaths">KDA</abbr></th>
-                    </tr>
-                        {{#each selectedPlayer.mostPlayed as |champion|}}
-                        <tr>
-                            <td><img src="{{champion.image}}" class='champ-icon-small'></td>
-                            <td>{{champion.games}}</td>
-                            <td>{{champion.winrate}}%</td>
-                            <td>{{champion.KDA}}</td>
-                        </tr>
-                        {{/each}}
+                        {{#if selectedPlayer.mostPlayed}}
+                            <tr>
+                                <th></th>
+                                <th>Games</th>
+                                <th>Winrate</th>
+                                <th><abbr title="Kills+Assists/Deaths">KDA</abbr></th>
+                            </tr>
+                            {{#each selectedPlayer.mostPlayed as |champion|}}
+                                <tr>
+                                    <td><img src="{{champion.image}}" class='champ-icon-small'></td>
+                                    <td>{{champion.games}}</td>
+                                    <td>{{champion.winrate}}%</td>
+                                    <td>{{champion.KDA}}</td>
+                                </tr>
+                            {{/each}}
+                        {{else}}
+                            <tr>
+                                <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+                                <td><b>No champions played</b></td>
+                            </tr>
+                        {{/if}}
                     {{else}}
-                    <div class='v-align'><img src='assets/select2-spinner.gif'></div>
+                        <div class='v-align'><img src='assets/select2-spinner.gif'></div>
                     {{/if}}
                 {{/if}}
             </table>
@@ -85,20 +88,26 @@
                 <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                 {{else}}
                     {{#if stages.roles}}
-                        <tr>
-                            <th>Role</th>
-                            <th>Games</th>
-                            <th>Percent</th>
-                        </tr>
-
-                        {{#each selectedPlayer.roles as |role|}}
+                        {{#if selectedPlayer.roles}}
                             <tr>
-                                <td>{{role.role}}</td>
-                                <td>{{role.games}}</td>
-                                <td>{{role.percent}}%</td>
+                                <th>Role</th>
+                                <th>Games</th>
+                                <th>Percent</th>
                             </tr>
-                        {{/each}}
 
+                            {{#each selectedPlayer.roles as |role|}}
+                                <tr>
+                                    <td>{{role.role}}</td>
+                                    <td>{{role.games}}</td>
+                                    <td>{{role.percent}}%</td>
+                                </tr>
+                            {{/each}}
+                        {{else}}
+                            <tr>
+                                <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+                                <td><b>No champions played</b></td>
+                            </tr>
+                        {{/if}}
                     {{else}}
                         <div class='v-align'><img src='assets/select2-spinner.gif'></div>
                     {{/if}}
@@ -114,11 +123,11 @@
         </div>
         
         <div class='col-lg-4 col-xs-12'>
-            <h3>Masteries:</h3>
-            <ul class='list-unstyled mastery-list'>
-                <li>Offense: {{selectedPlayer.masteries.offense}}</li>
-                <li>Defense: {{selectedPlayer.masteries.defense}}</li>
-                <li>Utility: {{selectedPlayer.masteries.utility}}</li>
+            <h3>Runes:</h3>
+            <ul class='list-unstyled rune-list'>
+                {{#each selectedPlayer.runes as |rune|}}
+                    <li>x{{rune.count}} <img class="rune-image" src="http://ddragon.leagueoflegends.com/cdn/5.19.1/img/rune/{{rune.image.full}}"> {{rune.description}}</li>
+                {{/each}}
             </ul>
         </div>
     </div>

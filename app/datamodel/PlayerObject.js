@@ -57,7 +57,12 @@ var PlayerObject = Ember.Object.extend({
         this.set('championLosses', data.championLosses);
         this.set('championGames', data.championWins + data.championLosses);
         this.set('championWinrate', (data.championWins * 100 / (data.championWins + data.championLosses)).toFixed(1));
-        this.set('championKDA', ((data.championKills + data.championAssists) / data.championDeaths).toFixed(1));
+        if(data.championDeaths > 0) {
+            this.set('championKDA', ((data.championKills + data.championAssists) / data.championDeaths).toFixed(1));
+        }
+        else {
+            this.set('championKDA', data.championKills + data.championAssists);
+        }
     },
     
     /* Inserts league placement data
@@ -70,7 +75,9 @@ var PlayerObject = Ember.Object.extend({
      */
     insertLeagueData: function(data) {
         this.set('league', this.capitalizeFirstLetter(data.league.toLowerCase()));
-        this.set('division', data.division);
+        if(data.division != 0) {
+            this.set('division', data.division);
+        }
         this.set('rankedWins', data.wins);
         this.set('rankedLosses', data.losses);
         this.set('rankedWinrate', ((this.get('rankedWins') * 100) / (this.get('rankedWins') + this.get('rankedLosses'))).toFixed(1));

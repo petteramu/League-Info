@@ -1,11 +1,14 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800,700,600,300);
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,800,700,600,300);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,100,700);
+
 @screen-md-min: 992px;
 @screen-md-max: 1200px;
 @screen-sm-max: 992px;
 @screen-sm-min: 768px;
 @header-color: hsl(230, 8%, 24%);
 @player-container-bg: hsl(230, 10%, 97%);
+@mastery-border: #E3D38A;
 
 
 html, body {
@@ -46,10 +49,26 @@ html, body {
     align-items: center;
 }
 
+.flex-space-around {
+    display: flex;
+    justify-content: space-around;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
 .row-reverse-md {
     @media(min-width: @screen-md-min) {
         flex-direction: row-reverse;
     }
+}
+
+.grayscale {
+    filter: url("data:image/svg+xml;utf8,&lt;svg xmlns=\'http://www.w3.org/2000/svg\'&gt;&lt;filter id=\'grayscale\'&gt;&lt;feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/&gt;&lt;/filter&gt;&lt;/svg&gt;#grayscale"); /* Firefox 10+, Firefox on Android */
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
 
 .content {
@@ -656,4 +675,283 @@ html[data-useragent*='Firefox'] .user-agent-height {
     @media(min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
         display: none;
     }
+}
+
+
+
+/* Masteries */
+/*********************/
+
+#masteries {
+    .flex-row;
+    position: absolute;
+    right: 0px;
+    top: 14px;
+    border: 1px solid @mastery-border;
+    border-radius: 5px;
+    display: none;
+    z-index: 5;
+}
+
+#ferocity, #cunning, #resolve {
+    width: 150px;
+    background: lightgrey;
+    display: inline-block;
+    padding: 3px;
+}
+
+#ferocity {
+    background-color: #1F0906;
+}
+
+#cunning {
+    background-color: #140911;
+    border-left: @mastery-border 1px solid;
+    border-right: @mastery-border 1px solid;
+}
+
+#resolve {
+    background-color: #090914;
+}
+
+.normal {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background-size: 35px 35px;
+}
+
+.rank {
+    position: relative;
+    left: 20px;
+    top: 25px;
+    width: 20px;
+    height: 15px;
+    border: 1px solid red;
+    text-align: center;
+    background: darkgrey;
+    font-size: 10px;
+}
+
+.level1 {
+    width: 100%;
+    padding: 5px;
+    .flex-space-around;
+}
+
+.level2 {
+    top: 50px;
+    width: 100%;
+    padding: 5px;
+    .flex-center;
+    > div {
+        margin: 2px;
+    }
+}
+
+.level3 {
+    top: 150px;
+    width: 100%;
+    padding: 5px;
+    .flex-space-around;
+}
+
+.level4 {
+    .level2;
+    top: 75px;
+}
+
+.level5 {
+    .level1;
+    top: 75px;
+}
+
+.level6 {
+    .level2;
+    top: 75px;
+}
+
+.level7 {
+    padding: 5px;
+    color: white;
+    font-size: 18px;
+    color: hsl(30, 30%, 90%);
+    text-transform: uppercase;
+    font: "Roboto" 300;
+}
+
+#masteryId6111 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6111.png');
+}
+
+#masteryId6114 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6114.png');
+}
+
+#masteryId6311 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6311.png');
+}
+
+#masteryId6312 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6312.png');
+}
+
+#masteryId6211 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6211.png');
+}
+
+#masteryId6212 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6212.png');
+}
+
+#masteryId6121 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6121.png');
+}
+
+#masteryId6122 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6122.png');
+}
+
+#masteryId6131 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6131.png');
+}
+
+#masteryId6134 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6134.png');
+}
+
+#masteryId6141 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6141.png');
+}
+
+#masteryId6142 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6142.png');
+}
+
+#masteryId6151 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6151.png');
+}
+
+#masteryId6154 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6154.png');
+}
+
+#masteryId6161 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6161.png');
+}
+
+#masteryId6162 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6162.png');
+}
+
+#masteryId6164 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6164.png');
+}
+
+#masteryId6311 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6311.png');
+}
+
+#masteryId6312 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6312.png');
+}
+
+#masteryId6321 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6321.png');
+}
+
+#masteryId6322 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6322.png');
+}
+
+#masteryId6323 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6323.png');
+}
+
+#masteryId6331 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6331.png');
+}
+
+#masteryId6332 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6332.png');
+}
+
+#masteryId6342 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6342.png');
+}
+
+#masteryId6343 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6343.png');
+}
+
+#masteryId6351 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6351.png');
+}
+
+#masteryId6352 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6352.png');
+}
+
+#masteryId6361 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6361.png');
+}
+
+#masteryId6362 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6362.png');
+}
+
+#masteryId6363 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6363.png');
+}
+
+#masteryId6211 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6211.png');
+}
+
+#masteryId6212 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6212.png');
+}
+
+#masteryId6221 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6221.png');
+}
+
+#masteryId6223 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6223.png');
+}
+
+#masteryId6231 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6231.png');
+}
+
+#masteryId6232 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6232.png');
+}
+
+#masteryId6241 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6241.png');
+}
+
+#masteryId6242 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6242.png');
+}
+
+#masteryId6251 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6251.png');
+}
+
+#masteryId6252 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6252.png');
+}
+
+#masteryId6261 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6261.png');
+}
+
+#masteryId6262 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6262.png');
+}
+
+#masteryId6263 {
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/6.1.1/img/mastery/6263.png');
 }
