@@ -17,6 +17,8 @@ export default Ember.Controller.extend({
      * the player objects, such as the version number */
     gameData: undefined,
     
+    masteryData: undefined,
+
     /* Used to keep track of time in-game */
     gameStartTime: undefined,
     
@@ -33,7 +35,7 @@ export default Ember.Controller.extend({
     
     /* The ip to the AWS data server */
     //nodeServerAddress: 'http://52.29.67.242:80',
-    nodeServerAddress: 'http://localhost:8080',
+    nodeServerAddress: 'https://52.29.36.162:443',
     
     /* Runs on initialization of this controller 
      * Sets up everything we need */
@@ -50,6 +52,8 @@ export default Ember.Controller.extend({
         setInterval(function() {
             _this.increaseGameTime.apply(_this);
         }, 1000);
+
+        this.getMasteryData();
     
         /* Create the class for stages
          * These are used to determine whether or not
@@ -64,6 +68,14 @@ export default Ember.Controller.extend({
         });
         
         this.set('stages', stageClass.create());
+    },
+
+    getMasteryData: function() {
+        self = this;
+        $.get('http://ddragon.leagueoflegends.com/cdn/6.1.1/data/en_US/mastery.json', function(data, status, jqXHR) {
+                self.masteryData = data;
+            }
+        );
     },
     
     //The following 3 methods and properties handle the updating of the game time

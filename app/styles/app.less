@@ -67,8 +67,13 @@ html, body {
 
 .grayscale {
     filter: url("data:image/svg+xml;utf8,&lt;svg xmlns=\'http://www.w3.org/2000/svg\'&gt;&lt;filter id=\'grayscale\'&gt;&lt;feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/&gt;&lt;/filter&gt;&lt;/svg&gt;#grayscale"); /* Firefox 10+, Firefox on Android */
-    filter: gray; /* IE6-9 */
+    //filter: gray; /* IE6-9 */
     -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+
+.nograyscale {
+    filter: none;
+    -webkit-filter: none;
 }
 
 .content {
@@ -714,11 +719,46 @@ html[data-useragent*='Firefox'] .user-agent-height {
     background-color: #090914;
 }
 
+.description {
+    position: relative;
+    display: none;
+    z-index: 100;
+    width: 200px;
+    background-color: #333;
+    color: white;
+    border: 1px solid @mastery-border;
+    padding: 3px;
+}
+
 .normal {
     display: inline-block;
     width: 35px;
     height: 35px;
-    background-size: 35px 35px;
+    border: 2px solid #333;
+}
+
+div.normal:hover > div.description {
+    display: block;
+}
+
+.normal[rank="1"], .normal[rank="2"], .normal[rank="3"], .normal[rank="4"], .normal[rank="5"] {
+    > .mastery-image {
+        .nograyscale;
+    }
+    border: 2px solid @mastery-border;
+}
+
+.mastery-image {
+    position: relative;
+    width: 31px;
+    height: 31px;
+    top: -15px;
+    background-size: 31px 31px;
+    .grayscale;
+}
+
+.keystone > .mastery-image {
+    top: 0px;
 }
 
 .rank {
@@ -727,10 +767,13 @@ html[data-useragent*='Firefox'] .user-agent-height {
     top: 25px;
     width: 20px;
     height: 15px;
-    border: 1px solid red;
+    border: 1px solid @mastery-border;
     text-align: center;
-    background: darkgrey;
+    background: #333;
     font-size: 10px;
+    opacity: 0.8;
+    color: white;
+    z-index: 10;
 }
 
 .level1 {

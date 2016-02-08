@@ -10,95 +10,239 @@
 
 	<div id='ferocity'>
 		<div class='level1'>
-			<div id='masteryId6111' class='normal grayscale' tooltip='Fury'><div class='rank'>0/0</div></div>
-			<div id='masteryId6114' class='normal grayscale' tooltip='Sorcery'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6111.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6111}}{{masteries.all.id6111.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6111' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6111.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6114.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6114}}{{masteries.all.id6114.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6114' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6114.description}}</div>
+			</div>
 		</div>
 		<div class='level2'>
-			<div id='masteryId6121' class='normal grayscale'></div>
-			<div id='masteryId6122' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6121.rank}}' class='normal keystone'>
+				<div id='masteryId6121' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6121.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6122.rank}}' class='normal keystone'>
+				<div id='masteryId6122' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6122.description}}</div>
+			</div>
 		</div>
 		<div class='level3'>
-			<div id='masteryId6131' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6134' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6131.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6131}}{{masteries.all.id6131.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6131' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6131.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6134.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6134}}{{masteries.all.id6134.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6134' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6134.description}}</div>
+			</div>
 		</div>
 		<div class='level4'>
-			<div id='masteryId6141' class='normal grayscale'></div>
-			<div id='masteryId6142' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6141.rank}}' class='normal keystone'>
+				<div id='masteryId6141' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6141.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6142.rank}}' class='normal keystone'>
+				<div id='masteryId6142' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6142.description}}</div>
+			</div>
 		</div>
 		<div class='level5'>
-			<div id='masteryId6151' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6154' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6151.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6151}}{{masteries.all.id6151.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6151' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6151.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6154.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6154}}{{masteries.all.id6154.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6154' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6154.description}}</div>
+			</div>
 		</div>
 		<div class='level6'>
-			<div id='masteryId6161' class='normal grayscale'></div>
-			<div id='masteryId6162' class='normal grayscale'></div>
-			<div id='masteryId6164' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6161.rank}}' class='normal keystone'>
+				<div id='masteryId6161' class='mastery-image'>
+			</div>
+				<div class='description'>{{masteryData.data.6161.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6162.rank}}' class='normal keystone'>
+				<div id='masteryId6162' class='mastery-image'>
+			</div>
+				<div class='description'>{{masteryData.data.6162.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6164.rank}}' class='normal keystone'>
+			<div id='masteryId6164' class='mastery-image'>
+			</div>
+				<div class='description'>{{masteryData.data.6164.description}}</div>
+			</div>
 		</div>
 		<div class='level7'>
-			Ferocity: 12
+			Ferocity: {{masteries.Ferocity}}
 		</div>
 	</div>
 
 	<div id='cunning'>
 		<div class='level1'>
-			<div id='masteryId6311' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6312' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6311.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6311}}{{masteries.all.id6311.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6311' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6311.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6312.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6312}}{{masteries.all.id6312.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6312' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6312.description}}</div>
+			</div>
 		</div>
 		<div class='level2'>
-			<div id='masteryId6321' class='normal grayscale'></div>
-			<div id='masteryId6322' class='normal grayscale'></div>
-			<div id='masteryId6323' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6321.rank}}' class='normal keystone'>
+				<div id='masteryId6321' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6321.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6322.rank}}' class='normal keystone'>
+				<div id='masteryId6322' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6322.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6323.rank}}' class='normal keystone'>
+				<div id='masteryId6323' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6323.description}}</div>
+			</div>
 		</div>
 		<div class='level3'>
-			<div id='masteryId6331' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6332' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6331.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6331}}{{masteries.all.id6331.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6331' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.631.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6332.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6332}}{{masteries.all.id6332.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6332' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6332.description}}</div>
+			</div>
 		</div>
 		<div class='level4'>
-			<div id='masteryId6342' class='normal grayscale'></div>
-			<div id='masteryId6343' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6342.rank}}' class='normal keystone'>
+				<div id='masteryId6342' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6342.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6343.rank}}' class='normal keystone'>
+				<div id='masteryId6343' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6343.description}}</div>
+			</div>
 		</div>
 		<div class='level5'>
-			<div id='masteryId6351' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6352' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6351.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6351}}{{masteries.all.id6351.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6351' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6351.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6352.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6352}}{{masteries.all.id6352.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6352' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6352.description}}</div>
+			</div>
 		</div>
 		<div class='level6'>
-			<div id='masteryId6361' class='normal grayscale'></div>
-			<div id='masteryId6362' class='normal grayscale'></div>
-			<div id='masteryId6363' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6361.rank}}' class='normal keystone'>
+				<div id='masteryId6361' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6361.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6362.rank}}' class='normal keystone'>
+				<div id='masteryId6362' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6362.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6363.rank}}' class='normal keystone'>
+				<div id='masteryId6363' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6363.description}}</div>
+			</div>
 		</div>
 		<div class='level7'>
-			Cunning: 18
+			Cunning: {{masteries.Cunning}}
 		</div>
 	</div>
 
 	<div id='resolve'>
 		<div class='level1'>
-			<div id='masteryId6211' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6212' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<!-- masteryData contains data with number format for ids -->
+			<!-- masteries has id as prefix -->
+			<div rank='{{masteries.all.id6211.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6211}}{{masteries.all.id6211.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6211' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6211.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6212.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6212}}{{masteries.all.id6212.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6212' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6212.description}}</div>
+			</div>
+			
 		</div>
 		<div class='level2'>
-			<div id='masteryId6221' class='normal grayscale'></div>
-			<div id='masteryId6223' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6221.rank}}' class='normal keystone'>
+				<div id='masteryId6221' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6221.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6223.rank}}' class='normal keystone'>
+				<div id='masteryId6223' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6223.description}}</div>
+			</div>
 		</div>
 		<div class='level3'>
-			<div id='masteryId6231' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6232' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6231.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6231}}{{masteries.all.id6231.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6231' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6231.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6232.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6232}}{{masteries.all.id6232.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6232' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6232.description}}</div>
+			</div>
 		</div>
 		<div class='level4'>
-			<div id='masteryId6241' class='normal grayscale'></div>
-			<div id='masteryId6242' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6241.rank}}' class='normal keystone'>
+				<div id='masteryId6241' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6241.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6242.rank}}' class='normal keystone'>
+				<div id='masteryId6242' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6242.description}}</div>
+			</div>
 		</div>
 		<div class='level5'>
-			<div id='masteryId6251' class='normal grayscale'><div class='rank'>0/0</div></div>
-			<div id='masteryId6252' class='normal grayscale'><div class='rank'>0/0</div></div>
+			<div rank='{{masteries.all.id6251.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6251}}{{masteries.all.id6251.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6251' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6251.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6252.rank}}' class='normal'>
+				<div class='rank'>{{#if masteries.all.id6252}}{{masteries.all.id6252.rank}}{{else}}0{{/if}}/5</div>
+				<div id='masteryId6252' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6252.description}}</div>
+			</div>
 		</div>
 		<div class='level6'>
-			<div id='masteryId6261' class='normal grayscale'></div>
-			<div id='masteryId6262' class='normal grayscale'></div>
-			<div id='masteryId6263' class='normal grayscale'></div>
+			<div rank='{{masteries.all.id6261.rank}}' class='normal keystone'>
+				<div id='masteryId6261' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6261.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6262.rank}}' class='normal keystone'>
+				<div id='masteryId6262' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6262.description}}</div>
+			</div>
+			<div rank='{{masteries.all.id6263.rank}}' class='normal keystone'>
+				<div id='masteryId6263' class='mastery-image'></div>
+				<div class='description'>{{masteryData.data.6263.description}}</div>
+			</div>
 		</div>
 		<div class='level7'>
-			Resolve: 18
+			Resolve: {{masteries.Resolve}}
 		</div>
 	</div>
 
